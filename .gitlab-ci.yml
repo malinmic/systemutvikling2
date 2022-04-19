@@ -1,0 +1,37 @@
+image: ubuntu:latest
+
+stages:
+  - build
+  - verify
+
+build:
+  stage: build
+  only:
+    - main
+    - dev
+    - merge_requests
+  script:
+    - echo "Building project"
+    - npm ci
+
+lint:
+  stage: verify
+  only:
+    - main
+    - dev
+    - merge_requests
+  script:
+    - echo "Checking formatting"
+    - npm ci
+    - npx vue-cli-service lint --no-fix
+
+test:
+  stage: verify
+  only:
+    - main
+    - dev
+    - merge_requests
+  script:
+    - echo "Running tests"
+    - npm ci
+    - npm run test:unit
