@@ -1,9 +1,13 @@
-image: ubuntu-latest
+image: node:latest
 
 stages:
   - build
   - verify
 
+cache:
+  paths:
+    - node_modules/
+    
 build:
   stage: build
   only:
