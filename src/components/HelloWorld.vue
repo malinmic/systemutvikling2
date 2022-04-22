@@ -24,6 +24,9 @@
                 </p>
             </v-col>
 
+            <!-- Test login popup-->
+            <login-popup />
+
             <v-col class="mb-5" cols="12">
                 <h2 class="headline font-weight-bold mb-5">What's next?</h2>
 
@@ -80,10 +83,10 @@
 
 <script lang="ts">
 import { defineComponent } from "vue"
+import LoginPopup from "./LoginPopup.vue"
 
 export default defineComponent({
     name: "HelloWorld",
-
     data() {
         return {
             ecosystem: [
@@ -134,5 +137,6 @@ export default defineComponent({
             ],
         }
     },
+    components: { LoginPopup },
 })
 </script>
