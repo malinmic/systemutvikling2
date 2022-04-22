@@ -1,5 +1,5 @@
 import axios from "axios"
-import { AUTH_URL } from "@/services/api/urls"
+import { AUTH_URL, USER_URL } from "@/services/api/urls"
 
 export async function getToken(
     username: String,
@@ -19,5 +19,30 @@ export async function getToken(
         })
         .catch((error) => {
             throw `Unable to retrieve token: ${error}`
+        })
+}
+
+export async function postUser(
+    email: String,
+    firstName: String,
+    lastName: String,
+    phone: number,
+    zip: number,
+    password: String
+) {
+    return axios
+        .post(USER_URL + `/create`, {
+            email: email,
+            firstname: firstName,
+            lastname: lastName,
+            phone: phone,
+            zip: zip,
+            password: password,
+        })
+        .then(() => {
+            return true
+        })
+        .catch(() => {
+            return false
         })
 }

@@ -1,6 +1,7 @@
 /* eslint-disable */
 import { createRouter, createWebHistory, Router, RouteRecordRaw } from "vue-router";
 import HomeView from "../views/HomeView.vue";
+import CreateUserView from "../views/CreateUserView.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -16,6 +17,11 @@ const routes: Array<RouteRecordRaw> = [
     // which is lazy-loaded when the route is visited.
     component: () =>
       import(/* webpackChunkName: "about" */ "../views/AboutView.vue"),
+  },
+  {
+    path: "/createUser",
+    name: "createUser",
+    component: CreateUserView,
   },
 ];
 
