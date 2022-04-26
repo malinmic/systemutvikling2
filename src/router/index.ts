@@ -6,6 +6,8 @@ import {
     RouteRecordRaw,
 } from "vue-router"
 import LandingPage from "../views/LandingPage.vue"
+import CreateUserView from "../views/CreateUserView.vue"
+import CreateListingView from "../views/CreateListingView.vue"
 
 const routes: Array<RouteRecordRaw> = [
     {
@@ -17,6 +19,11 @@ const routes: Array<RouteRecordRaw> = [
     path: "/createUser",
     name: "createUser",
     component: CreateUserView,
+  },
+  {
+    path: "/createListing",
+    name: "createlisting",
+    component: CreateListingView,
   },
 ]
 
