@@ -22,7 +22,7 @@
     "vue": "^3.2.13",
     "vue-axios": "^3.4.1",
     "vue-router": "^4.0.3",
-    "vuetify": "npm:@vuetify/nightly@next",
+    "vuetify": "npm:@vuetify/nightly@^3.0.0-next-20220422.0",
     "vuex": "^4.0.0",
     "webfontloader": "^1.0.0",
     "yup": "^0.32.11"
