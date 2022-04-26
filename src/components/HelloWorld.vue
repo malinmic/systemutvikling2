@@ -75,7 +75,7 @@
                 </v-row>
             </v-col>
             <v-col>
-                <v-btn color="success"> Test </v-btn>
+                <v-btn color="success" data-cy="test-button"> Test </v-btn>
             </v-col>
         </v-row>
     </v-container>

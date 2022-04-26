@@ -4,6 +4,7 @@
             <v-row>
                 <v-col class="d-flex flex-row mt-5 .rounded-xl">
                     <v-text-field
+                        data-cy="firstname"
                         class="fornavn"
                         label="Fornavn"
                         placeholder="Ola"
@@ -13,6 +14,7 @@
                         :error-messages="errors.firstname"
                     ></v-text-field>
                     <v-text-field
+                        data-cy="lastname"
                         label="Etternavn"
                         placeholder="Nordmann"
                         variant="outlined"
@@ -23,6 +25,7 @@
                 </v-col>
                 <v-col cols="12">
                     <v-text-field
+                        data-cy="email"
                         label="Epost"
                         placeholder="ola.nodrmann@gmail.ru"
                         variant="outlined"
@@ -30,6 +33,7 @@
                         :error-messages="errors.email"
                     ></v-text-field>
                     <v-text-field
+                        data-cy="phonenumber"
                         label="Mobilnummer"
                         placeholder="93293300"
                         variant="outlined"
@@ -39,6 +43,7 @@
                 </v-col>
                 <v-col class="d-flex flex-row mt-5">
                     <v-text-field
+                        data-cy="zipcode"
                         class="fornavn"
                         label="Postnummer"
                         placeholder="7030"
@@ -47,6 +52,7 @@
                         :error-messages="errors.zipcode"
                     ></v-text-field>
                     <v-text-field
+                        data-cy="city"
                         label="Poststed"
                         placeholder="Trondheim"
                         variant="outlined"
@@ -57,6 +63,7 @@
                 </v-col>
                 <v-col cols="12">
                     <v-text-field
+                        data-cy="password"
                         label="Passord"
                         :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
                         variant="outlined"
@@ -66,6 +73,7 @@
                         :error-messages="errors.password"
                     ></v-text-field>
                     <v-text-field
+                        data-cy="confirmPassword"
                         label="Gjenta Passord"
                         variant="outlined"
                         :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
@@ -76,7 +84,11 @@
                     ></v-text-field>
                 </v-col>
                 <v-col class="justify-center d-flex" cols="12">
-                    <v-btn color="#004aad" class="text-white" type="submit"
+                    <v-btn
+                        data-cy="createUser"
+                        color="#004aad"
+                        class="text-white"
+                        type="submit"
                         >Registrer deg</v-btn
                     >
                 </v-col>
