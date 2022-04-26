@@ -30,6 +30,7 @@ describe("Createing a new user", () => {
             }
         ).as("postUser")
         cy.get("[data-cy=createUser]").click()
+        cy.wait("@postUser");
     })
 
     it("Create new user unsuccessfully", () => {
