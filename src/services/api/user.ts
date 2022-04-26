@@ -46,3 +46,28 @@ export async function postUser(
             return false
         })
 }
+
+export async function editUser(
+    email: String,
+    firstName: String,
+    lastName: String,
+    phone: number,
+    zip: number,
+    password: String
+) {
+    return axios
+        .put(USER_URL, {
+            email: email,
+            firstname: firstName,
+            lastname: lastName,
+            phone: phone,
+            zip: zip,
+            password: password,
+        })
+        .then(() => {
+            return true
+        })
+        .catch(() => {
+            return false
+        })
+}

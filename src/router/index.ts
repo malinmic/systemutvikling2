@@ -6,6 +6,7 @@ import {
     RouteRecordRaw,
 } from "vue-router"
 import LandingPage from "../views/LandingPage.vue"
+import EditUserView from "../views/EditUserView.vue";
 import CreateUserView from "../views/CreateUserView.vue"
 import CreateListingView from "../views/CreateListingView.vue"
 
@@ -21,11 +22,26 @@ const routes: Array<RouteRecordRaw> = [
     component: CreateUserView,
   },
   {
-    path: "/createListing",
-    name: "createlisting",
-    component: CreateListingView,
+    path: "/about",
+    name: "about",
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () =>
+      import(/* webpackChunkName: "about" */ "../views/AboutView.vue"),
   },
-]
+  {
+    path: "/editUser",
+    name: "editUser",
+    component: EditUserView,
+  },
+  {
+  path: "/createListing",
+  name: "createlisting",
+  component: CreateListingView,
+},
+];
+
 
 const router: Router = createRouter({
     history: createWebHistory(process.env.BASE_URL),
