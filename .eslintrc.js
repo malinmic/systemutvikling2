@@ -7,6 +7,7 @@ module.exports = {
         "plugin:vue/vue3-essential",
         "eslint:recommended",
         "plugin:prettier/recommended",
+        "plugin:cypress/recommended",
     ],
     parserOptions: {
         parser: "@typescript-eslint/parser",
