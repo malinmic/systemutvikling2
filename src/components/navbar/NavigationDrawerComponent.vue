@@ -1,12 +1,13 @@
 <template>
     <v-navigation-drawer width="350" app v-model="isNavigationOpen">
-        <LoginPopup
+        <LoginPopupComponent
             v-model="showPopup"
             @update-login-state="updateLoginState"
-        ></LoginPopup>
+        ></LoginPopupComponent>
         <v-list>
             <v-list-item
                 v-if="isAuthenticated"
+                @click="$router.push({ name: 'edituser' })"
                 :prepend-avatar="avatar"
                 :title="fullName"
                 :subtitle="email"
@@ -14,34 +15,34 @@
                 data-cy="navdrawer-user-card"
             />
             <v-list-item
-                @click="showPopup = true"
                 v-else
+                @click="showPopup = true"
                 :prepend-avatar="avatar"
-                title="Logg Inn"
+                title="Logg inn"
                 value="login"
                 data-cy="navdrawer-login-button"
             />
         </v-list>
 
-        <v-divider></v-divider>
+        <v-divider />
 
         <v-list nav>
             <v-list-item
                 prepend-icon="mdi-magnify"
                 title="Finn noe å leie"
-                value="home"
+                @click="$router.push({ name: 'landingpage' })"
             />
 
             <v-list-item
                 prepend-icon="mdi-plus"
-                title="Opprett Annonse"
-                value="test"
+                title="Opprett annonse"
+                @click="$router.push({ name: 'createlisting' })"
             />
 
             <v-list-item
                 prepend-icon="mdi-home"
                 title="Om BoCo"
-                value="about"
+                @click="$router.push({ name: 'about' })"
             />
         </v-list>
     </v-navigation-drawer>
@@ -58,9 +59,16 @@
             data-test-id="hamburger-menu-button"
         ></v-app-bar-nav-icon>
 
-        <v-img src="@/assets/navbar-logo.png"> </v-img>
+        <v-img
+            src="@/assets/navbar-logo.png"
+            @click="$router.push({ name: 'landingpage' })"
+        />
 
-        <v-btn icon v-if="isAuthenticated">
+        <v-btn
+            v-if="isAuthenticated"
+            @click="$router.push({ name: 'edituser' })"
+            icon
+        >
             <v-avatar
                 :rounded="true"
                 size="24"
@@ -71,22 +79,22 @@
         </v-btn>
 
         <v-btn
-            text
             v-else
+            text
             @click="showPopup = true"
             data-cy="navbar-login-button"
         >
             <v-icon icon="mdi-login" class="mr-1" />
-            Logg Inn
+            Logg inn
         </v-btn>
     </v-app-bar>
 </template>
 <script setup lang="ts">
 import { ref } from "vue"
-import LoginPopup from "@/components/LoginPopup.vue"
 import { useStore } from "vuex"
+import LoginPopupComponent from "@/components/user/LoginPopupComponent.vue"
+import { getUser } from "@/services/api/user"
 
-//const router = useRouter()
 const store = useStore()
 
 const showPopup = ref(false)
@@ -96,10 +104,18 @@ const isAuthenticated = ref(false)
 const fullName = ref("")
 const email = ref("")
 
-const updateLoginState = () => {
+const updateLoginState = async () => {
     isAuthenticated.value = store.getters.isLoggedIn
-    fullName.value = store.getters.fullName
-    email.value = store.getters.email
+
+    if (isAuthenticated.value) {
+        const token = store.getters.token
+
+        let userinfo = await getUser(token)
+        await store.dispatch("setUserInfo", userinfo)
+
+        fullName.value = store.getters.fullName
+        email.value = store.getters.email
+    }
 }
 
 updateLoginState()

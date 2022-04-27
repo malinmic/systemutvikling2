@@ -12,9 +12,7 @@
                         </v-btn>
                     </v-card-title>
                     <v-col class="text-center mt-3" v-if="errormessage">
-                        <h4 class="text-red">
-                            {{ errormessage }}
-                        </h4>
+                        <v-alert type="error">{{ errormessage }}</v-alert>
                     </v-col>
                 </v-col>
                 <v-container>
@@ -73,7 +71,7 @@ import { ref, defineEmits } from "vue"
 import { useForm, useField } from "vee-validate"
 import { object, string } from "yup"
 import { useRouter } from "vue-router"
-import { getToken, getUserInfo } from "@/services/api/user"
+import { getToken } from "@/services/api/user"
 import { useCookies } from "vue3-cookies"
 import { useStore } from "vuex"
 
@@ -86,7 +84,9 @@ const showPassword = ref(false) //Show / unhide password
 const errormessage = ref("") //Cant log in
 
 const validationSchema = object({
-    username: string().required("Dette feltet er påkrevd").email(),
+    username: string()
+        .required("Dette feltet er påkrevd")
+        .email("Brukernavnet må være en e-post"),
     password: string().required("Dette feltet er påkrevd"),
 })
 
@@ -102,13 +102,18 @@ const submit = handleSubmit(async (values) => {
         try {
             let token = await getToken(values.username, values.password)
 
-            cookies.set("token", token, "1d")
+            if (!token) {
+                throw "No token received"
+            }
 
-            let userinfo = await getUserInfo(token)
-            await store.dispatch("setUserInfo", userinfo)
-            await store.dispatch("setToken", token)
+            cookies.set("token", token, "1d")
+            await store.dispatch("setToken", { token })
 
             emit("update-login-state")
+            await store.dispatch("postAlert", {
+                message: "Login successful",
+                type: "success",
+            })
 
             errormessage.value = ""
             emit("update:modelValue", false)
@@ -122,6 +127,6 @@ const submit = handleSubmit(async (values) => {
 })
 
 const register = () => {
-    router.push("/createUser")
+    router.push({ name: "createuser" })
 }
 </script>

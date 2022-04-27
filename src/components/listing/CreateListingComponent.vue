@@ -70,10 +70,15 @@
 </template>
 
 <script setup lang="ts">
-import { postListing } from "@/services/api/listing"
-import { useField, useForm } from "vee-validate"
 import { ref } from "vue"
+import { useStore } from "vuex"
 import { number, object, string } from "yup"
+import { useField, useForm } from "vee-validate"
+import { postListing } from "@/services/api/listing"
+import { useRouter } from "vue-router"
+
+const store = useStore()
+const router = useRouter()
 
 const isFree = ref(false)
 const showPhone = ref(false)
@@ -84,7 +89,7 @@ const changePriceLabel = () => {
     if (isFree.value) {
         priceSwitchText.value = "Gratis"
     } else {
-        priceSwitchText.value = "Ikke gratis, skriv inn pris for leie: "
+        priceSwitchText.value = "Ikke gratis, skriv inn pris for leie"
     }
 }
 
@@ -92,7 +97,7 @@ const changePhoneLabel = () => {
     if (showPhone.value) {
         phoneSwitchText.value = "Skjul telefonnummer"
     } else {
-        phoneSwitchText.value = "Vis telefonnummer, venligst skriv inn:"
+        phoneSwitchText.value = "Vis telefonnummer, vennligst skriv inn"
     }
 }
 
@@ -121,11 +126,18 @@ const submit = handleSubmit((values) => {
 
     if (values.title && values.address)
         postListing(
+            store.getters.token,
             values.title,
             description.value,
             price.value,
             values.address,
             phonenumber.value
-        )
+        ).then((data) => {
+            if (data) {
+                router.push({ name: "landingpage" })
+            } else {
+                alert("Something went wrong, check that server is running")
+            }
+        })
 })
 </script>

@@ -43,13 +43,13 @@ describe("Logging in a user", () => {
         cy.wait("@getUserInfo")
     })
 
-    it("Logging in user unsuccessfully, invalid email", () => {
+    it("Brukernavnet må være en e-post", () => {
         cy.visit("/*")
 
         cy.get("[data-cy=navbar-login-button]").click()
         cy.get("[data-cy=username]").type("ola.nordmanngmail")
         cy.get("[data-cy=password]").type("Passord")
-        cy.contains(/username must be a valid email/i) //Fyll inn en gyldig mailadresse
+        cy.contains(/Brukernavnet må være en e-post/i) //Fyll inn en gyldig mailadresse
         cy.get("[data-cy=submit]").click()
     })
 
@@ -78,7 +78,7 @@ describe("Logging in a user", () => {
         cy.wait("@getToken")
     })
 
-    it("should redirect to /createUser when pressing register button", function () {
+    it("Should redirect to Create User when pressing register button", function () {
         cy.visit("/*")
         cy.get("[data-cy=navbar-login-button]").click()
         cy.get("[data-cy=register]").click()

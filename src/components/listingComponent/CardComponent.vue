@@ -1,5 +1,8 @@
 <template>
-    <router-link :to="{ name: 'landingpage' }" class="link">
+    <router-link
+        :to="{ name: 'detailedListing', params: { id: props.item.id } }"
+        class="link"
+    >
         <v-card
             class="ma-0 item"
             min-width="120"
