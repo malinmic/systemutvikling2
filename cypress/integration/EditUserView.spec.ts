@@ -1,13 +1,12 @@
 describe("Editing a user", () => {
     it("Edit user successfully", () => {
-        cy.visit("/editUser")
+        cy.visit("/user/edit")
 
         cy.get("[data-cy=firstname]").type("Geir")
         cy.get("[data-cy=lastname]").type("Hansen")
         cy.get("[data-cy=email]").type("geir.hansen@gmail.no")
         cy.get("[data-cy=phonenumber]").type("99995555")
         cy.get("[data-cy=zipcode]").type("8800")
-        cy.get("[data-cy=city]").type("Sandnessjøen")
         cy.get("[data-cy=password]").type("Salami")
         cy.get("[data-cy=confirmPassword]").type("Salami")
         cy.intercept(
@@ -33,14 +32,13 @@ describe("Editing a user", () => {
     })
 
     it("Edit user unsuccessfully", () => {
-        cy.visit("/editUser")
+        cy.visit("/user/edit")
 
         cy.get("[data-cy=firstname]").type("Geir")
         cy.get("[data-cy=lastname]").type("Hansen")
         cy.get("[data-cy=email]").type("geir.hansen@gmail")
         cy.get("[data-cy=phonenumber]").type("99995555")
         cy.get("[data-cy=zipcode]").type("8800")
-        cy.get("[data-cy=city]").type("Sandnessjøen")
         cy.get("[data-cy=password]").type("Salami")
         cy.get("[data-cy=confirmPassword]").type("Salami")
         cy.contains(/Fyll inn en gyldig mailadresse/i)

@@ -1,6 +1,6 @@
 describe("Createing a new user", () => {
     it("Create new user successfully", () => {
-        cy.visit("/createUser")
+        cy.visit("/user/create")
 
         cy.get("[data-cy=firstname]").type("Ola")
         cy.get("[data-cy=lastname]").type("Nordmann")
@@ -13,7 +13,7 @@ describe("Createing a new user", () => {
         cy.intercept(
             {
                 method: "POST",
-                url: "http://localhost:8888/user/create*",
+                url: "http://localhost:8888/user*",
             },
             (req) => {
                 expect(req.body.email).to.include("ola.nordmann@gmail.no")
@@ -33,7 +33,7 @@ describe("Createing a new user", () => {
     })
 
     it("Create new user unsuccessfully", () => {
-        cy.visit("/createUser")
+        cy.visit("/user/create")
 
         cy.get("[data-cy=firstname]").type("Ola")
         cy.get("[data-cy=lastname]").type("Nordmann")

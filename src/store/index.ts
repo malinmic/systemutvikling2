@@ -1,4 +1,18 @@
 import { createStore } from "vuex"
+import { AlertMessage } from "@/types/IfcAlertInterface"
+
+export interface Module1State {
+    userAvatarPath: string
+    token: string
+    username: string
+    firstname: string
+    lastname: string
+    email: string
+    phonenumber: number
+    zipcode: number
+    city: string
+    alerts: AlertMessage[]
+}
 
 export default createStore({
     state: {
@@ -11,6 +25,7 @@ export default createStore({
         phonenumber: -1,
         zipcode: -1,
         city: "",
+        alerts: [] as AlertMessage[],
     },
     getters: {
         token(state) {
@@ -24,6 +39,9 @@ export default createStore({
         },
         email(state) {
             return state.email
+        },
+        alerts(state) {
+            return state.alerts
         },
     },
     mutations: {
@@ -51,6 +69,12 @@ export default createStore({
         SET_CITY(state, city) {
             state.city = city
         },
+        ADD_ALERT(state, alert) {
+            state.alerts.push(alert)
+        },
+        REVOKE_ALERT(state) {
+            state.alerts.pop()
+        },
     },
     actions: {
         setToken(context, { token }) {
@@ -67,6 +91,19 @@ export default createStore({
                 context.commit("SET_PHONENUMBER", phonenumber),
                 context.commit("SET_ZIPCODE", zipcode),
                 context.commit("SET_CITY", city)
+        },
+        postAlert(context, { message, type, title }) {
+            const alert: AlertMessage = {
+                message: message,
+                type: type,
+                title: title,
+            }
+
+            context.commit("ADD_ALERT", alert)
+
+            setTimeout(() => {
+                context.commit("REVOKE_ALERT")
+            }, 3000)
         },
     },
     modules: {},

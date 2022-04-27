@@ -18,22 +18,8 @@ export async function getToken(
             return response.data.token
         })
         .catch((error) => {
-            throw `Unable to retrieve token: ${error}`
-        })
-}
-
-export async function getUserInfo(token: string) {
-    return axios
-        .get(USER_URL, {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        })
-        .then((response) => {
-            return response.data
-        })
-        .catch(() => {
-            throw "Unable to retrieve user data"
+            console.error(`Unable to retrieve token: ${error}`)
+            return ""
         })
 }
 
@@ -46,7 +32,7 @@ export async function postUser(
     password: string
 ) {
     return axios
-        .post(USER_URL + `/create`, {
+        .post(USER_URL, {
             email: email,
             firstname: firstName,
             lastname: lastName,
@@ -57,32 +43,59 @@ export async function postUser(
         .then(() => {
             return true
         })
-        .catch(() => {
+        .catch((error) => {
+            console.error(`Unable to post user: ${error}`)
             return false
         })
 }
 
-export async function editUser(
-    email: String,
-    firstName: String,
-    lastName: String,
+export async function getUser(token: string) {
+    return axios
+        .get(USER_URL, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        })
+        .then((response) => {
+            return response.data
+        })
+        .catch((error) => {
+            console.error(`Unable to retrieve user: ${error}`)
+            return {}
+        })
+}
+
+export async function putUser(
+    token: string,
+    email: string,
+    firstName: string,
+    lastName: string,
     phone: number,
     zip: number,
-    password: String
+    password: string
 ) {
     return axios
-        .put(USER_URL, {
-            email: email,
-            firstname: firstName,
-            lastname: lastName,
-            phone: phone,
-            zip: zip,
-            password: password,
-        })
+        .put(
+            USER_URL,
+            {
+                email: email,
+                firstname: firstName,
+                lastname: lastName,
+                phone: phone,
+                zip: zip,
+                password: password,
+            },
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            }
+        )
         .then(() => {
             return true
         })
-        .catch(() => {
-            return false
+        .catch((error) => {
+            console.error(`Unable to put user: ${error}`)
+            throw error
         })
 }

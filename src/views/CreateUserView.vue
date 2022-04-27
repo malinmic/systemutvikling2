@@ -15,7 +15,7 @@
 import { defineComponent } from "vue"
 
 // Components
-import CreateUserComponent from "@/components/CreateUserComponent.vue"
+import CreateUserComponent from "@/components/user/CreateUserComponent.vue"
 
 export default defineComponent({
     name: "CreateUserView",
