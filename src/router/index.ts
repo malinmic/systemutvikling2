@@ -10,6 +10,7 @@ import EditUserView from "../views/EditUserView.vue"
 import CreateUserView from "../views/CreateUserView.vue"
 import AllListingView from "../views/AllListingView.vue"
 import CreateListingView from "../views/CreateListingView.vue"
+import AcceptBorrowRequest from "../views/AcceptBorrowRequest.vue"
 
 const routes: Array<RouteRecordRaw> = [
     {
@@ -47,7 +48,16 @@ const routes: Array<RouteRecordRaw> = [
         component: () =>
             import(/* webpackChunkName: "faq" */ "../views/FaqView.vue"),
     },
-
+    {
+        path: "/acceptBorrowRequest",
+        name: "acceptBorrowRequest",
+        component: AcceptBorrowRequest,
+    },
+    {
+        path: "/search/:searchstring",
+        name: "searchlisting",
+        component: LandingPage,
+    },
     {
         path: "/listingView",
         name: "AllListingView",
