@@ -22,7 +22,7 @@ describe("Verify NavBar Functionality", () => {
         cy.intercept(
             {
                 method: "GET",
-                url: "http://localhost:8888/user/info",
+                url: "http://localhost:8888/user",
             },
             (req) => {
                 expect(req.headers.authorization).to.equal("Bearer testtest")

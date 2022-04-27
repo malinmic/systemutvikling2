@@ -101,6 +101,7 @@ const submit = handleSubmit(async (values) => {
     if (values.username && values.password) {
         try {
             let token = await getToken(values.username, values.password)
+
             cookies.set("token", token, "1d")
 
             let userinfo = await getUserInfo(token)
