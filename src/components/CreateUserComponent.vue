@@ -169,7 +169,7 @@ export default defineComponent({
     },
 })
 </script>
-<style>
+<style scoped>
 .fornavn {
     margin-right: 20px;
 }
