@@ -153,7 +153,6 @@ const { value: password1 } = useField("password1")
 const { value: password2 } = useField("password2")
 
 const updateUserInfo = handleSubmit((values) => {
-    console.log("submitUpdate", values)
     if (
         values.email &&
         values.firstname &&
@@ -170,9 +169,7 @@ const updateUserInfo = handleSubmit((values) => {
             values.phonenumber,
             values.zipcode,
             values.password2
-        ).then((data) => {
-            console.log(data)
-        })
+        )
 })
 </script>
 

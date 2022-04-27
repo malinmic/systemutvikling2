@@ -136,7 +136,6 @@ export default defineComponent({
         const { value: confirmPassword } = useField("confirmPassword")
 
         const submit = handleSubmit((values) => {
-            console.log("submit", values)
             if (
                 values.email &&
                 values.firstname &&
@@ -152,9 +151,7 @@ export default defineComponent({
                     values.phonenumber,
                     values.zipcode,
                     values.password
-                ).then((data) => {
-                    console.log(data)
-                })
+                )
         })
 
         return {

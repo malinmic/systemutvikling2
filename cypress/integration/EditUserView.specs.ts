@@ -16,7 +16,6 @@ describe("Editing a user", () => {
                 url: "http://localhost:8888/user*",
             },
             (req) => {
-                console.log(req.body)
                 expect(req.body.email).to.include("geir.hansen@gmail.no")
                 expect(req.body.firstname).to.include("Geir")
                 expect(req.body.lastname).to.include("Hansen")
@@ -30,9 +29,8 @@ describe("Editing a user", () => {
             }
         ).as("postUser")
         cy.get("[data-cy=editUser]").click()
-        cy.wait("@postUser");
+        cy.wait("@postUser")
     })
-
 
     it("Edit user unsuccessfully", () => {
         cy.visit("/editUser")
