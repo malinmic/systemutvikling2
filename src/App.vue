@@ -1,12 +1,7 @@
 <template>
     <!-- This is the recommended layout according to the docs. -->
     <v-app>
-        <v-row>
-            <v-col cols="4">
-                <NavigationDrawerComponent />
-            </v-col>
-        </v-row>
-
+        <NavigationDrawerComponent />
         <v-main>
             <v-container fluid>
                 <!-- Show whatever router view is currently active. -->
