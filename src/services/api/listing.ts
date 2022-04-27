@@ -35,3 +35,18 @@ export async function getListingById(id: number) {
             throw "Unable to retrieve listing data."
         })
 }
+
+export async function getPersonalListings(token: string) {
+    return axios
+        .get(LISTING_URL + "/user", {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        })
+        .then((response) => {
+            return response.data
+        })
+        .catch(() => {
+            throw "Unable to retrieve user data"
+        })
+}

@@ -8,6 +8,7 @@ import {
 import LandingPage from "../views/LandingPage.vue"
 import EditUserView from "../views/EditUserView.vue"
 import CreateUserView from "../views/CreateUserView.vue"
+import AllListingView from "../views/AllListingView.vue"
 import CreateListingView from "../views/CreateListingView.vue"
 
 const routes: Array<RouteRecordRaw> = [
@@ -46,8 +47,13 @@ const routes: Array<RouteRecordRaw> = [
         component: () =>
             import(/* webpackChunkName: "faq" */ "../views/FaqView.vue"),
     },
-]
 
+    {
+        path: "/listingView",
+        name: "AllListingView",
+        component: AllListingView,
+    },
+]
 const router: Router = createRouter({
     history: createWebHistory(process.env.BASE_URL),
     routes,

@@ -24,7 +24,7 @@ export async function getToken(
 
 export async function getUserInfo(token: string) {
     return axios
-        .get(USER_URL + "/info", {
+        .get(USER_URL, {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
