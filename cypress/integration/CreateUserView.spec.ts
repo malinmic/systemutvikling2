@@ -16,7 +16,6 @@ describe("Createing a new user", () => {
                 url: "http://localhost:8888/user/create*",
             },
             (req) => {
-                console.log(req.body)
                 expect(req.body.email).to.include("ola.nordmann@gmail.no")
                 expect(req.body.firstname).to.include("Ola")
                 expect(req.body.lastname).to.include("Nordmann")
@@ -30,7 +29,7 @@ describe("Createing a new user", () => {
             }
         ).as("postUser")
         cy.get("[data-cy=createUser]").click()
-        cy.wait("@postUser");
+        cy.wait("@postUser")
     })
 
     it("Create new user unsuccessfully", () => {

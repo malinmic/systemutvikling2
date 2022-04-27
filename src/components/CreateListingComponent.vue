@@ -118,9 +118,6 @@ const submit = handleSubmit((values) => {
     if (!isFree.value) price.value = 0
     if (!showPhone.value) phonenumber.value = ""
     if (values.description == undefined) description.value = ""
-    console.log(
-        `Submit ${values.title} ${phonenumber.value} ${price.value} ${description.value}`
-    )
 
     if (values.title && values.address)
         postListing(
