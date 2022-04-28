@@ -99,6 +99,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue"
+import { useRouter } from "vue-router"
 import { object, string, number, ref } from "yup"
 import { useForm, useField } from "vee-validate"
 import { postUser } from "../services/api/user"
@@ -109,6 +110,7 @@ export default defineComponent({
         show2: false,
     }),
     setup() {
+        const router = useRouter()
         const validationSchema = object({
             firstname: string().required("Dette feltet er påkrevd"),
             lastname: string().required("Dette feltet er påkrevd"),
@@ -151,7 +153,9 @@ export default defineComponent({
                     values.phonenumber,
                     values.zipcode,
                     values.password
-                )
+                ).then(() => {
+                    router.push({ name: "landingpage" })
+                })
         })
 
         return {
