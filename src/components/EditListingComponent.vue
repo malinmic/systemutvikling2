@@ -83,11 +83,12 @@
 import {
     deleteListing,
     getListingById,
-    putListing,
+    putListingById,
 } from "@/services/api/listing"
 import { useField, useForm } from "vee-validate"
 import { onMounted, ref } from "vue"
 import { useRoute } from "vue-router"
+import { useStore } from "vuex"
 import { number, object, string } from "yup"
 
 const router = useRoute()
@@ -97,6 +98,7 @@ const showPhone = ref(false)
 const priceSwitchText = ref("Gratis")
 const phoneSwitchText = ref("Vis telefonnummer")
 const id: number = +router.params.id
+const store = useStore()
 
 const changePriceLabel = () => {
     if (isFree.value) {
@@ -141,7 +143,9 @@ const save = handleSubmit((values) => {
     )
 
     if (values.title && values.address)
-        putListing(
+        putListingById(
+            store.getters.token,
+            id,
             values.title,
             description.value,
             price.value,

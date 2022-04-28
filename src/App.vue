@@ -5,7 +5,7 @@
         <GlobalAlertComponent></GlobalAlertComponent>
 
         <v-main>
-            <v-container fluid>
+            <v-container>
                 <!-- Show whatever router view is currently active. -->
                 <router-view />
             </v-container>

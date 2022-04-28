@@ -6,11 +6,14 @@ import {
     RouteRecordRaw,
 } from "vue-router"
 import LandingPage from "@/views/LandingPageView.vue"
-import AcceptBorrowRequest from "../views/AcceptBorrowRequest.vue"
 import EditUserView from "../views/EditUserView.vue"
 import CreateUserView from "../views/CreateUserView.vue"
+import PersonalListingView from "../views/PersonalListingView.vue"
 import CreateListingView from "../views/CreateListingView.vue"
+import AllListingView from "../views/AllListingView.vue"
 import EditListingView from "../views/EditListingView.vue"
+import AcceptBorrowRequest from "../views/AcceptBorrowRequest.vue"
+import SearchListingView from "../views/SearchListingView.vue"
 
 const routes: Array<RouteRecordRaw> = [
     {
@@ -51,8 +54,8 @@ const routes: Array<RouteRecordRaw> = [
     },
     {
         path: "/search/:searchstring",
-        name: "searchlisting",
-        component: LandingPage,
+        name: "ListingSearch",
+        component: SearchListingView,
     },
     {
         path: "/user/edit",
@@ -61,6 +64,11 @@ const routes: Array<RouteRecordRaw> = [
             import(
                 /* webpackChunkName: "edit-user" */ "@/views/EditUserView.vue"
             ),
+    },
+    {
+        path: "/listingView",
+        name: "PersonalListingView",
+        component: PersonalListingView,
     },
     {
         path: "/listings",
@@ -75,6 +83,20 @@ const routes: Array<RouteRecordRaw> = [
             import(
                 /* webpackChunkName: "create-listing" */ "@/views/CreateListingView.vue"
             ),
+    },
+    {
+        path: "/listing/:id",
+        props: true,
+        name: "detailedListing",
+        component: () =>
+            import(/* webpackChunkName: "detailedListing" */ "../views/DetailedListingView.vue"),
+    },
+    {
+        path: "/listing/:id/edit",
+        props: true,
+        name: "editListing",
+        component: () =>
+            import(/* webpackChunkName: "detailedListing" */ "../views/EditListingView.vue"),
     },
 
 ]

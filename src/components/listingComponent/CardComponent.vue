@@ -1,19 +1,14 @@
 <template>
     <router-link
         :to="{ name: 'detailedListing', params: { id: props.item.id } }"
-        class="link"
+        class="link w-100"
     >
-        <v-card
-            class="ma-0 item"
-            min-width="120"
-            max-width="120"
-            variant="outlined"
-        >
+        <v-card class="ma-0 item" variant="outlined">
             <v-img
-                max-width="200"
-                max-height="200"
-                :src="`http://localhost:8888/image/1`"
+                :src="`http://localhost:8888/image/${props.item.image}`"
+                v-if="props.item.image"
             ></v-img>
+            <v-img v-else src="@/assets/smuggoat.jpg"></v-img>
             <v-card-title>{{ props.item.title }}</v-card-title>
             <v-card-text>
                 <div>{{ props.item.price }} kr/uke</div>
@@ -25,7 +20,12 @@
 import { defineProps } from "vue"
 
 const props = defineProps<{
-    item: Object
+    item: {
+        id: number
+        title: string
+        price: number
+        image: number
+    }
 }>()
 </script>
 

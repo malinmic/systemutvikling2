@@ -95,18 +95,6 @@ export async function getListings(token: string) {
         })
 }
 
-export async function getListingsByQuery(query: string) {
-    return axios
-        .get(LISTING_URL + `/search/${query}`)
-        .then((response) => {
-            return response.data
-        })
-        .catch((error) => {
-            console.error(`Unable to get listings: ${error}`)
-            return {}
-        })
-}
-
 export async function getPersonalListings(token: string) {
     return axios
         .get(LISTING_URL + "/user", {
@@ -122,27 +110,15 @@ export async function getPersonalListings(token: string) {
         })
 }
 
-export async function putListing(
-    title: string,
-    description: string,
-    price: number,
-    address: string,
-    phone: string
-) {
+export async function getListingsByQuery(query: string) {
     return axios
-        .put(LISTING_URL, {
-            title: title,
-            description: description,
-            price: price,
-            address: address,
-            phone: phone,
-            user: null,
+        .get(LISTING_URL + `/search/${query}`)
+        .then((response) => {
+            return response.data
         })
-        .then(() => {
-            return true
-        })
-        .catch(() => {
-            return false
+        .catch((error) => {
+            console.error(`Unable to get listings: ${error}`)
+            return {}
         })
 }
 
@@ -154,5 +130,17 @@ export async function deleteListing(id: number) {
         })
         .catch(() => {
             return "No id found"
+        })
+}
+
+export async function getAllListings() {
+    return axios
+        .get(LISTING_URL)
+        .then((response) => {
+            console.log(response.data)
+            return response.data
+        })
+        .catch(() => {
+            throw "Unable to retrieve user data"
         })
 }

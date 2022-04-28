@@ -1,8 +1,8 @@
 <template>
     <div class="text-center">
-        <h1>Alle annonser</h1>
+        <h2>Mine annonser</h2>
     </div>
-    <v-row v-if="listings.length > 0">
+    <v-row>
         <v-col
             class="d-flex flex-col mb-10 justify-center"
             v-for="(item, index) in listings"
@@ -14,17 +14,17 @@
         </v-col>
     </v-row>
 </template>
-
 <script setup lang="ts">
 import CardComponent from "@/components/listingComponent/CardComponent.vue"
-import { getAllListings } from "@/services/api/listing"
+import { getPersonalListings } from "@/services/api/listing"
 import { onMounted, ref } from "vue"
+import { useStore } from "vuex"
 
+const store = useStore()
 const listings = ref([])
-console.log(listings)
 
 onMounted(() => {
-    getAllListings().then((data) => {
+    getPersonalListings(store.getters.token).then((data) => {
         listings.value = data
     })
 })

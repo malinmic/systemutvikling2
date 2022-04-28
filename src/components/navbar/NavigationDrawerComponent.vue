@@ -34,6 +34,12 @@
             />
 
             <v-list-item
+                prepend-icon="mdi-animation"
+                title="Alle annonser"
+                @click="$router.push({ name: 'AllListingView' })"
+            />
+
+            <v-list-item
                 prepend-icon="mdi-plus"
                 title="Opprett annonse"
                 @click="$router.push({ name: 'createlisting' })"
@@ -42,7 +48,7 @@
             <v-list-item
                 prepend-icon="mdi-home"
                 title="Om BoCo"
-                @click="$router.push({ name: 'about' })"
+                @click="$router.push({ name: 'faq' })"
             />
         </v-list>
     </v-navigation-drawer>
