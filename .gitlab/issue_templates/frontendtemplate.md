@@ -1,5 +1,6 @@
 # Frontend issue template
-==(Fyll inn userstory her)==
+**(Fyll inn userstory her)**
+
 Definition of done:
-- [] requirement 1
-- [] requirement 2
+- requirement 1
+- requirement 2
