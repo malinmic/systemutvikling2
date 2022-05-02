@@ -86,8 +86,8 @@
                 <v-col class="justify-center d-flex" cols="12">
                     <v-btn
                         data-cy="createUser"
-                        color="#004aad"
-                        class="text-white"
+                        color="primary"
+                        class="text-primary-c"
                         type="submit"
                         >Registrer deg</v-btn
                     >
@@ -102,6 +102,8 @@ import { defineComponent } from "vue"
 import { object, string, number, ref } from "yup"
 import { useForm, useField } from "vee-validate"
 import { postUser } from "@/services/api/user"
+import router from "@/router"
+import store from "@/store"
 
 export default defineComponent({
     data: () => ({
@@ -152,6 +154,21 @@ export default defineComponent({
                     values.zipcode,
                     values.password
                 )
+                    .then(() => {
+                        store.dispatch("postAlert", {
+                            message: "Registerering av bruker gjennomført",
+                            type: "success",
+                            title: "Brukerregisterring fullført",
+                        })
+                        router.push({ name: "landingpage" })
+                    })
+                    .catch((e) => {
+                        store.dispatch("postAlert", {
+                            title: "Registrering av bruker feilet",
+                            type: "error",
+                            message: `En feil førte til at brukeren ikke kunne oppdateres. Grunn: ${e}`,
+                        })
+                    })
         })
 
         return {

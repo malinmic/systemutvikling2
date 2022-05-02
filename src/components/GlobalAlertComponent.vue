@@ -30,8 +30,7 @@ onMounted(() => {
     position: fixed;
     right: 50px;
     bottom: 50px;
-    width: 30%;
-    min-width: 450px;
+    width: 80%;
     max-width: 900px;
     z-index: 9999;
     margin: 0 auto;

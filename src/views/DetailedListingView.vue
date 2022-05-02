@@ -13,17 +13,7 @@
     </v-container>
 </template>
 
-<script lang="ts">
-// Components
-import ListingComponent from "@/components/ListingComponent.vue"
-import { defineComponent } from "vue"
-import sendRequestComponent from "@/components/sendRequestComponent.vue"
-export default defineComponent({
-    name: "DetailedListingView",
-
-    components: {
-        ListingComponent,
-        sendRequestComponent,
-    },
-})
+<script setup lang="ts">
+import ListingComponent from "@/components/listing/ListingComponent.vue"
+import SendRequestComponent from "@/components/SendRequestComponent.vue"
 </script>

@@ -60,9 +60,9 @@
                     ></v-textarea>
                 </v-col>
                 <v-col class="justify-center d-flex" cols="12">
-                    <v-btn color="#004aad" class="text-white" type="submit"
-                        >Publiser</v-btn
-                    >
+                    <v-btn color="primary" class="text-primary-c" type="submit">
+                        Publiser
+                    </v-btn>
                 </v-col>
             </v-row>
         </v-container>
@@ -135,6 +135,11 @@ const submit = handleSubmit((values) => {
         ).then((data) => {
             if (data) {
                 router.push({ name: "landingpage" })
+                store.dispatch("postAlert", {
+                    title: "Annonse publisert",
+                    message: "Annonsen din er nå publisert",
+                    type: "success",
+                })
             } else {
                 alert("Something went wrong, check that server is running")
             }

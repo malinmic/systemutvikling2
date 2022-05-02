@@ -1,8 +1,8 @@
 <template>
     <v-container>
+        <HeaderComponent text="Rediger annonse" />
         <v-row>
             <v-col cols="12">
-                <h3 class="text-h3 text-center">Hva vil du leie ut?</h3>
                 <EditListingComponent />
             </v-col>
         </v-row>
@@ -10,5 +10,6 @@
 </template>
 
 <script setup lang="ts">
-import EditListingComponent from "@/components/EditListingComponent.vue"
+import EditListingComponent from "@/components/listing/EditListingComponent.vue"
+import HeaderComponent from "@/components/HeaderComponent.vue"
 </script>

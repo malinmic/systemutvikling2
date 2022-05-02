@@ -4,7 +4,7 @@
             v-model="showPopup"
             @update-login-state="updateLoginState"
         ></LoginPopupComponent>
-        <v-list>
+        <v-list color="background">
             <v-list-item
                 v-if="isAuthenticated"
                 @click="$router.push({ name: 'edituser' })"
@@ -36,7 +36,13 @@
             <v-list-item
                 prepend-icon="mdi-animation"
                 title="Alle annonser"
-                @click="$router.push({ name: 'AllListingView' })"
+                @click="$router.push({ name: 'alllistingview' })"
+            />
+
+            <v-list-item
+                prepend-icon="mdi-animation"
+                title="Mine annonser"
+                @click="$router.push({ name: 'personallistingview' })"
             />
 
             <v-list-item
@@ -46,8 +52,8 @@
             />
 
             <v-list-item
-                prepend-icon="mdi-home"
-                title="Om BoCo"
+                prepend-icon="mdi-help-circle-outline"
+                title="Ofte stilte spørsmål"
                 @click="$router.push({ name: 'faq' })"
             />
         </v-list>
@@ -57,8 +63,9 @@
     <v-app-bar
         elevation="0"
         class="border-b-sm"
-        color="white"
+        border="none"
         elevate-on-scroll
+        :class="{ 'bg-transparent': props.transparent }"
     >
         <v-app-bar-nav-icon
             @click="isNavigationOpen = !isNavigationOpen"
@@ -68,6 +75,7 @@
         <v-img
             src="@/assets/navbar-logo.png"
             @click="$router.push({ name: 'landingpage' })"
+            class="h-75 ma-auto"
         />
 
         <v-btn
@@ -96,12 +104,15 @@
     </v-app-bar>
 </template>
 <script setup lang="ts">
-import { ref } from "vue"
+import { ref, defineProps } from "vue"
 import { useStore } from "vuex"
 import LoginPopupComponent from "@/components/user/LoginPopupComponent.vue"
 import { getUser } from "@/services/api/user"
 
 const store = useStore()
+const props = defineProps({
+    transparent: Boolean,
+})
 
 const showPopup = ref(false)
 

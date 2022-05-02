@@ -2,7 +2,7 @@
     <v-container>
         <v-row>
             <v-col>
-                <h3 class="text-h3 mb-5">Ofte stilte spørsmål</h3>
+                <HeaderComponent text="Ofte stilte spørsmål" />
                 <v-expansion-panels>
                     <v-expansion-panel
                         v-for="entry in entries"
@@ -17,6 +17,7 @@
 </template>
 
 <script setup lang="ts">
+import HeaderComponent from "@/components/HeaderComponent.vue"
 const entries = [
     {
         question: "Fungerer det?",

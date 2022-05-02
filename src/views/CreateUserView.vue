@@ -1,9 +1,7 @@
 <template>
     <v-container>
+        <HeaderComponent text="Registrer ny bruker" />
         <v-row>
-            <v-col cols="12">
-                <h3 class="text-h3 text-center">Registrer Bruker</h3>
-            </v-col>
             <v-col>
                 <create-user-component />
             </v-col>
@@ -13,15 +11,15 @@
 
 <script lang="ts">
 import { defineComponent } from "vue"
-
-// Components
 import CreateUserComponent from "@/components/user/CreateUserComponent.vue"
+import HeaderComponent from "@/components/HeaderComponent.vue"
 
 export default defineComponent({
     name: "CreateUserView",
 
     components: {
         CreateUserComponent,
+        HeaderComponent,
     },
 })
 </script>

@@ -50,6 +50,7 @@ export async function putListingById(
                 description: description,
                 price: price,
                 address: address,
+                imageId: null,
                 phone: phone,
             },
             {
@@ -122,9 +123,13 @@ export async function getListingsByQuery(query: string) {
         })
 }
 
-export async function deleteListing(id: number) {
+export async function deleteListing(token: string, id: number) {
     return axios
-        .delete(LISTING_URL + `/${id}`)
+        .delete(LISTING_URL + `/${id}`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        })
         .then((response) => {
             return response.data
         })

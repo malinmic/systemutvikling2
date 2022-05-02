@@ -1,27 +1,28 @@
 <template>
-    <div class="text-center">
-        <h1>Alle annonser</h1>
-    </div>
-    <v-row v-if="listings.length > 0">
-        <v-col
-            class="d-flex flex-col mb-10 justify-center"
-            v-for="(item, index) in listings"
-            :key="index"
-            xs="auto"
-            cols="6"
-        >
-            <CardComponent :item="item" />
-        </v-col>
-    </v-row>
+    <v-container class="w-100">
+        <HeaderComponent text="Alle annonser" />
+        <v-row v-if="listings.length > 0">
+            <v-col
+                v-for="(item, index) in listings"
+                :key="index"
+                cols="12"
+                sm="6"
+                lg="4"
+                xl="2"
+            >
+                <CardComponent :item="item" />
+            </v-col>
+        </v-row>
+    </v-container>
 </template>
 
 <script setup lang="ts">
-import CardComponent from "@/components/listingComponent/CardComponent.vue"
-import { getAllListings } from "@/services/api/listing"
 import { onMounted, ref } from "vue"
+import { getAllListings } from "@/services/api/listing"
+import CardComponent from "@/components/listing/CardComponent.vue"
+import HeaderComponent from "@/components/HeaderComponent.vue"
 
 const listings = ref([])
-console.log(listings)
 
 onMounted(() => {
     getAllListings().then((data) => {

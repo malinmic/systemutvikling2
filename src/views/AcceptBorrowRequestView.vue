@@ -23,7 +23,7 @@
 
         <v-row justify="center">
             <v-btn type="danger" class="ma-8 mr-12" width="200">avvis</v-btn>
-            <v-btn class="text-white ma-8 ml-12" color="#004aad" width="200"
+            <v-btn class="text-primary-c ma-8 ml-12" color="primary" width="200"
                 >godta</v-btn
             >
         </v-row>
@@ -36,7 +36,7 @@
 
 <script lang="ts" setup>
 import { ref } from "vue"
-import UserCard from "@/components/UserCard.vue"
+import UserCard from "@/components/user/UserCard.vue"
 
 const rentalObject = ref("Skøyter")
 const nameRequest = ref("Ola Nordmann")

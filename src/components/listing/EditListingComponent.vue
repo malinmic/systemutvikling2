@@ -61,16 +61,17 @@
                 </v-col>
                 <v-col class="justify-center d-flex" cols="12">
                     <v-btn
+                        append-icon="mdi-check"
                         id="Save"
-                        color="#004aad"
-                        class="text-white"
+                        color="success"
+                        class="text-primary-c"
                         type="submit"
                         >Lagre</v-btn
                     >
                     <v-btn
                         append-icon="mdi-trash-can"
-                        color="#004aad"
-                        class="text-white"
+                        color="error"
+                        class="text-primary-c"
                         @click="deleteClick"
                         >Slett</v-btn
                     >
@@ -87,17 +88,17 @@ import {
 } from "@/services/api/listing"
 import { useField, useForm } from "vee-validate"
 import { onMounted, ref } from "vue"
-import { useRoute } from "vue-router"
+import { useRouter, useRoute } from "vue-router"
 import { useStore } from "vuex"
 import { number, object, string } from "yup"
 
-const router = useRoute()
-
+const router = useRouter()
+const route = useRoute()
 const isFree = ref(false)
 const showPhone = ref(false)
 const priceSwitchText = ref("Gratis")
 const phoneSwitchText = ref("Vis telefonnummer")
-const id: number = +router.params.id
+const id: number = +route.params.id
 const store = useStore()
 
 const changePriceLabel = () => {
@@ -139,8 +140,9 @@ const save = handleSubmit((values) => {
     if (!showPhone.value) phonenumber.value = ""
     if (values.description == undefined) description.value = ""
     console.log(
-        `Save ${values.title} ${phonenumber.value} ${price.value} ${description.value}`
+        `Save ${title.value} ${id} ${phonenumber.value} ${price.value} ${description.value}`
     )
+    console.log(store.getters.token)
 
     if (values.title && values.address)
         putListingById(
@@ -152,11 +154,26 @@ const save = handleSubmit((values) => {
             values.address,
             phonenumber.value
         )
+            .then(() => {
+                store.dispatch("postAlert", {
+                    message: "Endring av annonse gjennomført",
+                    type: "success",
+                    title: "Annonseoppdatering fullført",
+                })
+                router.push({ name: "personallistingview" })
+            })
+            .catch((e) => {
+                store.dispatch("postAlert", {
+                    title: "Endring av annonse feilet",
+                    type: "error",
+                    message: `En feil førte til at annonsen ikke kunne oppdateres. Grunn: ${e}`,
+                })
+            })
 })
 
 const deleteClick = () => {
-    deleteListing(id).then(() => {
-        console.log("deleted " + id)
+    deleteListing(store.getters.token, id).then((data) => {
+        if (data) console.log("deleted " + id)
     })
 }
 
