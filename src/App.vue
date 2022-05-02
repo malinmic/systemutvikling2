@@ -1,14 +1,12 @@
 <template>
     <!-- This is the recommended layout according to the docs. -->
     <v-app>
-        <NavigationDrawerComponent />
+        <NavigationDrawerComponent :transparent="transparentNavBar" />
         <GlobalAlertComponent></GlobalAlertComponent>
 
         <v-main>
-            <v-container>
-                <!-- Show whatever router view is currently active. -->
-                <router-view />
-            </v-container>
+            <!-- Show whatever router view is currently active. -->
+            <router-view />
         </v-main>
     </v-app>
 </template>
@@ -32,6 +30,11 @@ export default defineComponent({
             store.dispatch("setToken", { token })
             this.$emit("update-login-state")
         }
+    },
+    computed: {
+        transparentNavBar() {
+            return this.$router.currentRoute.value.name == "landingpage"
+        },
     },
 })
 </script>

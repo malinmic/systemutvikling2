@@ -1,104 +1,99 @@
 <template>
-    <v-form @submit.prevent="updateUserInfo">
-        <v-container>
-            <v-row>
-                <v-col cols="12">
-                    <h3
-                        class="text-h3 text-center"
-                        style="padding-bottom: 40px"
+    <v-container class="m-6">
+        <HeaderComponent text="Rediger bruker" />
+        <v-form @submit.prevent="updateUserInfo">
+            <v-container>
+                <v-row>
+                    <v-col cols="12" md="6">
+                        <v-text-field
+                            data-cy="firstname"
+                            label="Fornavn"
+                            placeholder=""
+                            variant="outlined"
+                            v-model="firstname"
+                            type="text"
+                            :error-messages="errors.firstname"
+                        ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" md="6">
+                        <v-text-field
+                            data-cy="lastname"
+                            label="Etternavn"
+                            placeholder=""
+                            variant="outlined"
+                            v-model="lastname"
+                            type="text"
+                            :error-messages="errors.lastname"
+                        ></v-text-field>
+                    </v-col>
+                    <v-col cols="12">
+                        <v-text-field
+                            data-cy="email"
+                            label="Epost"
+                            variant="outlined"
+                            placeholder=""
+                            v-model="email"
+                            :error-messages="errors.email"
+                        ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" md="6">
+                        <v-text-field
+                            data-cy="phonenumber"
+                            label="Mobilnummer"
+                            variant="outlined"
+                            placeholder=""
+                            v-model="phonenumber"
+                            :error-messages="errors.phonenumber"
+                        ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" md="6">
+                        <v-text-field
+                            data-cy="zipcode"
+                            label="Postnummer"
+                            variant="outlined"
+                            placeholder=""
+                            v-model="zipcode"
+                            :error-messages="errors.zipcode"
+                        ></v-text-field>
+                    </v-col>
+                    <v-col cols="12">
+                        <v-text-field
+                            data-cy="password"
+                            label="Passord"
+                            variant="outlined"
+                            placeholder=""
+                            :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+                            :type="show1 ? 'text' : 'password'"
+                            @click:append="show1 = !show1"
+                            v-model="password1"
+                            :error-messages="errors.password1"
+                        />
+                        <v-text-field
+                            data-cy="confirmPassword"
+                            label="Gjenta Passord"
+                            variant="outlined"
+                            placeholder=""
+                            :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
+                            :type="show2 ? 'text' : 'password'"
+                            @click:append="show2 = !show2"
+                            v-model="password2"
+                            :error-messages="errors.password2"
+                        />
+                    </v-col>
+                </v-row>
+                <v-col class="justify-center d-flex" cols="12">
+                    <v-btn
+                        data-cy="editUser"
+                        color="primary"
+                        variant="outlined"
+                        type="submit"
                     >
-                        Rediger informasjon
-                    </h3>
+                        Lagre endringer
+                    </v-btn>
                 </v-col>
-                <v-col cols="12" md="6">
-                    <v-text-field
-                        data-cy="firstname"
-                        label="Fornavn"
-                        placeholder=""
-                        variant="outlined"
-                        v-model="firstname"
-                        type="text"
-                        :error-messages="errors.firstname"
-                    ></v-text-field>
-                </v-col>
-                <v-col cols="12" md="6">
-                    <v-text-field
-                        data-cy="lastname"
-                        label="Etternavn"
-                        placeholder=""
-                        variant="outlined"
-                        v-model="lastname"
-                        type="text"
-                        :error-messages="errors.lastname"
-                    ></v-text-field>
-                </v-col>
-                <v-col cols="12">
-                    <v-text-field
-                        data-cy="email"
-                        label="Epost"
-                        variant="outlined"
-                        placeholder=""
-                        v-model="email"
-                        :error-messages="errors.email"
-                    ></v-text-field>
-                </v-col>
-                <v-col cols="12" md="6">
-                    <v-text-field
-                        data-cy="phonenumber"
-                        label="Mobilnummer"
-                        variant="outlined"
-                        placeholder=""
-                        v-model="phonenumber"
-                        :error-messages="errors.phonenumber"
-                    ></v-text-field>
-                </v-col>
-                <v-col cols="12" md="6">
-                    <v-text-field
-                        data-cy="zipcode"
-                        label="Postnummer"
-                        variant="outlined"
-                        placeholder=""
-                        v-model="zipcode"
-                        :error-messages="errors.zipcode"
-                    ></v-text-field>
-                </v-col>
-                <v-col cols="12">
-                    <v-text-field
-                        data-cy="password"
-                        label="Passord"
-                        variant="outlined"
-                        placeholder=""
-                        :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
-                        :type="show1 ? 'text' : 'password'"
-                        @click:append="show1 = !show1"
-                        v-model="password1"
-                        :error-messages="errors.password1"
-                    />
-                    <v-text-field
-                        data-cy="confirmPassword"
-                        label="Gjenta Passord"
-                        variant="outlined"
-                        placeholder=""
-                        :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
-                        :type="show2 ? 'text' : 'password'"
-                        @click:append="show2 = !show2"
-                        v-model="password2"
-                        :error-messages="errors.password2"
-                    />
-                </v-col>
-            </v-row>
-            <v-col class="justify-center d-flex" cols="12">
-                <v-btn
-                    data-cy="editUser"
-                    color="#004aad"
-                    variant="outlined"
-                    type="submit"
-                >
-                    Lagre endringer
-                </v-btn>
-            </v-col>
-        </v-container>
-    </v-form>
+            </v-container>
+        </v-form>
+    </v-container>
 </template>
 
 <script setup lang="ts">
@@ -107,11 +102,23 @@ import { object, string, number } from "yup"
 import { useForm, useField } from "vee-validate"
 import { getUser, putUser } from "@/services/api/user"
 import { useStore } from "vuex"
+import { useRouter } from "vue-router"
+import HeaderComponent from "@/components/HeaderComponent.vue"
 
 const store = useStore()
 
 const show1 = ref(false)
 const show2 = ref(false)
+
+const router = useRouter()
+
+const registered = () => {
+    console.log("registrert endringer")
+
+    router.push({
+        name: "landingpage",
+    })
+}
 
 const validationSchema = object({
     firstname: string().required("Dette feltet er påkrevd"),
@@ -119,8 +126,8 @@ const validationSchema = object({
     email: string().required().email("Fyll inn en gyldig mailadresse"),
     phonenumber: number().min(8).required("Dette feltet er påkrevd"),
     zipcode: number().required("Dette feltet er påkrevd"),
-    password1: string().required("Dette feltet er påkrevd").min(6),
-    password2: string().required("Dette feltet er påkrevd").min(6),
+    password1: string(),
+    password2: string(),
 })
 
 const { handleSubmit, errors } = useForm({
@@ -146,6 +153,7 @@ const { value: password2 } = useField("password2")
 
 const updateUserInfo = handleSubmit((values) => {
     console.log("Update user")
+    if (values.password2 == undefined) password2.value = ""
 
     putUser(
         store.getters.token,
@@ -154,7 +162,7 @@ const updateUserInfo = handleSubmit((values) => {
         values.lastname as string,
         values.phonenumber as number,
         values.zipcode as number,
-        values.password2 as string
+        password2.value as string
     )
         .then(() => {
             store.dispatch("postAlert", {
@@ -162,7 +170,9 @@ const updateUserInfo = handleSubmit((values) => {
                 type: "success",
                 title: "Brukeroppdatering fullført",
             })
+            registered()
         })
+
         .catch((e) => {
             store.dispatch("postAlert", {
                 title: "Endring av bruker feilet",

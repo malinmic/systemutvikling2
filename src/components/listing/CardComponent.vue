@@ -1,23 +1,27 @@
 <template>
     <router-link
-        :to="{ name: 'detailedListing', params: { id: props.item.id } }"
+        :to="{ name: 'detailedlisting', params: { id: props.item.id } }"
         class="link w-100"
     >
         <v-card class="ma-0 item" variant="outlined">
             <v-img
-                :src="`http://localhost:8888/image/${props.item.image}`"
+                aspect-ratio="1"
+                :src="`${url}/${props.item.image}`"
                 v-if="props.item.image"
             ></v-img>
             <v-img v-else src="@/assets/smuggoat.jpg"></v-img>
             <v-card-title>{{ props.item.title }}</v-card-title>
             <v-card-text>
-                <div>{{ props.item.price }} kr/uke</div>
+                <div>{{ props.item.price }} kr/dag</div>
             </v-card-text>
         </v-card>
     </router-link>
 </template>
 <script setup lang="ts">
 import { defineProps } from "vue"
+import { IMAGE_URL } from "@/services/api/urls"
+
+const url = IMAGE_URL
 
 const props = defineProps<{
     item: {

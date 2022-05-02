@@ -1,19 +1,9 @@
-/* eslint-disable */
 import {
     createRouter,
     createWebHistory,
     Router,
     RouteRecordRaw,
 } from "vue-router"
-import LandingPage from "@/views/LandingPageView.vue"
-import EditUserView from "../views/EditUserView.vue"
-import CreateUserView from "../views/CreateUserView.vue"
-import PersonalListingView from "../views/PersonalListingView.vue"
-import CreateListingView from "../views/CreateListingView.vue"
-import AllListingView from "../views/AllListingView.vue"
-import EditListingView from "../views/EditListingView.vue"
-import AcceptBorrowRequest from "../views/AcceptBorrowRequest.vue"
-import SearchListingView from "../views/SearchListingView.vue"
 
 const routes: Array<RouteRecordRaw> = [
     {
@@ -23,15 +13,6 @@ const routes: Array<RouteRecordRaw> = [
             import(
                 /* webpackChunkName: "landing-page" */ "@/views/LandingPageView.vue"
             ),
-    },
-    {
-        path: "/about",
-        name: "about",
-        // route level code-splitting
-        // this generates a separate chunk (about.[hash].js) for this route
-        // which is lazy-loaded when the route is visited.
-        component: () =>
-            import(/* webpackChunkName: "about" */ "@/views/AboutView.vue"),
     },
     {
         path: "/faq",
@@ -48,16 +29,6 @@ const routes: Array<RouteRecordRaw> = [
             ),
     },
     {
-        path: "/acceptBorrowRequest",
-        name: "acceptBorrowRequest",
-        component: AcceptBorrowRequest,
-    },
-    {
-        path: "/search/:searchstring",
-        name: "ListingSearch",
-        component: SearchListingView,
-    },
-    {
         path: "/user/edit",
         name: "edituser",
         component: () =>
@@ -66,15 +37,36 @@ const routes: Array<RouteRecordRaw> = [
             ),
     },
     {
-        path: "/listingView",
-        name: "PersonalListingView",
-        component: PersonalListingView,
+        path: "/request/accept",
+        name: "acceptborrowrequest",
+        component: () =>
+            import(
+                /* webpackChunkName: "accept-request" */ "@/views/AcceptBorrowRequestView.vue"
+            ),
     },
     {
         path: "/listings",
-        name: "AllListingView",
+        name: "alllistingview",
         component: () =>
-            import(/* webpackChunkName: "faq" */ "../views/AllListingView.vue"),
+            import(
+                /* webpackChunkName: "all-listing" */ "../views/AllListingView.vue"
+            ),
+    },
+    {
+        path: "/listings/search/:searchstring",
+        name: "listingsearch",
+        component: () =>
+            import(
+                /* webpackChunkName: "search-listing" */ "../views/SearchListingView.vue"
+            ),
+    },
+    {
+        path: "/my-listings",
+        name: "personallistingview",
+        component: () =>
+            import(
+                /* webpackChunkName: "personal-listing" */ "../views/PersonalListingView.vue"
+            ),
     },
     {
         path: "/listing/create",
@@ -87,18 +79,21 @@ const routes: Array<RouteRecordRaw> = [
     {
         path: "/listing/:id",
         props: true,
-        name: "detailedListing",
+        name: "detailedlisting",
         component: () =>
-            import(/* webpackChunkName: "detailedListing" */ "../views/DetailedListingView.vue"),
+            import(
+                /* webpackChunkName: "detailed-listing" */ "../views/DetailedListingView.vue"
+            ),
     },
     {
         path: "/listing/:id/edit",
         props: true,
-        name: "editListing",
+        name: "editlisting",
         component: () =>
-            import(/* webpackChunkName: "detailedListing" */ "../views/EditListingView.vue"),
+            import(
+                /* webpackChunkName: "edit-listing" */ "../views/EditListingView.vue"
+            ),
     },
-
 ]
 const router: Router = createRouter({
     history: createWebHistory(process.env.BASE_URL),

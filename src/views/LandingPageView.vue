@@ -1,6 +1,6 @@
 <template>
-    <v-container class="h-screen container overflow-visible">
-        <div class="pt-16">
+    <v-parallax src="@/assets/canoe-background.jpg" class="overflow-visible">
+        <v-container class="h-screen container">
             <div class="ma-10 d-flex align-center text-center justify-center">
                 <v-col cols="12">
                     <h2
@@ -10,42 +10,44 @@
                     </h2>
                 </v-col>
             </div>
-            <v-col cols="12">
-                <div
-                    class="d-flex align-center text-center justify-center mt-1"
-                >
-                    <input
-                        placeholder="Hva ønsker du å leie?"
-                        class="input"
-                        v-model="searchbar"
-                    />
-                    <v-btn
-                        class="text-white ml-3 mb-3"
-                        height="51"
-                        width="75"
-                        rounded
-                        color="#233847"
-                        @click="search"
+            <v-form @submit.prevent="submit">
+                <v-col cols="12">
+                    <div
+                        class="d-flex align-center text-center justify-center mt-1"
                     >
-                        <v-icon size="25"> mdi-magnify </v-icon>
-                    </v-btn>
-                </div>
-                <div
-                    class="d-flex align-center text-center justify-center mt-0"
-                >
-                    <v-btn
-                        class="button v-btn text-white pa-6"
-                        rounded
-                        color="#233847"
-                        block
-                        @click="listing"
+                        <input
+                            placeholder="Hva ønsker du å leie?"
+                            class="input"
+                            v-model="searchbar"
+                        />
+                        <v-btn
+                            class="text-primary-c ml-3 mb-3"
+                            type="submit"
+                            height="51"
+                            width="75"
+                            rounded
+                            color="primary"
+                            icon="mdi-magnify"
+                        >
+                        </v-btn>
+                    </div>
+                    <div
+                        class="d-flex align-center text-center justify-center mt-0"
                     >
-                        ...eller leie ut?
-                    </v-btn>
-                </div>
-            </v-col>
-        </div>
-    </v-container>
+                        <v-btn
+                            class="button v-btn text-primary-c pa-6"
+                            rounded
+                            color="primary"
+                            block
+                            @click="listing"
+                        >
+                            ...eller leie ut?
+                        </v-btn>
+                    </div>
+                </v-col>
+            </v-form>
+        </v-container>
+    </v-parallax>
 </template>
 
 <script setup lang="ts">
@@ -55,11 +57,11 @@ import { useRouter } from "vue-router"
 const searchbar = ref("")
 const router = useRouter()
 
-const search = () => {
+const submit = () => {
     console.log(searchbar)
 
     router.push({
-        name: "ListingSearch",
+        name: "listingsearch",
         params: { searchstring: searchbar.value },
     })
 }
@@ -80,14 +82,5 @@ const listing = () => {
     border-radius: 30px;
     margin-bottom: 12px;
     padding-left: 16px;
-}
-
-.container {
-    background-image: url("~@/assets/canoe-background.jpg");
-    background-size: cover;
-    position: fixed;
-    overflow: visible;
-    top: 0;
-    left: 0;
 }
 </style>

@@ -2,7 +2,7 @@
     <v-container>
         <v-row>
             <v-col cols="12">
-                <h3 class="text-h3 text-center">Hva vil du leie ut?</h3>
+                <HeaderComponent text="Hva vil du leie ut?" />
                 <CreateListingComponent />
             </v-col>
         </v-row>
@@ -11,4 +11,5 @@
 
 <script setup lang="ts">
 import CreateListingComponent from "@/components/listing/CreateListingComponent.vue"
+import HeaderComponent from "@/components/HeaderComponent.vue"
 </script>

@@ -1,5 +1,5 @@
 <template>
-    <v-card elevation="4" class="mt-2" color="#E3F2FD">
+    <v-card elevation="0" class="mt-2" color="surface-nyance">
         <v-card-actions>
             <v-list-item
                 prepend-avatar="https://avataaars.io/?avatarStyle=Transparent&topType=ShortHairShortCurly&accessoriesType=Prescription02&hairColor=Black&facialHairType=Blank&clotheType=Hoodie&clotheColor=White&eyeType=Default&eyebrowType=DefaultNatural&mouthType=Default&skinColor=Light"
@@ -16,7 +16,7 @@
             <h2 class="text-subtitle-1 font-weight-light mr-1 text-no-wrap">
                 {{ score }}
             </h2>
-            <v-icon color="#FDD835" icon="mdi-star" class="mr-2"></v-icon>
+            <v-icon color="warning" icon="mdi-star" class="mr-2"></v-icon>
         </v-card-actions>
     </v-card>
 </template>

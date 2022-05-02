@@ -82,6 +82,6 @@ describe("Logging in a user", () => {
         cy.visit("/*")
         cy.get("[data-cy=navbar-login-button]").click()
         cy.get("[data-cy=register]").click()
-        cy.contains(/Registrer Bruker/i)
+        cy.contains(/Registrer deg/i)
     })
 })

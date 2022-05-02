@@ -39,8 +39,8 @@
                     </v-col>
                     <v-col cols="12">
                         <v-btn
-                            class="mr-2 text-white w-100"
-                            color="#004aad"
+                            class="mr-2 text-primary-c w-100"
+                            color="primary"
                             rounded
                             @click="submit"
                             >Send inn forespørsel

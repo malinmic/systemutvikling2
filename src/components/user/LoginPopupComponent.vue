@@ -45,10 +45,10 @@
 
                     <v-btn
                         data-cy="submit"
-                        class="mr-2 text-white"
-                        color="#004aad"
+                        class="mr-2 text-primary-c"
+                        color="primary"
+                        type="submit"
                         rounded
-                        @click="submit()"
                     >
                         Logg inn
                     </v-btn>
@@ -56,6 +56,7 @@
                     <v-btn
                         data-cy="register"
                         rounded
+                        color="background"
                         @click="register(), $emit('update:modelValue', false)"
                     >
                         Registrer deg
