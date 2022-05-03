@@ -15,13 +15,14 @@
 import { defineComponent } from "vue"
 import { useStore } from "vuex"
 import { useCookies } from "vue3-cookies"
+import { connect, subscribe } from "@/services/api/websocket"
 import NavigationDrawerComponent from "@/components/navbar/NavigationDrawerComponent.vue"
 import GlobalAlertComponent from "@/components/GlobalAlertComponent.vue"
 
 export default defineComponent({
     name: "App",
     components: { GlobalAlertComponent, NavigationDrawerComponent },
-    beforeMount() {
+    async beforeMount() {
         const store = useStore()
         const { cookies } = useCookies()
 
@@ -29,7 +30,12 @@ export default defineComponent({
             const token = cookies.get("token")
             store.dispatch("setToken", { token })
             this.$emit("update-login-state")
+            await connect(token)
         }
+
+        subscribe(store.getters.email, (message) => {
+            console.log("New message", message)
+        })
     },
     computed: {
         transparentNavBar() {
