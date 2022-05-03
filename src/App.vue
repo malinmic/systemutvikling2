@@ -1,7 +1,10 @@
 <template>
     <!-- This is the recommended layout according to the docs. -->
     <v-app>
-        <NavigationDrawerComponent :transparent="transparentNavBar" />
+        <NavigationDrawerComponent
+            v-if="!($route.name === 'notification')"
+            :transparent="transparentNavBar"
+        />
         <GlobalAlertComponent></GlobalAlertComponent>
 
         <v-main>
