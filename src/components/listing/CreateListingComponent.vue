@@ -59,6 +59,14 @@
                         :error-messages="errors.description"
                     ></v-textarea>
                 </v-col>
+                <v-col>
+                    <v-file-input
+                        accept="image/*"
+                        label="Last opp bilde"
+                        v-model="imageFile"
+                        @change="imageUpload()"
+                    ></v-file-input>
+                </v-col>
                 <v-col class="justify-center d-flex" cols="12">
                     <v-btn color="primary" class="text-primary-c" type="submit">
                         Publiser
@@ -84,6 +92,7 @@ const isFree = ref(false)
 const showPhone = ref(false)
 const priceSwitchText = ref("Gratis")
 const phoneSwitchText = ref("Vis telefonnummer")
+const imageFile = ref()
 
 const changePriceLabel = () => {
     if (isFree.value) {
@@ -99,6 +108,10 @@ const changePhoneLabel = () => {
     } else {
         phoneSwitchText.value = "Vis telefonnummer, vennligst skriv inn"
     }
+}
+
+const imageUpload = () => {
+    console.log(imageFile.value)
 }
 
 const validationSchema = object({
