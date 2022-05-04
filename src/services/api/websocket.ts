@@ -27,5 +27,5 @@ export function subscribe(username: string, callback: (m: Message) => any) {
         return
     }
 
-    client.subscribe(`/queue/${username}`, (message) => callback(message))
+    client.subscribe(`/queue/${username}`, (message: Message) => callback(message))
 }

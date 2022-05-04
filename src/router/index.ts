@@ -37,11 +37,11 @@ const routes: Array<RouteRecordRaw> = [
             ),
     },
     {
-        path: "/request/accept",
-        name: "acceptborrowrequest",
+        path: "/request/acceptmessage",
+        name: "acceptborrowrequestmessage",
         component: () =>
             import(
-                /* webpackChunkName: "accept-request" */ "@/views/AcceptBorrowRequestView.vue"
+                /* webpackChunkName: "accept-request-message" */ "@/components/chat/ChatRequestComponent.vue"
             ),
     },
     {
@@ -94,7 +94,17 @@ const routes: Array<RouteRecordRaw> = [
                 /* webpackChunkName: "edit-listing" */ "../views/EditListingView.vue"
             ),
     },
+    {
+        path: "/chat/:id",
+        props: true,
+        name: "chat",
+        component: () =>
+            import(
+                /* webpackChunkName: "edit-listing" */ "../views/ChatView.vue"
+            ),
+    },
 ]
+
 const router: Router = createRouter({
     history: createWebHistory(process.env.BASE_URL),
     routes,

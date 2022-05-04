@@ -10,29 +10,30 @@
                     </h2>
                 </v-col>
             </div>
-            <v-form @submit.prevent="submit">
+            <v-form @submit.prevent="submit" class="w-100">
                 <v-col cols="12">
                     <div
-                        class="d-flex align-center text-center justify-center mt-1"
+                        class="d-flex align-center text-center justify-center mt-1 w-100"
                     >
                         <input
+                            data-cy="searchbar"
                             placeholder="Hva ønsker du å leie?"
-                            class="input"
+                            class="input w-100"
                             v-model="searchbar"
                         />
                         <v-btn
+                            data-cy="searchbtn"
                             class="text-primary-c ml-3 mb-3"
                             type="submit"
-                            height="51"
-                            width="75"
-                            rounded
+                            height="50"
+                            width="50"
                             color="primary"
                             icon="mdi-magnify"
                         >
                         </v-btn>
                     </div>
                     <div
-                        class="d-flex align-center text-center justify-center mt-0"
+                        class="d-flex align-center text-center justify-center mt-0 w-100"
                     >
                         <v-btn
                             class="button v-btn text-primary-c pa-6"
@@ -76,11 +77,16 @@ const listing = () => {
 <style scoped>
 .input {
     height: 52px;
-    width: 500px;
-    background-color: white;
     border: #233847;
     border-radius: 30px;
     margin-bottom: 12px;
     padding-left: 16px;
+}
+
+.parralax {
+    padding-top: 70px;
+    margin-top: -70px;
+    height: 101vh;
+    overflow: hidden;
 }
 </style>

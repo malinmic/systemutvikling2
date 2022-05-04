@@ -87,6 +87,7 @@
                         color="primary"
                         variant="outlined"
                         type="submit"
+                        class="w-100"
                     >
                         Lagre endringer
                     </v-btn>

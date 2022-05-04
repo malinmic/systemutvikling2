@@ -168,7 +168,6 @@ export async function getAllListings() {
     return axios
         .get(LISTING_URL)
         .then((response) => {
-            console.log(response.data)
             return response.data
         })
         .catch(() => {

@@ -56,5 +56,15 @@ describe("Verify NavBar Functionality", () => {
         cy.get("[data-cy=navbar-user-avatar]").should("exist")
         cy.get("[data-cy=navdrawer-user-card]").contains("John Doe")
         cy.get("[data-cy=navdrawer-user-card]").contains("john@doe.org")
+        cy.get("[data-cy=navbar-chat-name]").should("not.exist")
+        cy.get("[data-cy=navbar-logo]").should("exist")
+    })
+
+    it("Test Login disappears and name of chat appears while in chat", () => {
+        cy.visit("/chat")
+        cy.get("[data-cy=navbar-chat-name]").should("exist")
+        cy.get("[data-cy=navbar-logo]").should("not.exist")
+
+
     })
 })

@@ -1,10 +1,8 @@
 <template>
     <!-- This is the recommended layout according to the docs. -->
-    <v-app>
-        <NavigationDrawerComponent
-            v-if="!($route.name === 'notification')"
-            :transparent="transparentNavBar"
-        />
+
+    <v-app :theme="theme">
+        <NavigationDrawerComponent :transparent="transparentNavBar" />
         <GlobalAlertComponent></GlobalAlertComponent>
 
         <v-main>
@@ -24,16 +22,24 @@ import GlobalAlertComponent from "@/components/GlobalAlertComponent.vue"
 
 export default defineComponent({
     name: "App",
-    components: { GlobalAlertComponent, NavigationDrawerComponent },
+    components: {
+        NavigationDrawerComponent,
+        GlobalAlertComponent,
+    },
     async beforeMount() {
         const store = useStore()
         const { cookies } = useCookies()
 
         if (cookies.isKey("token")) {
             const token = cookies.get("token")
-            store.dispatch("setToken", { token })
+            await store.dispatch("setToken", { token })
             this.$emit("update-login-state")
             await connect(token)
+        }
+
+        if (cookies.isKey("theme")) {
+            const theme = cookies.get("theme")
+            await store.dispatch("setTheme", { theme })
         }
 
         subscribe(store.getters.email, (message) => {
@@ -43,6 +49,10 @@ export default defineComponent({
     computed: {
         transparentNavBar() {
             return this.$router.currentRoute.value.name == "landingpage"
+        },
+        theme() {
+            const store = useStore()
+            return store.getters.theme
         },
     },
 })

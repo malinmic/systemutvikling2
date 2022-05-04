@@ -113,6 +113,7 @@ const submit = handleSubmit(async (values) => {
             emit("update-login-state")
             await store.dispatch("postAlert", {
                 message: "Login successful",
+                title: "Tittel",
                 type: "success",
             })
 
