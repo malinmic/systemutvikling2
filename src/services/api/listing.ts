@@ -68,7 +68,7 @@ export async function putListingById(
         })
 }
 
-export async function getListingById(id: number) {
+export async function getListingById(id: string) {
     return axios
         .get(LISTING_URL + `/${id}`)
         .then((response) => {
@@ -142,7 +142,6 @@ export async function getAllListings() {
     return axios
         .get(LISTING_URL)
         .then((response) => {
-            console.log(response.data)
             return response.data
         })
         .catch(() => {

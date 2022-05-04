@@ -1,4 +1,4 @@
-describe("Createing a new user", () => {
+describe("Creating a new user", () => {
     it("Create new user successfully", () => {
         cy.visit("/user/create")
 
