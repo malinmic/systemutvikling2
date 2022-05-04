@@ -72,10 +72,16 @@
                 <v-col>
                     <v-file-input
                         accept="image/*"
+                        multiple
                         label="Last opp bilde"
                         @change="imageSelect"
                     ></v-file-input>
                 </v-col>
+                <v-carousel>
+                    <v-carousel-item v-for="img in imageIds" :key="img">
+                        <v-img :src="IMAGE_URL + '/' + img" />
+                    </v-carousel-item>
+                </v-carousel>
                 <v-col class="justify-center d-flex" cols="12">
                     <v-btn
                         data-cy="publish"
@@ -99,6 +105,7 @@ import { useField, useForm } from "vee-validate"
 import { postListing } from "@/services/api/listing"
 import { uploadImage } from "@/services/api/image"
 import { useRouter } from "vue-router"
+import { IMAGE_URL } from "@/services/api/urls"
 
 const store = useStore()
 const router = useRouter()
@@ -107,7 +114,8 @@ const isFree = ref(false)
 const showPhone = ref(false)
 const priceSwitchText = ref("Gratis")
 const phoneSwitchText = ref("Vis telefonnummer")
-const imageFile = ref()
+const imageFile = ref([])
+const imageIds = ref<Array<number>>([])
 
 const changePriceLabel = () => {
     if (isFree.value) {
@@ -127,7 +135,13 @@ const changePhoneLabel = () => {
 
 const imageSelect = (e: Event) => {
     //@ts-ignore
-    if (e.target != null) imageFile.value = e.target.files[0]
+    for (let i = 0; i < e.target.files.length; i += 2) {
+        //@ts-ignore
+        uploadImage(e.target.files[i], store.getters.token).then((data) => {
+            imageIds.value.push(data.id)
+        })
+    }
+    console.log(imageIds.value)
 }
 
 const validationSchema = object({
@@ -153,39 +167,6 @@ const submit = handleSubmit((values) => {
     if (!showPhone.value) phonenumber.value = ""
     if (values.description == undefined) description.value = ""
 
-    if (imageFile.value) {
-        uploadImage(imageFile.value, store.getters.token)
-            .then((data) => {
-                postListing(
-                    store.getters.token,
-                    title.value,
-                    description.value,
-                    price.value,
-                    address.value,
-                    data.id,
-                    phonenumber.value
-                )
-                    .then(() => {
-                        store.dispatch("postAlert", {
-                            message: "Endring av annonse gjennomført",
-                            type: "success",
-                            title: "Annonseoppdatering fullført",
-                        })
-                        router.push({ name: "personallistingview" })
-                    })
-                    .catch((e) => {
-                        store.dispatch("postAlert", {
-                            title: "Endring av annonse feilet",
-                            type: "error",
-                            message: `En feil førte til at annonsen ikke kunne oppdateres. Grunn: ${e}`,
-                        })
-                    })
-            })
-            .catch((e) => {
-                console.log(e)
-            })
-    }
-
     postListing(
         store.getters.token,
         title.value,
@@ -197,17 +178,17 @@ const submit = handleSubmit((values) => {
     )
         .then(() => {
             store.dispatch("postAlert", {
-                title: "Annonse publisert",
-                message: "Annonsen din er nå publisert",
+                message: "Endring av annonse gjennomført",
                 type: "success",
+                title: "Annonseoppdatering fullført",
             })
             router.push({ name: "personallistingview" })
         })
         .catch((e) => {
             store.dispatch("postAlert", {
-                title: "Oppretting av annonse feilet",
+                title: "Endring av annonse feilet",
                 type: "error",
-                message: `En feil førte til at annonsen ikke kunne opprettes. Grunn: ${e}`,
+                message: `En feil førte til at annonsen ikke kunne oppdateres. Grunn: ${e}`,
             })
         })
 })
