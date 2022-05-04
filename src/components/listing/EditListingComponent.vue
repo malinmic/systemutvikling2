@@ -71,9 +71,13 @@
                     <v-file-input
                         accept="image/*"
                         label="Last opp bilde"
-                        show-size
                         @change="imageSelect"
                     ></v-file-input>
+                    <v-img :src="IMAGE_URL + '/' + imageId" height="200">
+                        <div v-if="imageId">
+                            <v-btn @click="deleteImage">Slett Bilde</v-btn>
+                        </div>
+                    </v-img>
                 </v-col>
                 <v-col class="justify-center d-flex" cols="12">
                     <v-btn
@@ -99,12 +103,13 @@
     </v-form>
 </template>
 <script setup lang="ts">
-import { uploadImage } from "@/services/api/image"
+import { deleteImageCall, uploadImage } from "@/services/api/image"
 import {
     deleteListing,
     getListingById,
     putListingById,
 } from "@/services/api/listing"
+import { IMAGE_URL } from "@/services/api/urls"
 import { useField, useForm } from "vee-validate"
 import { onMounted, ref } from "vue"
 import { useRouter, useRoute } from "vue-router"
@@ -117,7 +122,7 @@ const isFree = ref(false)
 const showPhone = ref(false)
 const priceSwitchText = ref("Gratis")
 const phoneSwitchText = ref("Vis telefonnummer")
-const imageFile = ref()
+const imageId = ref()
 const id: number = +route.params.id
 const store = useStore()
 
@@ -139,7 +144,16 @@ const changePhoneLabel = () => {
 
 const imageSelect = (e: Event) => {
     //@ts-ignore
-    if (e.target != null) imageFile.value = e.target.files[0]
+    uploadImage(e.target.files[0], store.getters.token).then((data) => {
+        imageId.value = data.id
+    })
+}
+
+const deleteImage = () => {
+    deleteImageCall(imageId.value, store.getters.token).then((response) => {
+        console.log(response.data)
+        imageId.value = undefined
+    })
 }
 
 const validationSchema = object({
@@ -164,44 +178,6 @@ const save = handleSubmit((values) => {
     if (!isFree.value) price.value = 0
     if (!showPhone.value) phonenumber.value = ""
     if (values.description == undefined) description.value = ""
-    console.log(
-        `Save ${title.value} ${id} ${phonenumber.value} ${price.value} ${description.value}`
-    )
-    console.log(store.getters.token)
-
-    if (imageFile.value) {
-        uploadImage(imageFile.value, store.getters.token)
-            .then((data) => {
-                putListingById(
-                    store.getters.token,
-                    id,
-                    title.value,
-                    description.value,
-                    price.value,
-                    address.value,
-                    data.id,
-                    phonenumber.value
-                )
-                    .then(() => {
-                        store.dispatch("postAlert", {
-                            message: "Endring av annonse gjennomført",
-                            type: "success",
-                            title: "Annonseoppdatering fullført",
-                        })
-                        router.push({ name: "personallistingview" })
-                    })
-                    .catch((e) => {
-                        store.dispatch("postAlert", {
-                            title: "Endring av annonse feilet",
-                            type: "error",
-                            message: `En feil førte til at annonsen ikke kunne oppdateres. Grunn: ${e}`,
-                        })
-                    })
-            })
-            .catch((e) => {
-                console.log(e)
-            })
-    }
 
     putListingById(
         store.getters.token,
@@ -210,20 +186,20 @@ const save = handleSubmit((values) => {
         description.value,
         price.value,
         address.value,
-        0,
+        imageId.value,
         phonenumber.value
     )
         .then(() => {
             store.dispatch("postAlert", {
-                message: "Endring av annonse gjennomført",
+                title: "Annonse oppdatert",
+                message: "Annonsen din er nå oppdatert",
                 type: "success",
-                title: "Annonseoppdatering fullført",
             })
             router.push({ name: "personallistingview" })
         })
         .catch((e) => {
             store.dispatch("postAlert", {
-                title: "Endring av annonse feilet",
+                title: "Oppdatering av annonse feilet",
                 type: "error",
                 message: `En feil førte til at annonsen ikke kunne oppdateres. Grunn: ${e}`,
             })
@@ -232,7 +208,15 @@ const save = handleSubmit((values) => {
 
 const deleteClick = () => {
     deleteListing(store.getters.token, id).then((data) => {
-        if (data) console.log("deleted " + id)
+        if (data) {
+            console.log("deleted " + id)
+            store.dispatch("postAlert", {
+                message: "Annonse slettet",
+                type: "success",
+                title: "Annonse slettet",
+            })
+            router.push({ name: "personallistingview" })
+        }
     })
 }
 
@@ -243,6 +227,7 @@ onMounted(() => {
             price.value = listing.price
             phonenumber.value = listing.phonenumber
             address.value = listing.address
+            imageId.value = listing.image
             description.value = listing.description
         })
         .catch(() => {

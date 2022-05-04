@@ -18,3 +18,11 @@ export async function uploadImage(file: File, token: string) {
             return `Unable to upload image, error ${e}`
         })
 }
+
+export async function deleteImageCall(id: number, token: string) {
+    return axios.delete(IMAGE_URL + `/${id}`, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    })
+}
