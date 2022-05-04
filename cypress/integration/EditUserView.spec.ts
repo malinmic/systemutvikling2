@@ -26,9 +26,9 @@ describe("Editing a user", () => {
                     status: "Success",
                 })
             }
-        ).as("postUser")
+        ).as("putUser")
         cy.get("[data-cy=editUser]").click()
-        cy.wait("@postUser")
+        cy.wait("@putUser")
     })
 
     it("Edit user unsuccessfully", () => {
