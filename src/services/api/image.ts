@@ -2,7 +2,6 @@ import axios from "axios"
 import { IMAGE_URL } from "./urls"
 
 export async function uploadImage(file: File, token: string) {
-    console.log(file.size)
     let formData = new FormData()
     formData.append("image", file)
     return axios
