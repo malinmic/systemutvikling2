@@ -3,7 +3,7 @@
         <v-col>
             <v-carousel>
                 <v-carousel-item>
-                    <v-img v-model="listingImage" :src="listingImage" />
+                    <v-img :src="IMAGE_URL + '/' + listing?.image" />
                 </v-carousel-item>
             </v-carousel>
         </v-col>
@@ -12,76 +12,49 @@
     <v-row class="container">
         <v-spacer />
         <v-col>
-            <v-card-content
-                class=""
-                v-model="listingTitle"
-                :title="listingTitle"
-            >
-                <h2>{{ listingTitle }}</h2>
-                <i>{{ listingPrice }} kr/dagen</i>
+            <v-card-content class="py-1">
+                <h2>{{ listing?.title }}</h2>
+                <i>{{ listing?.price }} kr/dagen</i>
+            </v-card-content>
+        </v-col>
+        <v-col v-if="listing?.email || listing?.phone">
+            <v-card-content class="py-1">
+                <p v-if="listing?.email">
+                    <b>E-post: </b> {{ listing?.email }}
+                </p>
+                <p v-if="listing?.phone">
+                    <b>Telefonnummer: </b> {{ listing?.phone }}
+                </p>
             </v-card-content>
         </v-col>
         <v-col>
-            <v-card-content v-model="listingDescription">
-                {{ listingDescription }}
+            <v-card-content class="py-1">
+                {{ listing?.description }}
             </v-card-content>
         </v-col>
     </v-row>
     <v-row>
         <v-col>
             <v-btn
-                v-model="listingEmail"
-                v-if="$store.getters.email === listingEmail"
-                @click="$router.push({ name: 'editListing' })"
-                >Rediger</v-btn
+                v-if="userEmail === listing?.email"
+                @click="$router.push({ name: 'editlisting' })"
             >
+                Rediger
+            </v-btn>
         </v-col>
     </v-row>
 </template>
 
-<script>
-import { getListingById } from "@/services/api/listing"
-import { useRoute } from "vue-router"
-import { defineComponent, ref } from "vue"
+<script setup lang="ts">
+import { defineProps } from "vue"
+import { useStore } from "vuex"
 import { IMAGE_URL } from "@/services/api/urls"
 
-export default defineComponent({
-    setup() {
-        const route = useRoute()
-        const id = route.params.id
+const store = useStore()
+const userEmail = store.getters.email
 
-        const listingImage = ref("")
-        const listingTitle = ref("")
-        const listingDescription = ref("")
-        const listingPrice = ref("")
-        const listingEmail = ref("")
-
-        const getListing = () => {
-            getListingById(id).then((data) => {
-                console.log(data)
-                listingImage.value = IMAGE_URL + "/" + data.image
-                if (listingImage.value == null) {
-                    listingImage.value =
-                        "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fi.pinimg.com%2Foriginals%2F07%2F20%2F73%2F07207337cc8bba66bf8696082a975890.jpg&f=1&nofb=1"
-                }
-                listingTitle.value = data.title
-                listingDescription.value = data.description
-                listingPrice.value = data.price
-                listingEmail.value = data.email
-            })
-        }
-
-        getListing()
-
-        return {
-            getListing,
-            listingImage,
-            listingTitle,
-            listingDescription,
-            listingPrice,
-            listingEmail,
-        }
-    },
+defineProps({
+    listing: Object,
 })
 </script>
 
