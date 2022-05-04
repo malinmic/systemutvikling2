@@ -4,6 +4,7 @@
             <v-row>
                 <v-col cols="12">
                     <v-text-field
+                        data-cy="title"
                         label="Tittel"
                         variant="outlined"
                         v-model="title"
@@ -13,6 +14,7 @@
                 </v-col>
                 <v-col cols="12" sm="6">
                     <v-switch
+                        data-cy="isFree"
                         v-model="isFree"
                         :label="priceSwitchText"
                         @click="changePriceLabel"
@@ -21,7 +23,9 @@
                 </v-col>
                 <v-col cols="12" sm="6" v-if="isFree">
                     <v-text-field
+                        data-cy="price"
                         label="Pris"
+                        suffix="kr/dag"
                         variant="outlined"
                         v-model="price"
                         type="number"
@@ -30,6 +34,7 @@
                 </v-col>
                 <v-col cols="12" sm="6">
                     <v-switch
+                        data-cy="showPhone"
                         v-model="showPhone"
                         :label="phoneSwitchText"
                         @click="changePhoneLabel"
@@ -37,6 +42,7 @@
                 </v-col>
                 <v-col cols="12" sm="6" v-if="showPhone">
                     <v-text-field
+                        data-cy="phone"
                         label="Mobilnummer"
                         variant="outlined"
                         v-model="phonenumber"
@@ -45,7 +51,8 @@
                 </v-col>
                 <v-col cols="12">
                     <v-text-field
-                        label="Postnummer"
+                        data-cy="address"
+                        label="Adresse"
                         variant="outlined"
                         v-model="address"
                         :error-messages="errors.address"
@@ -53,6 +60,7 @@
                 </v-col>
                 <v-col cols="12">
                     <v-textarea
+                        data-cy="description"
                         label="Beskrivelse"
                         variant="outlined"
                         v-model="description"
@@ -61,6 +69,7 @@
                 </v-col>
                 <v-col class="justify-center d-flex" cols="12">
                     <v-btn
+                        data-cy="save"
                         append-icon="mdi-check"
                         id="Save"
                         color="success"
@@ -69,6 +78,7 @@
                         >Lagre</v-btn
                     >
                     <v-btn
+                        data-cy="delete"
                         append-icon="mdi-trash-can"
                         color="error"
                         class="text-primary-c"

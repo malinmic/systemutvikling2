@@ -16,11 +16,13 @@
                         class="d-flex align-center text-center justify-center mt-1"
                     >
                         <input
+                            data-cy="searchbar"
                             placeholder="Hva ønsker du å leie?"
                             class="input"
                             v-model="searchbar"
                         />
                         <v-btn
+                            data-cy="searchbtn"
                             class="text-primary-c ml-3 mb-3"
                             type="submit"
                             height="51"
