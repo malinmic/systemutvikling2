@@ -75,6 +75,11 @@
                         label="Last opp bilde"
                         @change="imageSelect"
                     ></v-file-input>
+                    <v-img :src="IMAGE_URL + '/' + imageId" height="200">
+                        <div v-if="imageId">
+                            <v-btn @click="deleteImage">Slett Bilde</v-btn>
+                        </div>
+                    </v-img>
                 </v-col>
                 <v-col class="justify-center d-flex" cols="12">
                     <v-btn
@@ -97,8 +102,9 @@ import { useStore } from "vuex"
 import { number, object, string } from "yup"
 import { useField, useForm } from "vee-validate"
 import { postListing } from "@/services/api/listing"
-import { uploadImage } from "@/services/api/image"
+import { uploadImage, deleteImageCall } from "@/services/api/image"
 import { useRouter } from "vue-router"
+import { IMAGE_URL } from "@/services/api/urls"
 
 const store = useStore()
 const router = useRouter()
@@ -107,7 +113,7 @@ const isFree = ref(false)
 const showPhone = ref(false)
 const priceSwitchText = ref("Gratis")
 const phoneSwitchText = ref("Vis telefonnummer")
-const imageFile = ref()
+const imageId = ref()
 
 const changePriceLabel = () => {
     if (isFree.value) {
@@ -127,7 +133,16 @@ const changePhoneLabel = () => {
 
 const imageSelect = (e: Event) => {
     //@ts-ignore
-    if (e.target != null) imageFile.value = e.target.files[0]
+    uploadImage(e.target.files[0], store.getters.token).then((data) => {
+        imageId.value = data.id
+    })
+}
+
+const deleteImage = () => {
+    deleteImageCall(imageId.value, store.getters.token).then((response) => {
+        console.log(response.data)
+        imageId.value = undefined
+    })
 }
 
 const validationSchema = object({
@@ -153,46 +168,13 @@ const submit = handleSubmit((values) => {
     if (!showPhone.value) phonenumber.value = ""
     if (values.description == undefined) description.value = ""
 
-    if (imageFile.value) {
-        uploadImage(imageFile.value, store.getters.token)
-            .then((data) => {
-                postListing(
-                    store.getters.token,
-                    title.value,
-                    description.value,
-                    price.value,
-                    address.value,
-                    data.id,
-                    phonenumber.value
-                )
-                    .then(() => {
-                        store.dispatch("postAlert", {
-                            message: "Endring av annonse gjennomført",
-                            type: "success",
-                            title: "Annonseoppdatering fullført",
-                        })
-                        router.push({ name: "personallistingview" })
-                    })
-                    .catch((e) => {
-                        store.dispatch("postAlert", {
-                            title: "Endring av annonse feilet",
-                            type: "error",
-                            message: `En feil førte til at annonsen ikke kunne oppdateres. Grunn: ${e}`,
-                        })
-                    })
-            })
-            .catch((e) => {
-                console.log(e)
-            })
-    }
-
     postListing(
         store.getters.token,
         title.value,
         description.value,
         price.value,
         address.value,
-        0,
+        imageId.value,
         phonenumber.value
     )
         .then(() => {
