@@ -11,6 +11,9 @@
                 <br />
                 Aktiv nå
             </h2>
+            <h2 class="text-subtitle-1 font-weight-light mr-1 text-no-wrap">
+                {{ online }}
+            </h2>
         </v-card-actions>
     </v-card>
 </template>

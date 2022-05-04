@@ -87,7 +87,7 @@
                     <v-btn
                         data-cy="createUser"
                         color="primary"
-                        class="text-primary-c"
+                        class="text-primary-c w-100"
                         type="submit"
                         >Registrer deg</v-btn
                     >

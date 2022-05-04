@@ -1,7 +1,8 @@
 import { createStore } from "vuex"
 import { AlertMessage } from "@/types/IfcAlertInterface"
+import { useCookies } from "vue3-cookies"
 
-export interface Module1State {
+export interface StateIfc {
     userAvatarPath: string
     token: string
     username: string
@@ -12,6 +13,7 @@ export interface Module1State {
     zipcode: number
     city: string
     alerts: AlertMessage[]
+    theme: string
 }
 
 export default createStore({
@@ -26,6 +28,7 @@ export default createStore({
         zipcode: -1,
         city: "",
         alerts: [] as AlertMessage[],
+        theme: "light",
     },
     getters: {
         token(state) {
@@ -42,6 +45,9 @@ export default createStore({
         },
         alerts(state) {
             return state.alerts
+        },
+        theme(state) {
+            return state.theme
         },
     },
     mutations: {
@@ -75,6 +81,10 @@ export default createStore({
         REVOKE_ALERT(state) {
             state.alerts.pop()
         },
+        SET_THEME(state, theme) {
+            useCookies().cookies.set("theme", theme)
+            state.theme = theme
+        },
     },
     actions: {
         setToken(context, { token }) {
@@ -104,6 +114,17 @@ export default createStore({
             setTimeout(() => {
                 context.commit("REVOKE_ALERT")
             }, 3000)
+        },
+        setTheme(context, { theme }) {
+            context.commit("SET_THEME", theme)
+        },
+        toggleTheme(context) {
+            console.log(context.state.theme)
+            if (context.state.theme == "light") {
+                context.commit("SET_THEME", "dark")
+            } else {
+                context.commit("SET_THEME", "light")
+            }
         },
     },
     modules: {},
