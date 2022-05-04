@@ -127,9 +127,9 @@
         <v-btn
             v-else
             text
+            :class="{ 'text-background': transparent }"
             @click="showPopup = true"
             data-cy="navbar-login-button"
-            :class="{ 'text-background': transparent }"
         >
             <v-icon icon="mdi-login" class="mr-1" />
             Logg inn

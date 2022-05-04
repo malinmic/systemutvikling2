@@ -2,12 +2,13 @@
     <v-container class="h-screen w-100">
         <v-card outlined elevation="2" contained-text>
             <h2 class="text-subtitle-1 font-weight-light ma-1 text-left">
-                <b>{{ nameRequest }}</b> har spurt om å leie
+                <b>{{ rentalObject.firstname }}</b> har spurt om å leie
                 <em>{{ rentalObject.title }}</em> fra {{ startDate }} -
                 {{ endDate }}
             </h2>
             <v-row justify="center">
                 <v-btn
+                    data-cy="reject"
                     type="danger"
                     class="ma-8 mr-12"
                     width="200"
@@ -15,6 +16,7 @@
                     >avvis</v-btn
                 >
                 <v-btn
+                    data-cy="accept"
                     class="text-primary-c ma-8 ml-12"
                     color="primary"
                     width="200"
@@ -35,8 +37,7 @@ import {
 import { onMounted, ref } from "vue"
 import { useStore } from "vuex"
 
-const nameRequest = ref("")
-const rentalObject = ref([])
+const rentalObject = ref({ title: "" as string, firstname: "" as string })
 const startDate = ref("")
 const endDate = ref("")
 
@@ -66,13 +67,16 @@ const accept = () => {
 
 onMounted(() => {
     //id is hardcoded here, replace when everything is stiched together
-    getRequest(2, store.getters.token).then((data) => {
-        nameRequest.value = data.listing.firstname
-        rentalObject.value = data.listing
-        var start: Date = new Date(data.startDate)
-        var end: Date = new Date(data.endDate)
-        startDate.value = `${start.getDay() + 1}/${start.getMonth() + 1}`
-        endDate.value = `${end.getDay() + 1}/${end.getMonth() + 1}`
-    })
+    getRequest(2, store.getters.token)
+        .then((data) => {
+            rentalObject.value = data.listing
+            var start: Date = new Date(data.startDate)
+            var end: Date = new Date(data.endDate)
+            startDate.value = `${start.getDay() + 1}/${start.getMonth() + 1}`
+            endDate.value = `${end.getDay() + 1}/${end.getMonth() + 1}`
+        })
+        .catch((e) => {
+            console.log(e)
+        })
 })
 </script>

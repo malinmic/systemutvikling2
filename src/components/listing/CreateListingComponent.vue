@@ -15,6 +15,7 @@
                 <v-col cols="12" sm="6">
                     <v-switch
                         data-cy="isFree"
+                        color="primary"
                         v-model="isFree"
                         :label="priceSwitchText"
                         @click="changePriceLabel()"
@@ -35,6 +36,7 @@
                 <v-col cols="12" sm="6">
                     <v-switch
                         data-cy="showPhone"
+                        color="primary"
                         v-model="showPhone"
                         :label="phoneSwitchText"
                         @click="changePhoneLabel()"

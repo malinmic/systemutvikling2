@@ -25,9 +25,8 @@
                             data-cy="searchbtn"
                             class="text-primary-c ml-3 mb-3"
                             type="submit"
-                            height="51"
-                            width="75"
-                            rounded
+                            height="50"
+                            width="50"
                             color="primary"
                             icon="mdi-magnify"
                         >
@@ -78,8 +77,6 @@ const listing = () => {
 <style scoped>
 .input {
     height: 52px;
-    width: 500px;
-    background-color: white;
     border: #233847;
     border-radius: 30px;
     margin-bottom: 12px;
