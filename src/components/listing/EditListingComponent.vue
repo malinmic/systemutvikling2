@@ -67,6 +67,14 @@
                         :error-messages="errors.description"
                     ></v-textarea>
                 </v-col>
+                <v-col>
+                    <v-file-input
+                        accept="image/*"
+                        label="Last opp bilde"
+                        show-size
+                        @change="imageSelect"
+                    ></v-file-input>
+                </v-col>
                 <v-col class="justify-center d-flex" cols="12">
                     <v-btn
                         data-cy="save"
@@ -91,6 +99,7 @@
     </v-form>
 </template>
 <script setup lang="ts">
+import { uploadImage } from "@/services/api/image"
 import {
     deleteListing,
     getListingById,
@@ -108,6 +117,7 @@ const isFree = ref(false)
 const showPhone = ref(false)
 const priceSwitchText = ref("Gratis")
 const phoneSwitchText = ref("Vis telefonnummer")
+const imageFile = ref()
 const id: number = +route.params.id
 const store = useStore()
 
@@ -125,6 +135,11 @@ const changePhoneLabel = () => {
     } else {
         phoneSwitchText.value = "Vis telefonnummer, venligst skriv inn:"
     }
+}
+
+const imageSelect = (e: Event) => {
+    //@ts-ignore
+    if (e.target != null) imageFile.value = e.target.files[0]
 }
 
 const validationSchema = object({
@@ -154,31 +169,65 @@ const save = handleSubmit((values) => {
     )
     console.log(store.getters.token)
 
-    if (values.title && values.address)
-        putListingById(
-            store.getters.token,
-            id,
-            values.title,
-            description.value,
-            price.value,
-            values.address,
-            phonenumber.value
-        )
-            .then(() => {
-                store.dispatch("postAlert", {
-                    message: "Endring av annonse gjennomført",
-                    type: "success",
-                    title: "Annonseoppdatering fullført",
-                })
-                router.push({ name: "personallistingview" })
+    if (imageFile.value) {
+        uploadImage(imageFile.value, store.getters.token)
+            .then((data) => {
+                putListingById(
+                    store.getters.token,
+                    id,
+                    title.value,
+                    description.value,
+                    price.value,
+                    address.value,
+                    data.id,
+                    phonenumber.value
+                )
+                    .then(() => {
+                        store.dispatch("postAlert", {
+                            message: "Endring av annonse gjennomført",
+                            type: "success",
+                            title: "Annonseoppdatering fullført",
+                        })
+                        router.push({ name: "personallistingview" })
+                    })
+                    .catch((e) => {
+                        store.dispatch("postAlert", {
+                            title: "Endring av annonse feilet",
+                            type: "error",
+                            message: `En feil førte til at annonsen ikke kunne oppdateres. Grunn: ${e}`,
+                        })
+                    })
             })
             .catch((e) => {
-                store.dispatch("postAlert", {
-                    title: "Endring av annonse feilet",
-                    type: "error",
-                    message: `En feil førte til at annonsen ikke kunne oppdateres. Grunn: ${e}`,
-                })
+                console.log(e)
             })
+    }
+
+    putListingById(
+        store.getters.token,
+        id,
+        title.value,
+        description.value,
+        price.value,
+        address.value,
+        0,
+        phonenumber.value
+    )
+        .then(() => {
+            store.dispatch("postAlert", {
+                message: "Endring av annonse gjennomført",
+                type: "success",
+                title: "Annonseoppdatering fullført",
+            })
+            router.push({ name: "personallistingview" })
+        })
+        .catch((e) => {
+            store.dispatch("postAlert", {
+                title: "Endring av annonse feilet",
+                type: "error",
+                message: `En feil førte til at annonsen ikke kunne oppdateres. Grunn: ${e}`,
+            })
+        })
 })
 
 const deleteClick = () => {
