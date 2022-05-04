@@ -7,6 +7,7 @@ export async function postListing(
     description: string,
     price: number,
     address: string,
+    imageId: number,
     phone: string
 ) {
     return axios
@@ -17,6 +18,7 @@ export async function postListing(
                 description: description,
                 price: price,
                 address: address,
+                image: imageId,
                 phone: phone,
             },
             {
@@ -40,6 +42,7 @@ export async function putListingById(
     description: string,
     price: number,
     address: string,
+    imageId: number,
     phone: string
 ) {
     return axios
@@ -50,7 +53,7 @@ export async function putListingById(
                 description: description,
                 price: price,
                 address: address,
-                imageId: null,
+                image: imageId,
                 phone: phone,
             },
             {
@@ -68,7 +71,30 @@ export async function putListingById(
         })
 }
 
-export async function getListingById(id: string) {
+export async function updateImageByListingId(
+    token: string,
+    id: number,
+    image: number
+) {
+    return axios
+        .put(
+            LISTING_URL + `/${id}`,
+            { image: image },
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            }
+        )
+        .then((response) => {
+            return response.data
+        })
+        .catch((e) => {
+            return `Error: ${e}`
+        })
+}
+
+export async function getListingById(id: number) {
     return axios
         .get(LISTING_URL + `/${id}`)
         .then((response) => {

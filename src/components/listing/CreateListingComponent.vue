@@ -69,6 +69,13 @@
                         :error-messages="errors.description"
                     ></v-textarea>
                 </v-col>
+                <v-col>
+                    <v-file-input
+                        accept="image/*"
+                        label="Last opp bilde"
+                        @change="imageSelect"
+                    ></v-file-input>
+                </v-col>
                 <v-col class="justify-center d-flex" cols="12">
                     <v-btn
                         data-cy="publish"
@@ -90,6 +97,7 @@ import { useStore } from "vuex"
 import { number, object, string } from "yup"
 import { useField, useForm } from "vee-validate"
 import { postListing } from "@/services/api/listing"
+import { uploadImage } from "@/services/api/image"
 import { useRouter } from "vue-router"
 
 const store = useStore()
@@ -99,6 +107,7 @@ const isFree = ref(false)
 const showPhone = ref(false)
 const priceSwitchText = ref("Gratis")
 const phoneSwitchText = ref("Vis telefonnummer")
+const imageFile = ref()
 
 const changePriceLabel = () => {
     if (isFree.value) {
@@ -114,6 +123,11 @@ const changePhoneLabel = () => {
     } else {
         phoneSwitchText.value = "Vis telefonnummer, vennligst skriv inn"
     }
+}
+
+const imageSelect = (e: Event) => {
+    //@ts-ignore
+    if (e.target != null) imageFile.value = e.target.files[0]
 }
 
 const validationSchema = object({
@@ -139,25 +153,62 @@ const submit = handleSubmit((values) => {
     if (!showPhone.value) phonenumber.value = ""
     if (values.description == undefined) description.value = ""
 
-    if (values.title && values.address)
-        postListing(
-            store.getters.token,
-            values.title,
-            description.value,
-            price.value,
-            values.address,
-            phonenumber.value
-        ).then((data) => {
-            if (data) {
-                router.push({ name: "landingpage" })
-                store.dispatch("postAlert", {
-                    title: "Annonse publisert",
-                    message: "Annonsen din er nå publisert",
-                    type: "success",
-                })
-            } else {
-                alert("Something went wrong, check that server is running")
-            }
+    if (imageFile.value) {
+        uploadImage(imageFile.value, store.getters.token)
+            .then((data) => {
+                postListing(
+                    store.getters.token,
+                    title.value,
+                    description.value,
+                    price.value,
+                    address.value,
+                    data.id,
+                    phonenumber.value
+                )
+                    .then(() => {
+                        store.dispatch("postAlert", {
+                            message: "Endring av annonse gjennomført",
+                            type: "success",
+                            title: "Annonseoppdatering fullført",
+                        })
+                        router.push({ name: "personallistingview" })
+                    })
+                    .catch((e) => {
+                        store.dispatch("postAlert", {
+                            title: "Endring av annonse feilet",
+                            type: "error",
+                            message: `En feil førte til at annonsen ikke kunne oppdateres. Grunn: ${e}`,
+                        })
+                    })
+            })
+            .catch((e) => {
+                console.log(e)
+            })
+    }
+
+    postListing(
+        store.getters.token,
+        title.value,
+        description.value,
+        price.value,
+        address.value,
+        0,
+        phonenumber.value
+    )
+        .then(() => {
+            store.dispatch("postAlert", {
+                title: "Annonse publisert",
+                message: "Annonsen din er nå publisert",
+                type: "success",
+            })
+            router.push({ name: "personallistingview" })
+        })
+        .catch((e) => {
+            store.dispatch("postAlert", {
+                title: "Oppretting av annonse feilet",
+                type: "error",
+                message: `En feil førte til at annonsen ikke kunne opprettes. Grunn: ${e}`,
+            })
         })
 })
 </script>
