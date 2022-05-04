@@ -7,6 +7,7 @@ export async function postListing(
     description: string,
     price: number,
     address: string,
+    imageId: number,
     phone: string
 ) {
     return axios
@@ -17,6 +18,7 @@ export async function postListing(
                 description: description,
                 price: price,
                 address: address,
+                image: imageId,
                 phone: phone,
             },
             {
@@ -40,6 +42,7 @@ export async function putListingById(
     description: string,
     price: number,
     address: string,
+    imageId: number,
     phone: string
 ) {
     return axios
@@ -50,7 +53,7 @@ export async function putListingById(
                 description: description,
                 price: price,
                 address: address,
-                imageId: null,
+                image: imageId,
                 phone: phone,
             },
             {
