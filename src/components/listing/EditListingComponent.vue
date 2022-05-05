@@ -152,7 +152,7 @@ const imageSelect = (e: Event) => {
 const deleteImage = () => {
     deleteImageCall(imageId.value, store.getters.token).then((response) => {
         console.log(response.data)
-        imageId.value = undefined
+        imageId.value = 0
     })
 }
 
@@ -224,7 +224,9 @@ onMounted(() => {
     getListingById(id)
         .then((listing) => {
             title.value = listing.title
+            if (listing.price != 0) isFree.value = true
             price.value = listing.price
+            if (listing.phone != "") showPhone.value = true
             phonenumber.value = listing.phonenumber
             address.value = listing.address
             imageId.value = listing.image

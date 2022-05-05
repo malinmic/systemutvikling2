@@ -7,9 +7,9 @@
             <v-img
                 aspect-ratio="1"
                 :src="`${url}/${props.item.image}`"
-                v-if="props.item.image"
+                v-if="props.item.image != 0 && props.item.image != null"
             ></v-img>
-            <v-img v-else src="@/assets/smuggoat.jpg"></v-img>
+            <v-img v-else src="@/assets/placeholder_item_listing.png"></v-img>
             <v-card-title data-cy="title">{{ props.item.title }}</v-card-title>
             <v-card-text data-cy="price">
                 <div>{{ props.item.price }} kr/dag</div>

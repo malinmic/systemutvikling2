@@ -65,7 +65,7 @@ describe("Editing a list", () => {
         cy.contains("Gratis").click()
         cy.get("[data-cy=price]").type("30")
         cy.get("[data-cy=showPhone]").click()
-        cy.get("[data-cy=phone").type("99994444")
+        cy.get("[data-cy=phone]").type("99994444")
         cy.get("[data-cy=address]").type("7030")
         cy.get("[data-cy=description]").type(
             "Dette er en gressklipper som er i veldig god stand"
