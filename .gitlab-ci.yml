@@ -44,3 +44,15 @@ integration-test:
     when: always
     paths:
       - coverage
+
+pages:
+  stage: pages
+  script:
+    - rm -rf public/cypress
+    - mkdir public/cypress
+    - cp -r coverage/lcov-report/* public/cypress/
+  artifacts:
+    paths:
+      - public
+  only:
+    - main
