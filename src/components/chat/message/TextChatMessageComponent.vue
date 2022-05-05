@@ -1,10 +1,12 @@
 <template>
-    <chat-message-component class="w-75" :class="{ 'float-right': sentByMe }">
-        <h5 class="text-secondary-dimmed font-weight-regular mb-1">
-            {{ timeLabel }}
-        </h5>
-        <p>{{ props.message.message }}</p>
-    </chat-message-component>
+    <v-row class="w-100 mb-4" :justify="sentByMe ? 'end' : 'start'">
+        <chat-message-component class="w-75 ml-6 mt-4">
+            <h5 class="text-secondary-dimmed font-weight-regular mb-2">
+                <b>{{ props.message.from + " " }} </b> {{ timeLabel }}
+            </h5>
+            <p>{{ props.message.message }}</p>
+        </chat-message-component>
+    </v-row>
 </template>
 
 <script setup lang="ts">
@@ -19,7 +21,6 @@ const props = defineProps<{
 
 const store = useStore()
 
-console.log(props.message.from)
 const sentByMe = props.message.from == store.getters.email
 
 const dateTime = new Date(props.message.time)

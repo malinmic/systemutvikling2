@@ -1,19 +1,19 @@
 <template>
-    <v-container class="d-flex flex-column pb-16 mb-6 h-screen overflow-auto">
-        <div ref="chatContainer" id="chatCont" style="overflow: scroll">
+    <div class="h-screen mt-n16 pt-16">
+        <v-container class="d-flex flex-column h-100">
             <ChatMessagesLayoutComponent
                 :messages="messages"
+                class="h-100"
             ></ChatMessagesLayoutComponent>
-        </div>
 
-        <v-card
-            fixed
-            bottom
-            class="w-100 pb-5 justify-end chat-text-field ml-n4 pr-2 pl-2 border-t pt-4"
-        >
-            <ChatTextField :send-message-callback="sendChatMessage" />
-        </v-card>
-    </v-container>
+            <v-card
+                elevation="0"
+                class="w-100 justify-end chat-text-field pt-4"
+            >
+                <ChatTextField :send-message-callback="sendChatMessage" />
+            </v-card>
+        </v-container>
+    </div>
 </template>
 
 <script lang="ts" setup>
@@ -23,17 +23,22 @@ import { ref, onMounted } from "vue"
 import { ChatMessage } from "@/types/IfcChatMessageInterface"
 import { useStore } from "vuex"
 import { getChatMessages, postChatMessage } from "@/services/api/chat"
-import { subscribe } from "@/services/api/websocket"
+import { addObserver } from "@/services/api/websocket"
+import { useRoute } from "vue-router"
+import { UserAccount } from "@/types/IfcUserAccountInterface"
 
 const messages = ref([] as ChatMessage[])
 const store = useStore()
-const chatId = 101
-
-const chatContainer = ref<HTMLDivElement>()
+const route = useRoute()
+const chatId = parseInt(route.params.id as string)
+const receiverInfo = ref()
 
 const updateChatLog = () => {
-    getChatMessages(store.getters.token, chatId)
+    return getChatMessages(store.getters.token, chatId)
         .then((res) => {
+            receiverInfo.value = res.data.users.filter(
+                (u: any) => u.email != store.getters.email
+            )[0]
             messages.value = []
             messages.value = res.data.messages
         })
@@ -47,28 +52,30 @@ const updateChatLog = () => {
 }
 
 const sendChatMessage = (message: string) => {
-    return postChatMessage(store.getters.token, chatId, message)
-        .then(() => {
-            updateChatLog()
-
-            console.log(chatContainer.value!.scrollTop)
-            chatContainer.value!.scrollTop = chatContainer.value!.scrollHeight
-        })
-        .catch((e) => {
-            store.dispatch("postAlert", {
-                title: "Feil ved sending av melding",
-                message: "" + e,
-                type: "error",
+    if (message != "")
+        return postChatMessage(store.getters.token, chatId, message)
+            .then(() => {
+                updateChatLog()
             })
-        })
+            .catch((e) => {
+                store.dispatch("postAlert", {
+                    title: "Feil ved sending av melding",
+                    message: "" + e,
+                    type: "error",
+                })
+            })
 }
 
 onMounted(() => {
-    updateChatLog()
+    updateChatLog().then(() => {
+        const acc: UserAccount = receiverInfo.value as UserAccount
+        console.log(acc)
+        store.commit("SET_CHAT_RECEIVER", acc)
+    })
 })
 
 //Subscribe to WebSocket update-calls for new chat-messages
-subscribe(store.getters.email, () => {
+addObserver(store.getters.email, () => {
     updateChatLog()
 })
 </script>
