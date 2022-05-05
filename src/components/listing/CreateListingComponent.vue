@@ -14,7 +14,7 @@
                 </v-col>
                 <v-col cols="12" sm="6">
                     <v-switch
-                        data-cy="isFree"
+                        data-cy="isFreeCreate"
                         color="primary"
                         v-model="isFree"
                         :label="priceSwitchText"
@@ -24,7 +24,7 @@
                 </v-col>
                 <v-col cols="12" sm="6" v-if="isFree">
                     <v-text-field
-                        data-cy="price"
+                        data-cy="priceCreate"
                         label="Pris"
                         suffix="kr/dag"
                         variant="outlined"

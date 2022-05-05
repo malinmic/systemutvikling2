@@ -33,6 +33,7 @@
         "yup": "^0.32.11"
     },
     "devDependencies": {
+        "@cypress/code-coverage": "^3.9.12",
         "@nuxtjs/vuetify": "^1.12.3",
         "@types/jest": "^27.0.1",
         "@types/node": "^17.0.30",
