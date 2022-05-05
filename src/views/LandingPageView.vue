@@ -18,7 +18,7 @@
                         <input
                             data-cy="searchbar"
                             placeholder="Hva ønsker du å leie?"
-                            class="input w-100"
+                            class="input w-100 bg-secondary"
                             v-model="searchbar"
                         />
                         <v-btn
@@ -33,7 +33,7 @@
                         </v-btn>
                     </div>
                     <div
-                        class="d-flex align-center text-center justify-center mt-0 w-100"
+                        class="d-flex align-center text-center justify-center mt-0"
                     >
                         <v-btn
                             class="button v-btn text-primary-c pa-6"
@@ -79,12 +79,5 @@ const listing = () => {
     border-radius: 30px;
     margin-bottom: 12px;
     padding-left: 16px;
-}
-
-.parralax {
-    padding-top: 70px;
-    margin-top: -70px;
-    height: 101vh;
-    overflow: hidden;
 }
 </style>

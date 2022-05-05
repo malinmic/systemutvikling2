@@ -5,6 +5,7 @@ import {
     RouteRecordRaw,
 } from "vue-router"
 
+// @ts-ignore
 const routes: Array<RouteRecordRaw> = [
     {
         path: "/",

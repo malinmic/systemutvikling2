@@ -167,9 +167,7 @@ import ThemeToggleComponent from "@/components/navbar/ThemeToggleComponent.vue"
 import NavigationBarLogo from "@/components/navbar/NavigationBarLogoComponent.vue"
 import NotificationCardComponent from "@/components/notifications/NotificationCardComponent.vue"
 import { getNotifications } from "@/services/api/notification"
-import { connect } from "@/services/api/websocket"
 import NavigationBarHamburgerButtonComponent from "@/components/navbar/NavigationBarHamburgerButtonComponent.vue"
-import { UserAccount } from "@/types/IfcUserAccountInterface"
 
 const store = useStore()
 const props = defineProps({
