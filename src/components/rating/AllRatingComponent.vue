@@ -7,18 +7,11 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from "vue"
-import { useStore } from "vuex"
-import { getRatingsForUser } from "@/services/api/rating"
-import RatingCardComponent from "@/components/rating/RatingCardComponent"
+import { defineProps } from "vue"
+import RatingCardComponent from "@/components/rating/RatingCardComponent.vue"
 
-const store = useStore()
-const ratings = ref([])
-
-onMounted(() => {
-    getRatingsForUser(store.getters.email, store.getters.token).then((data) => {
-        ratings.value = data.ratings
-    })
+defineProps({
+    ratings: Object,
 })
 </script>
 
