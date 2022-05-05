@@ -113,7 +113,7 @@ const isFree = ref(false)
 const showPhone = ref(false)
 const priceSwitchText = ref("Gratis")
 const phoneSwitchText = ref("Vis telefonnummer")
-const imageId = ref()
+const imageId = ref(0)
 
 const changePriceLabel = () => {
     if (isFree.value) {
@@ -141,7 +141,7 @@ const imageSelect = (e: Event) => {
 const deleteImage = () => {
     deleteImageCall(imageId.value, store.getters.token).then((response) => {
         console.log(response.data)
-        imageId.value = undefined
+        imageId.value = 0
     })
 }
 
