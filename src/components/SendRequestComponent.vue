@@ -6,6 +6,7 @@
                 <v-row>
                     <v-col>
                         <v-textarea
+                            data-cy="message"
                             v-model="message"
                             type="text"
                             label="Melding"
@@ -14,11 +15,15 @@
                         </v-textarea>
                     </v-col>
                 </v-row>
+
                 <v-row>
-                    <v-col cols="10">
-                        <v-row>
+                    <v-col cols="12">
+                        <h3 class="mb-2">Leieperiode</h3>
+                        <v-divider></v-divider>
+                        <v-row class="mt-2">
                             <v-col cols="12" sm="6">
                                 <v-text-field
+                                    data-cy="startDate"
                                     v-model="startDate"
                                     label="Startdato"
                                     prepend-icon="mdi-calendar"
@@ -28,6 +33,7 @@
                             </v-col>
                             <v-col cols="12" sm="6">
                                 <v-text-field
+                                    data-cy="endDate"
                                     v-model="endDate"
                                     label="Sluttdato"
                                     prepend-icon="mdi-calendar"
@@ -39,10 +45,11 @@
                     </v-col>
                     <v-col cols="12">
                         <v-btn
+                            data-cy="sendRequest"
                             class="mr-2 text-primary-c w-100"
                             color="primary"
                             rounded
-                            @click="submit"
+                            type="submit"
                             >Send inn forespørsel
                         </v-btn>
                     </v-col>
@@ -54,17 +61,21 @@
 
 <script setup lang="ts">
 import { useField, useForm } from "vee-validate"
-import { boolean, number, object, string } from "yup"
+import { boolean, date, number, object, ref, string } from "yup"
 import { postRequest } from "@/services/api/request"
+import { useRouter } from "vue-router"
 import { useRoute } from "vue-router"
+import { useStore } from "vuex"
 
 const route = useRoute()
+const router = useRouter()
+const store = useStore()
 
 const validationSchema = object({
-    username: string(),
+    email: string(),
     listingId: number(),
-    startDate: string().required("Dette feltet er påkrevd"),
-    endDate: string().required("Dette feltet er påkrevd"),
+    startDate: date().required("Dette feltet er påkrevd"),
+    endDate: date().required().min(ref("startDate"), "Dette feltet er påkrevd"),
     message: string(),
     accepted: boolean(),
 })
@@ -78,23 +89,30 @@ const { value: endDate } = useField("endDate")
 const { value: message } = useField("message")
 
 const submit = handleSubmit((values) => {
-    console.log("Submit", values)
-    if (
-        values.username &&
-        values.listingId &&
-        values.startDate &&
-        values.endDate &&
-        values.message &&
-        values.accepted
-    )
+    if (values.startDate && values.endDate)
         postRequest(
-            values.username,
             ~~route.params.id,
             new Date(values.startDate),
             new Date(values.endDate),
-            values.message,
-            values.accepted
+            values.message as string,
+            store.getters.token
         )
+            .then(() => {
+                store.dispatch("postAlert", {
+                    title: "Forespørsel sendt!",
+                    message: " ",
+                    type: "success",
+                })
+
+                router.push({ name: "landingpage" })
+            })
+            .catch((e) => {
+                store.dispatch("postAlert", {
+                    title: "Forespørsel kunne ikke sendes!",
+                    message: "Error" + e,
+                    type: "error",
+                })
+            })
 })
 </script>
 

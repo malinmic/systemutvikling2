@@ -2,28 +2,28 @@ import axios from "axios"
 import { REQUEST_URL } from "@/services/api/urls"
 
 export async function postRequest(
-    username: string,
     listingId: number,
     startDate: Date,
     endDate: Date,
     message: string,
-    accepted: boolean
+    token: string
 ) {
-    return axios
-        .post(REQUEST_URL, {
-            username: null,
-            listingId: listingId,
+    return axios.post(
+        REQUEST_URL,
+        {
+            listing: {
+                id: listingId,
+            },
             startDate: startDate,
             endDate: endDate,
             message: message,
-            accepted: accepted,
-        })
-        .then(() => {
-            return true
-        })
-        .catch(() => {
-            return false
-        })
+        },
+        {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        }
+    )
 }
 
 export async function getRequest(requestId: number, token: string) {
