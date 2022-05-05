@@ -7,7 +7,7 @@
         <v-list color="background">
             <v-list-item
                 v-if="isAuthenticated"
-                @click="$router.push({ name: 'edituser' })"
+                @click="$router.push({ name: 'userprofile' })"
                 :prepend-avatar="avatar"
                 :title="fullName"
                 :subtitle="email"
@@ -108,7 +108,7 @@
 
         <v-btn
             v-if="isAuthenticated"
-            @click="$router.push({ name: 'edituser' })"
+            @click="$router.push({ name: 'userprofile' })"
             icon
         >
             <v-avatar

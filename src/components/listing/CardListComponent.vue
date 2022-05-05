@@ -1,9 +1,9 @@
 <template>
     <v-container class="w-100">
-        <HeaderComponent :text="title" />
+        <HeaderComponent :text="props.title" />
         <v-row>
             <v-col
-                v-for="(item, index) in listings"
+                v-for="(item, index) in props.listings"
                 :key="index"
                 cols="12"
                 sm="6"
@@ -20,7 +20,7 @@ import { defineProps } from "vue"
 import HeaderComponent from "@/components/HeaderComponent.vue"
 import ListingCardComponent from "@/components/listing/ListingCardComponent.vue"
 
-defineProps({
+const props = defineProps({
     title: String,
     listings: Object,
 })
