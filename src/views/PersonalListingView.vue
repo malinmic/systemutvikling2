@@ -1,19 +1,16 @@
 <template>
-    <CardListComponent title="Mine annonser" :listings="listings" />
+    <v-container class="w-100">
+        <HeaderComponent text="Mine annonser" />
+        <v-row>
+            <v-container>
+                <PersonalListingsComponent />
+            </v-container>
+        </v-row>
+    </v-container>
 </template>
-
-<script setup lang="ts">
-import { onMounted, ref } from "vue"
-import { useStore } from "vuex"
-import { getPersonalListings } from "@/services/api/listing"
-import CardListComponent from "@/components/listing/CardListComponent.vue"
-
-const store = useStore()
-const listings = ref([])
-
-onMounted(() => {
-    getPersonalListings(store.getters.token).then((data) => {
-        listings.value = data
-    })
-})
+<script>
+import PersonalListingsComponent from "../components/listing/PersonalListingsComponent"
+export default {
+    components: { PersonalListingsComponent },
+}
 </script>

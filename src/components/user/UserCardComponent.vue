@@ -2,15 +2,19 @@
     <v-card elevation="0" class="mt-2" color="surface-nyance">
         <v-card-actions>
             <v-list-item
-                prepend-avatar="https://avataaars.io/?avatarStyle=Transparent&topType=ShortHairShortCurly&accessoriesType=Prescription02&hairColor=Black&facialHairType=Blank&clotheType=Hoodie&clotheColor=White&eyeType=Default&eyebrowType=DefaultNatural&mouthType=Default&skinColor=Light"
+                data-cy="profile"
+                :prepend-avatar="avatar"
                 class="w-100"
-                :title="nameRequest"
-                :subtitle="phonenumber"
+                @update-profile-state="updateProfileState"
+                :title="profileName"
+                :subtitle="email"
             >
-                <router-link
-                    to="LINK"
-                    class="text-subtitle-2 text-blue-darken-4"
-                    >Se profil</router-link
+                <v-btn
+                    data-cy="editbtn"
+                    v-model="email"
+                    v-if="$store.getters.email === email"
+                    @click="$router.push({ name: 'edituser' })"
+                    >Rediger bruker</v-btn
                 >
             </v-list-item>
             <h2 class="text-subtitle-1 font-weight-light mr-1 text-no-wrap">
@@ -23,10 +27,32 @@
 
 <script setup lang="ts">
 import { ref } from "vue"
+import { useStore } from "vuex"
+import { getUser } from "@/services/api/user"
 
-const nameRequest = ref("Ola Nordmann")
-const phonenumber = ref("+47 98765432")
+const profileName = ref("")
+const email = ref("")
 const score = ref("4.8")
+const store = useStore()
+const isAuthenticated = ref(false)
+
+const avatar = ref(require("@/assets/user-avatar-placeholder.png"))
+
+const updateProfileState = async () => {
+    isAuthenticated.value = store.getters.isLoggedIn
+
+    if (isAuthenticated.value) {
+        const token = store.getters.token
+
+        let userinfo = await getUser(token)
+        await store.dispatch("setUserInfo", userinfo)
+
+        profileName.value = store.getters.fullName
+        email.value = store.getters.email
+    }
+}
+
+updateProfileState()
 </script>
 
 <style scoped></style>

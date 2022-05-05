@@ -21,6 +21,14 @@ const routes: Array<RouteRecordRaw> = [
             import(/* webpackChunkName: "faq" */ "@/views/FaqView.vue"),
     },
     {
+        path: "/userprofile",
+        name: "userprofile",
+        component: () =>
+            import(
+                /* webpackChunkName: "edit-user" */ "@/views/ProfileView.vue"
+            ),
+    },
+    {
         path: "/user/create",
         name: "createuser",
         component: () =>
