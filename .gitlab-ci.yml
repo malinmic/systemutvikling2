@@ -3,6 +3,7 @@ image: node:latest
 stages:
   - build
   - verify
+  - pages
     
 build:
   stage: build
@@ -38,3 +39,8 @@ integration-test:
     - npm ci
     - npm run serve &
     - npx cypress run
+    - npx nyc report --reporter=text-summary
+  artifacts:
+    when: always
+    paths:
+      - coverage

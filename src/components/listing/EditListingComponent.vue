@@ -14,7 +14,7 @@
                 </v-col>
                 <v-col cols="12" sm="6">
                     <v-switch
-                        data-cy="isFree"
+                        data-cy="isFreeEdit"
                         v-model="isFree"
                         :label="priceSwitchText"
                         @click="changePriceLabel"

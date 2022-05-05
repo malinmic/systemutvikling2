@@ -1,7 +1,4 @@
 describe("Editing a list", () => {
-    beforeEach(() => {
-        cy.login()
-    })
     it("Editing a list successfully without phonenumber and price", () => {
         cy.intercept(
             {
@@ -65,9 +62,9 @@ describe("Editing a list", () => {
 
         cy.wait("@getListingById")
         cy.get("[data-cy=title]").type("Gressklipper")
-        cy.get("[data-cy=isFree]").click()
+        cy.contains("Gratis").click()
         cy.get("[data-cy=price]").type("30")
-        cy.get("[data-cy=showPhone").click()
+        cy.get("[data-cy=showPhone]").click()
         cy.get("[data-cy=phone").type("99994444")
         cy.get("[data-cy=address]").type("7030")
         cy.get("[data-cy=description]").type(
@@ -177,9 +174,9 @@ describe("Editing a list", () => {
             }
         ).as("getListingById")
         cy.get("[data-cy=title]").type("Gressklipper")
-        cy.get("[data-cy=isFree]").click()
+        cy.contains("Gratis").click()
         cy.get("[data-cy=price]").type("30")
-        cy.get("[data-cy=showPhone").click()
+        cy.get("[data-cy=showPhone]").click()
         cy.get("[data-cy=phone").type("99994444")
         cy.get("[data-cy=address]").type("7030")
         cy.get("[data-cy=description]").type(

@@ -1,7 +1,4 @@
 describe("Search for lists", () => {
-    beforeEach(() => {
-        cy.login()
-    })
     it("Search for lists successfully", () => {
         cy.visit("/")
 
@@ -11,7 +8,7 @@ describe("Search for lists", () => {
         cy.intercept(
             {
                 method: "GET",
-                url: "http://localhost:8888/listing/search/*",
+                url: "http://localhost:8888/listing/search/te",
             },
             (req) => {
                 req.reply([
@@ -26,7 +23,7 @@ describe("Search for lists", () => {
         ).as("getListingsByQuery")
 
         cy.wait("@getListingsByQuery")
-        cy.contains("Alle annonser")
+
         cy.contains("Grønn gressklipper").click()
     })
 })
