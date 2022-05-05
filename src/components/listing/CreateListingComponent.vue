@@ -140,7 +140,6 @@ const imageSelect = (e: Event) => {
 
 const deleteImage = () => {
     deleteImageCall(imageId.value, store.getters.token).then((response) => {
-        console.log(response.data)
         imageId.value = 0
     })
 }

@@ -69,7 +69,6 @@ const sendChatMessage = (message: string) => {
 onMounted(() => {
     updateChatLog().then(() => {
         const acc: UserAccount = receiverInfo.value as UserAccount
-        console.log(acc)
         store.commit("SET_CHAT_RECEIVER", acc)
     })
 })

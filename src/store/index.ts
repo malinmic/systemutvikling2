@@ -96,9 +96,7 @@ export default createStore({
             state.theme = theme
         },
         SET_CHAT_RECEIVER(state, receiver: UserAccount) {
-            console.log(state.chatReceiver)
             state.chatReceiver = receiver
-            console.log(state.chatReceiver)
         },
     },
     actions: {
@@ -134,7 +132,6 @@ export default createStore({
             context.commit("SET_THEME", theme)
         },
         toggleTheme(context) {
-            console.log(context.state.theme)
             if (context.state.theme == "light") {
                 context.commit("SET_THEME", "dark")
             } else {

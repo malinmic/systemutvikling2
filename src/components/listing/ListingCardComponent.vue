@@ -1,7 +1,12 @@
 <template>
-    <router-link
-        :to="{ name: 'detailedlisting', params: { id: props.item.id } }"
-        class="link w-100"
+    <div
+        @click="
+            $router.push({
+                name: 'detailedlisting',
+                params: { id: props.item.id },
+            })
+        "
+        style="cursor: pointer"
     >
         <v-card class="ma-0 item" variant="outlined">
             <v-img
@@ -15,7 +20,7 @@
                 <div>{{ props.item.price }} kr/dag</div>
             </v-card-text>
         </v-card>
-    </router-link>
+    </div>
 </template>
 <script setup lang="ts">
 import { defineProps } from "vue"

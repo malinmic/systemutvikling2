@@ -44,24 +44,22 @@ const endDate = ref("")
 const store = useStore()
 
 const reject = () => {
-    console.log("Reject request")
     rejectRequest(2, store.getters.token)
         .then((data) => {
             console.log(data)
         })
         .catch(() => {
-            console.log("Error")
+            console.error("Error rejecting request")
         })
 }
 
 const accept = () => {
-    console.log("Request accepted")
     acceptRequest(2, store.getters.token)
         .then((data) => {
             console.log(data)
         })
         .catch(() => {
-            console.log("Error")
+            console.error("Error accepting request")
         })
 }
 
@@ -76,7 +74,7 @@ onMounted(() => {
             endDate.value = `${end.getDay() + 1}/${end.getMonth() + 1}`
         })
         .catch((e) => {
-            console.log(e)
+            console.error(e)
         })
 })
 </script>
