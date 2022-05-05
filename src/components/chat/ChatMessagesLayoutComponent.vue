@@ -1,22 +1,40 @@
 <template>
     <div ref="chatContainer" style="overflow: scroll">
-        <text-chat-message-component
-            :message="m"
-            v-for="m in props.messages"
-            :key="m.time"
-        ></text-chat-message-component>
+        <span v-for="m in props.messages" :key="m.time">
+            <text-chat-message-component
+                v-if="m.type === MSG_TYPE_TEXT"
+                :message="m"
+            />
+            <rating-chat-message-component
+                v-if="m.type === MSG_TYPE_RATING"
+                :message="m"
+                @update-chat="$emit('update-chat')"
+            />
+            <request-chat-message-component
+                v-if="m.type === MSG_TYPE_REQUEST"
+                :message="m"
+                @update-chat="$emit('update-chat')"
+            />
+        </span>
     </div>
 </template>
 
 <script setup lang="ts">
-import { defineProps, ref, watch } from "vue"
+import { defineProps, ref, watch, defineEmits } from "vue"
 import { ChatMessage } from "@/types/IfcChatMessageInterface"
 import TextChatMessageComponent from "@/components/chat/message/TextChatMessageComponent.vue"
+import RatingChatMessageComponent from "@/components/chat/message/RatingChatMessageComponent.vue"
+import RequestChatMessageComponent from "@/components/chat/message/RequestChatMessageComponent.vue"
 
 const props = defineProps<{
     messages: ChatMessage[]
 }>()
+const emit = defineEmits(["update-chat"])
 const chatContainer = ref<HTMLDivElement>()
+
+const MSG_TYPE_TEXT = "MESSAGE"
+const MSG_TYPE_RATING = "RATING"
+const MSG_TYPE_REQUEST = "REQUEST"
 
 watch(
     () => props.messages,

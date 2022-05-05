@@ -4,7 +4,7 @@
             <div class="ma-10 d-flex align-center text-center justify-center">
                 <v-col cols="12">
                     <h2
-                        class="text-h5 font-italic text-white font-weight-light mb-16 mt-5"
+                        class="text-h5 font-italic text-white font-weight-light mb-16 mt-5 text-background"
                     >
                         "For å skape et bærekraftig samfunn"
                     </h2>
@@ -18,7 +18,7 @@
                         <input
                             data-cy="searchbar"
                             placeholder="Hva ønsker du å leie?"
-                            class="input w-100 bg-secondary"
+                            class="input w-100 bg-background"
                             v-model="searchbar"
                         />
                         <v-btn

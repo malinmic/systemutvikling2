@@ -55,8 +55,12 @@
                     prepend-icon="mdi-chat"
                     title="Chat"
                     @click="chat = !chat"
-                    ><div v-if="!unread">
-                        <v-badge dot color="error" inline />
+                    ><div
+                        v-if="unread"
+                        class="d-flex justify-center align-center"
+                    >
+                        <v-badge dot color="error" class="ma-auto" inline />
+                        <p class="ml-2 text-error text-body-2">Ulest melding</p>
                     </div>
                 </v-list-item>
 
@@ -68,6 +72,7 @@
                 />
             </v-list>
         </div>
+
         <div v-else>
             <v-list nav>
                 <v-list-item
@@ -75,25 +80,50 @@
                     title="Back"
                     @click="chat = !chat"
                 />
+                <v-list-item
+                    v-for="chat in chats"
+                    :key="chat"
+                    @click="
+                        this.$router.push({
+                            name: 'chat',
+                            params: { id: chat.id },
+                        })
+                    "
+                    class="w-100 text-left"
+                    :prepend-avatar="avatar"
+                    :title="chat.users[0].firstname"
+                    :subtitle="chat.users[0].email"
+                    value="user"
+                >
+                    <div v-if="unread" class="d-flex">
+                        <v-badge dot color="error" class="ma-auto" inline />
+                        <p class="ml-2 text-error text-body-2">Ulest melding</p>
+                    </div>
+                </v-list-item>
             </v-list>
         </div>
 
         <template v-slot:append>
             <v-divider></v-divider>
-            <v-list-item class="pa-8">
-                <theme-toggle-component></theme-toggle-component>
-            </v-list-item>
-            <v-list-item class="px-8 mt-n8 text-error">
-                <v-btn
-                    v-if="isAuthenticated"
-                    class="w-100"
-                    height="35"
-                    variant="outlined"
-                    prepend-icon="mdi-logout"
-                    title="Logg ut"
-                    @click="logout"
-                    >Logg ut</v-btn
-                >
+            <v-list-item class="py-4">
+                <v-row>
+                    <v-col>
+                        <theme-toggle-component></theme-toggle-component>
+                    </v-col>
+
+                    <v-col col="6">
+                        <v-btn
+                            class="text-error w-100"
+                            v-if="isAuthenticated"
+                            variant="outlined"
+                            prepend-icon="mdi-logout"
+                            title="Logg ut"
+                            @click="logout"
+                            height="42"
+                            >Logg ut</v-btn
+                        >
+                    </v-col>
+                </v-row>
             </v-list-item>
         </template>
     </v-navigation-drawer>
@@ -175,7 +205,9 @@ import { useRouter, useRoute } from "vue-router"
 import ThemeToggleComponent from "@/components/navbar/ThemeToggleComponent.vue"
 import NavigationBarLogo from "@/components/navbar/NavigationBarLogoComponent.vue"
 import { getNotifications } from "@/services/api/notification"
+import { connect, addObserver } from "@/services/api/websocket"
 import NavigationBarHamburgerButtonComponent from "@/components/navbar/NavigationBarHamburgerButtonComponent.vue"
+import { getChats } from "@/services/api/chat"
 import { useCookies } from "vue3-cookies"
 
 const store = useStore()
@@ -197,7 +229,7 @@ const chat = ref(false)
 const unread = ref(true)
 
 const updateIsChat = () => {
-    isChat.value = router.currentRoute.value.path === "/chat"
+    isChat.value = route.name == "chat"
 }
 
 const updateLoginState = async () => {
@@ -211,6 +243,19 @@ const updateLoginState = async () => {
 
         fullName.value = store.getters.fullName
         email.value = store.getters.email
+
+        connect(token, store.getters.email).catch((e) => {
+            store.dispatch("postAlert", {
+                title: "Kunne ikke koble til websocket",
+                message: "" + e,
+                type: "error",
+            })
+        })
+
+        //Notification observer
+        addObserver(() => {
+            refreshNotifications()
+        })
     }
 }
 
@@ -229,12 +274,34 @@ const logout = () => {
 
 onUpdated(() => {
     updateIsChat()
+    refreshNotifications()
 })
 
-const token = store.getters.token
-getNotifications(token).then((data) => {
-    unread.value = data.unread
-})
+const chats = ref()
+const getChatlist = () => {
+    return getChats(store.getters.token).then((data) => {
+        chats.value = data
+    })
+}
+getChatlist()
+
+const refreshNotifications = () => {
+    const token = store.getters.token
+
+    const originalNotificationValue = unread.value
+
+    getNotifications(token).then((res) => {
+        unread.value = res.data.unread as boolean
+
+        if (unread.value != originalNotificationValue && unread.value) {
+            store.dispatch("postAlert", {
+                title: "Ny melding",
+                message: "Du har fått en ny melding i chat",
+                type: "info",
+            })
+        }
+    })
+}
 
 updateLoginState()
 const avatar = ref(require("@/assets/user-avatar-placeholder.png"))

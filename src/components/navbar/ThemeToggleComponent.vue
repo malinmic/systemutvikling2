@@ -1,11 +1,11 @@
 <template>
     <v-btn
-        class="w-100 text-yellow-darken-3"
+        class="text-yellow-darken-3 w-100"
         v-if="currentTheme === 'dark'"
         @click="toggleTheme"
         prepend-icon="mdi-white-balance-sunny"
         variant="outlined"
-        height="48"
+        height="42"
         >Bytt tema</v-btn
     >
 
@@ -15,7 +15,7 @@
         v-else
         @click="toggleTheme"
         prepend-icon="mdi-moon-waxing-crescent"
-        height="48"
+        height="42"
     >
         Bytt tema
     </v-btn>

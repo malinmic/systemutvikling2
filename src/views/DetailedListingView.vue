@@ -55,7 +55,7 @@ const address = ref("")
 const mapCenter = ref({ lat: 0, lng: 0 })
 const positions = ref()
 
-getListingById(id).then((l) => {
+getListingById(parseInt(id)).then((l) => {
     listing.value = l
     address.value = l.address
     getPositionsFromQuery(l.address).then((p: any) => {
