@@ -98,15 +98,11 @@
         elevate-on-scroll
         :class="{ 'bg-transparent': props.transparent }"
     >
-        <v-app-bar-nav-icon
-            @click="isNavigationOpen = !isNavigationOpen"
-            height="28"
-            data-test-id="hamburger-menu-button"
-            :class="{ 'text-background': transparent }"
-        ></v-app-bar-nav-icon>
-        <div v-if="!unread">
-            <v-badge dot color="error" class="notification" />
-        </div>
+        <navigation-bar-hamburger-button-component
+            :notification="unread"
+            :navigation-toggle-callback="toggleNavigationDrawer"
+            :transparent-mode="props.transparent"
+        ></navigation-bar-hamburger-button-component>
 
         <NavigationBarLogo :transparentMode="transparent"></NavigationBarLogo>
 
@@ -127,15 +123,16 @@
         <v-btn
             v-else
             text
-            :class="{ 'text-background': transparent }"
             @click="showPopup = true"
             data-cy="navbar-login-button"
+            :class="{ 'text-background': transparent }"
         >
             <v-icon icon="mdi-login" class="mr-1" />
             Logg inn
         </v-btn>
     </v-app-bar>
 
+    <!-- If chat window is opened, navigation bar is switched out with chat-receiver information -->
     <v-app-bar
         v-else
         elevation="0"
@@ -144,40 +141,42 @@
         elevate-on-scroll
         :class="{ 'bg-transparent': props.transparent }"
     >
-        <v-app-bar-nav-icon
-            @click="isNavigationOpen = !isNavigationOpen"
-            data-test-id="hamburger-menu-button"
-        ></v-app-bar-nav-icon>
-        <v-icon icon="mdi-alert-circle" class="notification" />
+        <navigation-bar-hamburger-button-component
+            :transparent-mode="props.transparent"
+            :notification="unread"
+            :navigation-toggle-callback="toggleNavigationDrawer"
+        ></navigation-bar-hamburger-button-component>
 
-        <v-btn>
-            <v-list-item
-                prepend-avatar="https://avataaars.io/?avatarStyle=Transparent&topType=ShortHairShortCurly&accessoriesType=Prescription02&hairColor=Black&facialHairType=Blank&clotheType=Hoodie&clotheColor=White&eyeType=Default&eyebrowType=DefaultNatural&mouthType=Default&skinColor=Light"
-                class="w-100 text-left"
-                :title="user"
-                :subtitle="activity"
-                data-cy="navbar-chat-name"
-            >
-            </v-list-item>
-        </v-btn>
+        <v-list-item
+            :prepend-avatar="avatar"
+            class="w-100 text-left"
+            :title="chatReceiverInfo.firstname"
+            :subtitle="chatReceiverInfo.email"
+            data-cy="navbar-chat-name"
+        >
+        </v-list-item>
     </v-app-bar>
 </template>
 <script setup lang="ts">
-import { ref, defineProps, onUpdated } from "vue"
+import { ref, defineProps, onUpdated, computed } from "vue"
 import { useStore } from "vuex"
 import LoginPopupComponent from "@/components/user/LoginPopupComponent.vue"
 import { getUser } from "@/services/api/user"
-import { useRouter } from "vue-router"
+import { useRouter, useRoute } from "vue-router"
 import ThemeToggleComponent from "@/components/navbar/ThemeToggleComponent.vue"
 import NavigationBarLogo from "@/components/navbar/NavigationBarLogoComponent.vue"
 import NotificationCardComponent from "@/components/notifications/NotificationCardComponent.vue"
 import { getNotifications } from "@/services/api/notification"
+import { connect } from "@/services/api/websocket"
+import NavigationBarHamburgerButtonComponent from "@/components/navbar/NavigationBarHamburgerButtonComponent.vue"
+import { UserAccount } from "@/types/IfcUserAccountInterface"
 
 const store = useStore()
 const props = defineProps({
     transparent: Boolean,
 })
 const router = useRouter()
+const route = useRoute()
 
 const showPopup = ref(false)
 const isChat = ref(false)
@@ -208,6 +207,12 @@ const updateLoginState = async () => {
     }
 }
 
+const toggleNavigationDrawer = () => {
+    isNavigationOpen.value = !isNavigationOpen.value
+}
+
+const chatReceiverInfo = computed(() => store.getters.chatReceiverInfo)
+
 onUpdated(() => {
     updateIsChat()
 })
@@ -218,19 +223,5 @@ getNotifications(token).then((data) => {
 })
 
 updateLoginState()
-
 const avatar = ref(require("@/assets/user-avatar-placeholder.png"))
-const user = ref("Ola Nordmann")
-const activity = ref("Aktiv for 10 min siden")
 </script>
-
-<style scoped>
-.notification {
-    margin-left: -12px;
-    margin-bottom: 15px;
-}
-
-.pointer:hover {
-    cursor: pointer;
-}
-</style>

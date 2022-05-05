@@ -1,8 +1,9 @@
 import { createStore } from "vuex"
 import { AlertMessage } from "@/types/IfcAlertInterface"
 import { useCookies } from "vue3-cookies"
+import { UserAccount } from "@/types/IfcUserAccountInterface"
 
-export interface StateIfc {
+export interface Module1State {
     userAvatarPath: string
     token: string
     username: string
@@ -14,6 +15,7 @@ export interface StateIfc {
     city: string
     alerts: AlertMessage[]
     theme: string
+    chatReceiver: UserAccount //Chat receiver describes Receiver Information used in navigation bar on chat-page
 }
 
 export default createStore({
@@ -29,6 +31,11 @@ export default createStore({
         city: "",
         alerts: [] as AlertMessage[],
         theme: "light",
+        chatReceiver: {
+            firstname: "String",
+            lastname: "String",
+            email: "String",
+        } as UserAccount,
     },
     getters: {
         token(state) {
@@ -48,6 +55,9 @@ export default createStore({
         },
         theme(state) {
             return state.theme
+        },
+        chatReceiverInfo(state) {
+            return state.chatReceiver as UserAccount
         },
     },
     mutations: {
@@ -84,6 +94,11 @@ export default createStore({
         SET_THEME(state, theme) {
             useCookies().cookies.set("theme", theme)
             state.theme = theme
+        },
+        SET_CHAT_RECEIVER(state, receiver: UserAccount) {
+            console.log(state.chatReceiver)
+            state.chatReceiver = receiver
+            console.log(state.chatReceiver)
         },
     },
     actions: {
