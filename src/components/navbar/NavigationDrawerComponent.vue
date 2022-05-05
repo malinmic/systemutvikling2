@@ -190,7 +190,6 @@ const unread = ref(true)
 
 const updateIsChat = () => {
     isChat.value = router.currentRoute.value.path === "/chat"
-    console.log(router.currentRoute.value.path)
 }
 
 const updateLoginState = async () => {

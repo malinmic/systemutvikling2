@@ -59,8 +59,6 @@ const searchbar = ref("")
 const router = useRouter()
 
 const submit = () => {
-    console.log(searchbar)
-
     router.push({
         name: "listingsearch",
         params: { searchstring: searchbar.value },

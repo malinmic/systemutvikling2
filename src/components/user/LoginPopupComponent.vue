@@ -124,7 +124,7 @@ const submit = handleSubmit(async (values) => {
             errormessage.value = "Feil brukernavn eller passord"
         }
     } else {
-        console.log("Login error")
+        console.error("Login error")
     }
 })
 

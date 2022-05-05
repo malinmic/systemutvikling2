@@ -14,7 +14,6 @@ export async function postChatMessage(
     chatId: number,
     message: string
 ) {
-    console.log(message)
     return axios.post(
         CHAT_URL + `/${chatId}`,
         {

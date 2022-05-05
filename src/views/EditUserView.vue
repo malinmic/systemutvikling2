@@ -114,8 +114,6 @@ const show2 = ref(false)
 const router = useRouter()
 
 const registered = () => {
-    console.log("registrert endringer")
-
     router.push({
         name: "landingpage",
     })
@@ -153,7 +151,6 @@ const { value: password1 } = useField("password1")
 const { value: password2 } = useField("password2")
 
 const updateUserInfo = handleSubmit((values) => {
-    console.log("Update user")
     if (values.password2 == undefined) password2.value = ""
 
     putUser(

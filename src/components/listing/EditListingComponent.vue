@@ -151,7 +151,6 @@ const imageSelect = (e: Event) => {
 
 const deleteImage = () => {
     deleteImageCall(imageId.value, store.getters.token).then((response) => {
-        console.log(response.data)
         imageId.value = 0
     })
 }
@@ -209,7 +208,6 @@ const save = handleSubmit((values) => {
 const deleteClick = () => {
     deleteListing(store.getters.token, id).then((data) => {
         if (data) {
-            console.log("deleted " + id)
             store.dispatch("postAlert", {
                 message: "Annonse slettet",
                 type: "success",
@@ -233,7 +231,7 @@ onMounted(() => {
             description.value = listing.description
         })
         .catch(() => {
-            console.log("error retrieving data")
+            console.log("error retrieving listing")
         })
 })
 </script>
