@@ -6,7 +6,7 @@
         prepend-icon="mdi-white-balance-sunny"
         variant="outlined"
         height="48"
-        >Toggle theme</v-btn
+        >Bytt tema</v-btn
     >
 
     <v-btn
@@ -17,7 +17,7 @@
         prepend-icon="mdi-moon-waxing-crescent"
         height="48"
     >
-        Toggle theme
+        Bytt tema
     </v-btn>
 </template>
 

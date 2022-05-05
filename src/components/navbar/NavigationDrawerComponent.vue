@@ -86,6 +86,18 @@
             <v-list-item class="pa-8">
                 <theme-toggle-component></theme-toggle-component>
             </v-list-item>
+            <v-list-item class="px-8 mt-n8 text-error">
+                <v-btn
+                    v-if="isAuthenticated"
+                    class="w-100"
+                    height="35"
+                    variant="outlined"
+                    prepend-icon="mdi-logout"
+                    title="Logg ut"
+                    @click="logout"
+                    >Logg ut</v-btn
+                >
+            </v-list-item>
         </template>
     </v-navigation-drawer>
 
@@ -168,8 +180,10 @@ import NavigationBarLogo from "@/components/navbar/NavigationBarLogoComponent.vu
 import NotificationCardComponent from "@/components/notifications/NotificationCardComponent.vue"
 import { getNotifications } from "@/services/api/notification"
 import NavigationBarHamburgerButtonComponent from "@/components/navbar/NavigationBarHamburgerButtonComponent.vue"
+import { useCookies } from "vue3-cookies"
 
 const store = useStore()
+const { cookies } = useCookies()
 const props = defineProps({
     transparent: Boolean,
 })
@@ -209,6 +223,13 @@ const toggleNavigationDrawer = () => {
 }
 
 const chatReceiverInfo = computed(() => store.getters.chatReceiverInfo)
+
+const logout = () => {
+    cookies.remove("token")
+    store.dispatch("setUserInfo", {})
+    router.push("landingpage")
+    location.reload()
+}
 
 onUpdated(() => {
     updateIsChat()
