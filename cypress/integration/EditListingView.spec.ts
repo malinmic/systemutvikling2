@@ -44,55 +44,6 @@ describe("Editing a list", () => {
         cy.wait("@putListing")
     })
 
-    it("Editing a list successfully with phonenumber and price", () => {
-        cy.intercept(
-            {
-                method: "GET",
-                url: "http://localhost:8888/listing/20*",
-            },
-            (req) => {
-                req.reply({
-                    title: "Grønn gressklipper",
-                    address: "7020",
-                    description: "En grønn gressklipper",
-                })
-            }
-        ).as("getListingById")
-        cy.visit("/listing/20/edit")
-
-        cy.wait("@getListingById")
-        cy.get("[data-cy=title]").type("Gressklipper")
-        cy.contains("Gratis").click()
-        cy.get("[data-cy=price]").type("30")
-        cy.get("[data-cy=showPhone]").click()
-        cy.get("[data-cy=phone]").type("99994444")
-        cy.get("[data-cy=address]").type("7030")
-        cy.get("[data-cy=description]").type(
-            "Dette er en gressklipper som er i veldig god stand"
-        )
-        cy.intercept(
-            {
-                method: "PUT",
-                url: "http://localhost:8888/listing/20*",
-            },
-            (req) => {
-                expect(req.body.title).to.include("Gressklipper")
-                expect(req.body.description).to.include(
-                    "Dette er en gressklipper som er i veldig god stand"
-                )
-                expect(req.body.phone).to.include("99994444")
-                expect(req.body.address).to.include("7030")
-                expect(req.body.price).to.equal(30)
-
-                req.reply({
-                    status: "Success",
-                })
-            }
-        ).as("putListing")
-        cy.get("[data-cy=save]").click()
-        cy.wait("@putListing")
-    })
-
     it("Edit a list without title", () => {
         cy.intercept(
             {
@@ -142,7 +93,7 @@ describe("Editing a list", () => {
         cy.contains(/Dette feltet er påkrevd/i)
     })
 
-    it("Delete a list successfully with phonenumber and price", () => {
+    it("Delete a listing successfully", () => {
         cy.intercept(
             {
                 method: "GET",
@@ -174,10 +125,6 @@ describe("Editing a list", () => {
             }
         ).as("getListingById")
         cy.get("[data-cy=title]").type("Gressklipper")
-        cy.contains("Gratis").click()
-        cy.get("[data-cy=price]").type("30")
-        cy.get("[data-cy=showPhone]").click()
-        cy.get("[data-cy=phone").type("99994444")
         cy.get("[data-cy=address]").type("7030")
         cy.get("[data-cy=description]").type(
             "Dette er en gressklipper som er i veldig god stand"
