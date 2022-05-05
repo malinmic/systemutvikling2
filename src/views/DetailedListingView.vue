@@ -2,7 +2,7 @@
     <v-container>
         <v-row>
             <v-col>
-                <listing-component :listing="listing" />
+                <ViewListingComponent :listing="listing" />
             </v-col>
         </v-row>
         <v-row>
@@ -43,7 +43,7 @@
 import { ref } from "vue"
 import { useRoute } from "vue-router"
 import { getListingById } from "@/services/api/listing"
-import ListingComponent from "@/components/listing/ListingComponent.vue"
+import ViewListingComponent from "@/components/listing/ViewListingComponent.vue"
 import SendRequestComponent from "@/components/SendRequestComponent.vue"
 import { getPositionsFromQuery } from "@/services/api/map"
 
