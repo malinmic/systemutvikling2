@@ -46,14 +46,6 @@ const routes: Array<RouteRecordRaw> = [
             ),
     },
     {
-        path: "/request/acceptmessage",
-        name: "acceptborrowrequestmessage",
-        component: () =>
-            import(
-                /* webpackChunkName: "accept-request-message" */ "@/components/chat/ChatRequestComponent.vue"
-            ),
-    },
-    {
         path: "/listings",
         name: "alllistingview",
         component: () =>

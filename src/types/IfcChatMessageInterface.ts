@@ -1,6 +1,6 @@
 export interface ChatMessage {
-    type: string
+    type: "text"
     time: Date
     from: string
-    message: string
+    content: any
 }
