@@ -75,9 +75,6 @@
                     title="Back"
                     @click="chat = !chat"
                 />
-                <v-list-item>
-                    <NotificationCardComponent />
-                </v-list-item>
             </v-list>
         </div>
 
@@ -177,7 +174,6 @@ import { getUser } from "@/services/api/user"
 import { useRouter, useRoute } from "vue-router"
 import ThemeToggleComponent from "@/components/navbar/ThemeToggleComponent.vue"
 import NavigationBarLogo from "@/components/navbar/NavigationBarLogoComponent.vue"
-import NotificationCardComponent from "@/components/notifications/NotificationCardComponent.vue"
 import { getNotifications } from "@/services/api/notification"
 import NavigationBarHamburgerButtonComponent from "@/components/navbar/NavigationBarHamburgerButtonComponent.vue"
 import { useCookies } from "vue3-cookies"
