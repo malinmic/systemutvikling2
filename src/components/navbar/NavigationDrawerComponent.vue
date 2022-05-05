@@ -28,30 +28,29 @@
 
         <div v-if="!chat">
             <v-list nav>
+                <v-list-subheader>Utforsk</v-list-subheader>
                 <v-list-item
                     prepend-icon="mdi-magnify"
                     title="Finn noe å leie"
                     @click="$router.push({ name: 'landingpage' })"
                 />
-
                 <v-list-item
-                    prepend-icon="mdi-animation"
+                    prepend-icon="mdi-format-list-bulleted"
                     title="Alle annonser"
                     @click="$router.push({ name: 'alllistingview' })"
                 />
 
-                <v-list-item
-                    prepend-icon="mdi-animation"
-                    title="Mine annonser"
-                    @click="$router.push({ name: 'personallistingview' })"
-                />
-
+                <v-list-subheader>Administrer</v-list-subheader>
                 <v-list-item
                     prepend-icon="mdi-plus"
                     title="Opprett annonse"
                     @click="$router.push({ name: 'createlisting' })"
                 />
-
+                <v-list-item
+                    prepend-icon="mdi-animation"
+                    title="Mine annonser"
+                    @click="$router.push({ name: 'personallistingview' })"
+                />
                 <v-list-item
                     prepend-icon="mdi-chat"
                     title="Chat"
@@ -61,6 +60,7 @@
                     </div>
                 </v-list-item>
 
+                <v-list-subheader>Få hjelp</v-list-subheader>
                 <v-list-item
                     prepend-icon="mdi-help-circle-outline"
                     title="Ofte stilte spørsmål"

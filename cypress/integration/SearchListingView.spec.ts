@@ -2,9 +2,6 @@ describe("Search for lists", () => {
     it("Search for lists successfully", () => {
         cy.visit("/")
 
-        cy.get("[data-cy=searchbar").type("te")
-        cy.get("[data-cy=searchbtn").click()
-
         cy.intercept(
             {
                 method: "GET",
@@ -21,6 +18,9 @@ describe("Search for lists", () => {
                 ])
             }
         ).as("getListingsByQuery")
+
+        cy.get("[data-cy=searchbar").type("te")
+        cy.get("[data-cy=searchbtn").click()
 
         cy.wait("@getListingsByQuery")
 
