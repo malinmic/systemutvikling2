@@ -35,6 +35,8 @@
             <v-btn
                 v-if="userEmail === listing?.email"
                 @click="$router.push({ name: 'editlisting' })"
+                variant="outlined"
+                class="ml-4 my-6"
             >
                 Rediger
             </v-btn>

@@ -117,7 +117,10 @@ const validationSchema = object({
     firstname: string().required("Dette feltet er påkrevd"),
     lastname: string().required("Dette feltet er påkrevd"),
     email: string().required().email("Fyll inn en gyldig mailadresse"),
-    phonenumber: number().min(8).required("Dette feltet er påkrevd"),
+    phonenumber: number()
+        .min(8)
+        .typeError("Mobilnummer må være et tall")
+        .required("Dette feltet er påkrevd"),
     zipcode: number().required("Dette feltet er påkrevd"),
     city: string().required("Dette feltet er påkrevd"),
     password: string().required("Dette feltet er påkrevd"),

@@ -108,7 +108,8 @@
                     :subtitle="chat.users[0].email"
                     value="user"
                 >
-                    <div v-if="unread" class="d-flex">
+                    <!--Component to show notification for new chat, currently not implemented -->
+                    <div v-if="false" class="d-flex">
                         <v-badge dot color="error" class="ma-auto" inline />
                         <p class="ml-2 text-error text-body-2">Ulest melding</p>
                     </div>
@@ -245,13 +246,14 @@ const isAuthenticated = ref(false)
 const fullName = ref("")
 const email = ref("")
 const chat = ref(false)
-const unread = ref(true)
+const unread = ref(false)
 
 const updateIsChat = () => {
     isChat.value = route.name == "chat"
 }
 
 const chats = ref()
+
 const getChatlist = () => {
     return getChats(store.getters.token).then((data) => {
         chats.value = data
@@ -278,8 +280,19 @@ const updateLoginState = async () => {
             })
         })
         //Notification observer
-        addObserver(() => {
+        addObserver((m) => {
             refreshNotifications()
+
+            if (router.currentRoute.value.name != "chat") {
+                if (m.body == "new_chat") {
+                    //Sends alert to user at new notification
+                    store.dispatch("postAlert", {
+                        title: "Ny melding",
+                        message: "Du har fått en ny melding",
+                        type: "info",
+                    })
+                }
+            }
         })
     }
 }
@@ -300,28 +313,20 @@ const logout = () => {
 /** Method for updating the chat */
 onUpdated(() => {
     updateIsChat()
-    refreshNotifications()
 })
 
 /** Method for checking if notifications is unread or not */
 const refreshNotifications = () => {
     const token = store.getters.token
 
-    const originalNotificationValue = unread.value
-
     getNotifications(token).then((res) => {
+        console.log(res)
         unread.value = res.data.unread as boolean
-
-        if (unread.value != originalNotificationValue && unread.value) {
-            store.dispatch("postAlert", {
-                title: "Ny melding",
-                message: "Du har fått en ny melding i chat",
-                type: "info",
-            })
-        }
     })
 }
 
 updateLoginState()
+refreshNotifications()
+
 const avatar = ref(require("@/assets/user-avatar-placeholder.png"))
 </script>

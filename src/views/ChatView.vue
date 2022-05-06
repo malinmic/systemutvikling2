@@ -104,13 +104,19 @@ onBeforeRouteUpdate(() => {
 })
 
 //Subscribe to WebSocket update-calls for new chat-messages
-addObserver(() => {
+addObserver((m) => {
     //Make sure we are acctually in the correct chat at callback time
     if (
         route.name == "chat" &&
-        parseInt(route.params.id as string) == (chatId as number)
+        parseInt(route.params.id as string) == (chatId as number) &&
+        m.body == "new_chat"
     ) {
         updateChatLog()
     }
 })
 </script>
+
+<style scoped>
+.chat-text-field {
+}
+</style>
