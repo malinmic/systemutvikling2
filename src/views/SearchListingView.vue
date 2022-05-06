@@ -53,17 +53,17 @@
 
 <script setup lang="ts">
 import { onMounted, Ref, ref } from "vue"
-import { useRoute } from "vue-router"
+import { useRoute, useRouter } from "vue-router"
 import CardListComponent from "@/components/listing/CardListComponent.vue"
 import { getListingsByQuery } from "@/services/api/listing"
 import { getPositionsFromQuery } from "@/services/api/map"
-import { useRouter } from "vue-router"
 
 const route = useRoute()
+const router = useRouter()
+
 const listings = ref([])
 const searchstring = ref(String(route.params.searchstring))
 const searchbar = ref("")
-const router = useRouter()
 
 const positions: Ref<Array<any>> = ref([])
 

@@ -8,9 +8,7 @@
         </v-row>
     </v-container>
 </template>
-<script>
-import PersonalListingsComponent from "../components/listing/PersonalListingsComponent"
-export default {
-    components: { PersonalListingsComponent },
-}
+<script setup lang="ts">
+import PersonalListingsComponent from "@/components/listing/PersonalListingsComponent.vue"
+import HeaderComponent from "@/components/HeaderComponent.vue"
 </script>
