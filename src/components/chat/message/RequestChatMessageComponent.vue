@@ -1,7 +1,7 @@
 <template>
     <chat-message-component :sent-by-me="sentByMe">
         <v-container>
-            <h2 v-if="!sentByMe">Leieforespørsel</h2>
+            <h2 v-if="sentByMe">Leieforespørsel</h2>
             <h2 v-else>Ny leieforespørsel</h2>
 
             <h3 class="font-weight-light ma-1 text-left">
@@ -78,7 +78,7 @@ import {
     getRequest,
     rejectRequest,
 } from "@/services/api/request"
-import { defineEmits, ref, defineProps, computed } from "vue"
+import { onMounted, ref, defineProps } from "vue"
 import { useStore } from "vuex"
 import ChatMessageComponent from "@/components/chat/message/ChatMessageComponent.vue"
 import { ChatMessage } from "@/types/IfcChatMessageInterface"
@@ -86,21 +86,17 @@ import { ChatMessage } from "@/types/IfcChatMessageInterface"
 const store = useStore()
 
 const props = defineProps<{ message: ChatMessage }>()
-const emit = defineEmits(["update-chat"])
-
 const sentByMe = props.message.from == store.getters.email
 
-const requestItem = computed(() => props.message.content)
+const requestItem = ref(props.message.content)
 const listingItem = ref(requestItem.value.listing)
 
 const fromName = ref(props.message.from)
 
 const listingTitle = listingItem.value.title
 
-console.log(props.message)
-
 const requestId = requestItem.value.requestId
-const accepted = computed(() => requestItem.value.accepted)
+const accepted = requestItem.value.accepted
 const requestMessage = requestItem.value.message
 const start: Date = new Date(requestItem.value.startDate)
 const end: Date = new Date(requestItem.value.endDate)
@@ -109,9 +105,7 @@ const endDate = ref(`${end.getDay() + 1}/${end.getMonth() + 1}`)
 
 const reject = () => {
     rejectRequest(requestId, store.getters.token)
-        .then((data) => {
-            emit("update-chat")
-        })
+        .then((data) => {})
         .catch((e) => {
             store.dispatch("postAlert", {
                 title: "Feil ved oppdatering av forespørsel",
@@ -123,9 +117,7 @@ const reject = () => {
 
 const accept = () => {
     acceptRequest(requestId, store.getters.token)
-        .then((data) => {
-            emit("update-chat")
-        })
+        .then((data) => {})
         .catch((e) => {
             store.dispatch("postAlert", {
                 title: "Feil ved oppdatering av forespørsel",
