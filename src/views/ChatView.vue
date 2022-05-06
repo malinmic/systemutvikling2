@@ -38,15 +38,22 @@ const route = useRoute()
 const chatId = parseInt(route.params.id as string)
 const receiverInfo = ref()
 
+const sortMessagesByDate = (messages: ChatMessage[]) => {
+    return messages.sort((a, b) => {
+        return new Date(a.time).getTime() - new Date(b.time).getTime()
+    })
+}
+
 const updateChatLog = () => {
     return getChatMessages(store.getters.token, chatId)
         .then((res) => {
             receiverInfo.value = res.data.users.filter(
                 (u: ChatMessage) => u.from != store.getters.email
             )[0]
-            messages.value = []
-            messages.value = res.data.messages as ChatMessage[]
 
+            messages.value = sortMessagesByDate(
+                res.data.messages as ChatMessage[]
+            )
             markAsRead(store.getters.token, chatId)
         })
         .catch((e) => {

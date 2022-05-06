@@ -1,10 +1,10 @@
 <template>
     <chat-message-component :sent-by-me="sentByMe">
         <v-container>
-            <h2 v-if="!sentByMe">Leieforespørsel</h2>
-            <h2 v-else>Ny leieforespørsel</h2>
+            <h3 v-if="!sentByMe">Leieforespørsel</h3>
+            <h3 v-else>Ny leieforespørsel</h3>
 
-            <h3 class="font-weight-light ma-1 text-left">
+            <h4 class="font-weight-light ma-1 text-left">
                 <span v-if="!sentByMe">
                     <b>{{ fromName }}</b>
                 </span>
@@ -16,14 +16,14 @@
                 >
                 fra
                 <i>{{ startDate }} - {{ endDate }}</i>
-            </h3>
+            </h4>
 
             <v-container class="rounded pa-2 border mt-4" v-if="requestMessage">
                 <p>{{ requestMessage }}</p>
             </v-container>
 
             <div class="mt-8">
-                <span justify="center" v-if="accepted === 'NOT_READ'">
+                <span justify="center" v-if="accepted === 'NOT_SEEN'">
                     <v-row v-if="!sentByMe">
                         <v-col cols="12" lg="6" md="6">
                             <v-btn
@@ -90,22 +90,20 @@ const emit = defineEmits(["update-chat"])
 
 const sentByMe = props.message.from == store.getters.email
 
-const requestItem = computed(() => props.message.content)
-const listingItem = ref(requestItem.value.listing)
+const requestItem = computed(() => props.message.attachment)
+const listingItem = computed(() => requestItem.value.listing)
 
 const fromName = ref(props.message.from)
 
 const listingTitle = "listingItem.value.title"
-
-console.log(props.message)
 
 const requestId = requestItem.value.requestId
 const accepted = computed(() => requestItem.value.accepted)
 const requestMessage = requestItem.value.message
 const start: Date = new Date(requestItem.value.startDate)
 const end: Date = new Date(requestItem.value.endDate)
-const startDate = ref(`${start.getDay() + 1}/${start.getMonth() + 1}`)
-const endDate = ref(`${end.getDay() + 1}/${end.getMonth() + 1}`)
+const startDate = ref(`${start.getDay() + 1}.${start.getMonth() + 1}`)
+const endDate = ref(`${end.getDay() + 1}.${end.getMonth() + 1}`)
 
 const reject = () => {
     rejectRequest(requestId, store.getters.token)
