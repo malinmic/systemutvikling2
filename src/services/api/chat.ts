@@ -51,24 +51,14 @@ export async function getNotificationsByID(id: number) {
         })
 }
 
-export async function putNotification(token: string, read: boolean) {
-    return axios
-        .put(
-            CHAT_URL,
-            {
-                read: read,
+export async function markAsRead(token: string, chatId: number) {
+    return axios.put(
+        CHAT_URL + `/${chatId}/notification`,
+        {},
+        {
+            headers: {
+                Authorization: `Bearer ${token}`,
             },
-            {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            }
-        )
-        .then(() => {
-            return true
-        })
-        .catch((error) => {
-            console.error(`Unable to put notifications: ${error}`)
-            return false
-        })
+        }
+    )
 }
