@@ -193,3 +193,8 @@ const submit = handleSubmit((values) => {
         })
 })
 </script>
+<style>
+.v-switch__thumb {
+    color: white;
+}
+</style>

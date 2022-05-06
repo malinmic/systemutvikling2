@@ -40,18 +40,23 @@
                     @click="$router.push({ name: 'alllistingview' })"
                 />
 
-                <v-list-subheader>Administrer</v-list-subheader>
+                <v-list-subheader :hidden="!isAuthenticated"
+                    >Administrer</v-list-subheader
+                >
                 <v-list-item
+                    :hidden="!isAuthenticated"
                     prepend-icon="mdi-plus"
                     title="Opprett annonse"
                     @click="$router.push({ name: 'createlisting' })"
                 />
                 <v-list-item
+                    :hidden="!isAuthenticated"
                     prepend-icon="mdi-animation"
                     title="Mine annonser"
                     @click="$router.push({ name: 'personallistingview' })"
                 />
                 <v-list-item
+                    :hidden="!isAuthenticated"
                     prepend-icon="mdi-chat"
                     title="Chat"
                     @click="chat = !chat"
