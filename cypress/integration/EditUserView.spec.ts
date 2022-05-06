@@ -1,11 +1,15 @@
 describe("Editing a user", () => {
+    beforeEach(() => {
+        cy.login()
+    })
+
     it("Edit user successfully", () => {
         cy.visit("/user/edit")
 
         cy.get("[data-cy=firstname]").type("Geir")
         cy.get("[data-cy=lastname]").type("Hansen")
-        cy.get("[data-cy=email]").type("geir.hansen@gmail.no")
-        cy.get("[data-cy=phonenumber]").type("99995555")
+        cy.get("[data-cy=email]").clear().type("geir.hansen@gmail.no")
+        cy.get("[data-cy=phonenumber]").clear().type("99995555")
         cy.get("[data-cy=zipcode]").type("8800")
         cy.get("[data-cy=password]").type("Salami")
         cy.get("[data-cy=confirmPassword]").type("Salami")
@@ -33,11 +37,10 @@ describe("Editing a user", () => {
 
     it("Edit user unsuccessfully", () => {
         cy.visit("/user/edit")
-
         cy.get("[data-cy=firstname]").type("Geir")
         cy.get("[data-cy=lastname]").type("Hansen")
-        cy.get("[data-cy=email]").type("geir.hansen@gmail")
-        cy.get("[data-cy=phonenumber]").type("99995555")
+        cy.get("[data-cy=email]").clear().type("geir.hansen@gmail")
+        cy.get("[data-cy=phonenumber]").clear().type("99995555")
         cy.get("[data-cy=zipcode]").type("8800")
         cy.get("[data-cy=password]").type("Salami")
         cy.get("[data-cy=confirmPassword]").type("Salami")

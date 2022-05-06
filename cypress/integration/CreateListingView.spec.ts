@@ -1,4 +1,8 @@
 describe("Creating a new listing", () => {
+    beforeEach(() => {
+        cy.login()
+    })
+
     it("Create new listing successfully without phonenumber and price", () => {
         cy.visit("/listing/create")
 

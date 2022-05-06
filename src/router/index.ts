@@ -24,6 +24,9 @@ const routes: Array<RouteRecordRaw> = [
     {
         path: "/userprofile",
         name: "userprofile",
+        meta: {
+            requiresAuth: true,
+        },
         component: () =>
             import(
                 /* webpackChunkName: "edit-user" */ "@/views/ProfileView.vue"
@@ -40,6 +43,9 @@ const routes: Array<RouteRecordRaw> = [
     {
         path: "/user/edit",
         name: "edituser",
+        meta: {
+            requiresAuth: true,
+        },
         component: () =>
             import(
                 /* webpackChunkName: "edit-user" */ "@/views/EditUserView.vue"
@@ -64,6 +70,9 @@ const routes: Array<RouteRecordRaw> = [
     {
         path: "/my-listings",
         name: "personallistingview",
+        meta: {
+            requiresAuth: true,
+        },
         component: () =>
             import(
                 /* webpackChunkName: "personal-listing" */ "../views/PersonalListingView.vue"
@@ -72,6 +81,9 @@ const routes: Array<RouteRecordRaw> = [
     {
         path: "/listing/create",
         name: "createlisting",
+        meta: {
+            requiresAuth: true,
+        },
         component: () =>
             import(
                 /* webpackChunkName: "create-listing" */ "@/views/CreateListingView.vue"
@@ -90,6 +102,9 @@ const routes: Array<RouteRecordRaw> = [
         path: "/listing/:id/edit",
         props: true,
         name: "editlisting",
+        meta: {
+            requiresAuth: true,
+        },
         component: () =>
             import(
                 /* webpackChunkName: "edit-listing" */ "../views/EditListingView.vue"
@@ -99,6 +114,9 @@ const routes: Array<RouteRecordRaw> = [
         path: "/chat/:id",
         props: true,
         name: "chat",
+        meta: {
+            requiresAuth: true,
+        },
         component: () =>
             import(
                 /* webpackChunkName: "edit-listing" */ "../views/ChatView.vue"
@@ -106,9 +124,23 @@ const routes: Array<RouteRecordRaw> = [
     },
 ]
 
+import store from "@/store"
+
 const router: Router = createRouter({
     history: createWebHistory(process.env.BASE_URL),
     routes,
+})
+
+router.beforeEach((to, from, next) => {
+    if (to.matched.some((record) => record.meta.requiresAuth)) {
+        if (!store.getters.isLoggedIn) {
+            next({ name: "landingpage" })
+        } else {
+            next()
+        }
+    } else {
+        next()
+    }
 })
 
 export default router

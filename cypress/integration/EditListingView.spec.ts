@@ -1,4 +1,8 @@
 describe("Editing a listing", () => {
+    beforeEach(() => {
+        cy.login()
+    })
+
     it("Editing a listing successfully without phonenumber and price", () => {
         cy.intercept(
             {
