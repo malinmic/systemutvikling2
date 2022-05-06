@@ -1,3 +1,4 @@
+/** Imports: */
 import { createStore } from "vuex"
 import { AlertMessage } from "@/types/IfcAlertInterface"
 import { useCookies } from "vue3-cookies"

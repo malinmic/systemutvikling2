@@ -1,6 +1,8 @@
+<!-- The view for chats-->
 <template>
     <v-container class="h-screen mt-n16 pt-16">
         <v-container class="d-flex flex-column h-100">
+            <!-- Uses the component for messages layout-->
             <ChatMessagesLayoutComponent
                 @update-chat="updateChatLog"
                 :messages="messages"
@@ -11,6 +13,7 @@
                 elevation="0"
                 class="w-100 justify-end chat-text-field pt-4"
             >
+                <!-- Uses the component for chat text field-->
                 <ChatTextField :send-message-callback="sendChatMessage" />
             </v-card>
         </v-container>
@@ -18,9 +21,10 @@
 </template>
 
 <script lang="ts" setup>
+/** Imports: */
 import ChatTextField from "@/components/chat/ChatTextFieldComponent.vue"
 import ChatMessagesLayoutComponent from "@/components/chat/ChatMessagesLayoutComponent.vue"
-import { ref, onMounted, onUpdated } from "vue"
+import { ref, onMounted } from "vue"
 import { ChatMessage } from "@/types/IfcChatMessageInterface"
 import { useStore } from "vuex"
 import {
@@ -32,12 +36,14 @@ import { addObserver } from "@/services/api/websocket"
 import { onBeforeRouteUpdate, useRoute } from "vue-router"
 import { UserAccount } from "@/types/IfcUserAccountInterface"
 
+/** Variables: */
 const messages = ref([] as ChatMessage[])
 const store = useStore()
 const route = useRoute()
 const chatId = parseInt(route.params.id as string)
 const receiverInfo = ref()
 
+/** Method to update the chat log */
 const sortMessagesByDate = (messages: ChatMessage[]) => {
     return messages.sort((a, b) => {
         return new Date(a.time).getTime() - new Date(b.time).getTime()
@@ -65,6 +71,7 @@ const updateChatLog = () => {
         })
 }
 
+/** Method for sending a chat message */
 const sendChatMessage = (message: string) => {
     if (message != "")
         return postChatMessage(store.getters.token, chatId, message)
@@ -80,6 +87,7 @@ const sendChatMessage = (message: string) => {
             })
 }
 
+/** Method to load chat log before the user loads the page */
 onMounted(() => {
     updateChatLog().then(() => {
         const acc: UserAccount = receiverInfo.value as UserAccount
@@ -87,6 +95,7 @@ onMounted(() => {
     })
 })
 
+/** Method for setting userinformation for the chat in navigation bar */
 onBeforeRouteUpdate(() => {
     updateChatLog().then(() => {
         const acc: UserAccount = receiverInfo.value as UserAccount
@@ -105,8 +114,3 @@ addObserver(() => {
     }
 })
 </script>
-
-<style scoped>
-.chat-text-field {
-}
-</style>

@@ -1,3 +1,4 @@
+<!-- The component for hamburger button for navigation bar-->
 <template>
     <v-app-bar-nav-icon
         @click="props.navigationToggleCallback"
@@ -11,6 +12,7 @@
 </template>
 
 <script setup lang="ts">
+/** Imports: */
 import { defineProps } from "vue"
 
 const props = defineProps({

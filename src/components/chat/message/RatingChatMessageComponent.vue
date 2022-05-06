@@ -1,4 +1,6 @@
+<!-- Base component for ratings in chat messages -->
 <template>
+    <!-- Uses the component for chat messages-->
     <chat-message-component
         :sent-by-me="sentByMe"
         v-if="!awaitingRating || (awaitingRating && sentByMe)"
@@ -38,6 +40,7 @@
                     variant="outlined"
                     label="Gi gjerne en kommentar..."
                 ></v-text-field>
+                <!-- Send rating button-->
                 <v-btn
                     class="mr-3"
                     height="39"
@@ -53,6 +56,7 @@
 </template>
 
 <script setup lang="ts">
+/** Imports: */
 import { ref, defineProps, computed, defineEmits } from "vue"
 import ChatMessageComponent from "@/components/chat/message/ChatMessageComponent.vue"
 import { useField } from "vee-validate"
@@ -60,13 +64,14 @@ import { useStore } from "vuex"
 import { ChatMessage } from "@/types/IfcChatMessageInterface"
 import { putRating } from "@/services/api/rating"
 
+/** Variables: */
 const props = defineProps<{
     message: ChatMessage
 }>()
 
 const emit = defineEmits(["update-chat"])
 
-const { value: rating } = useField("rating")
+const { value: rating } = useField<number>("rating")
 const { value: review } = useField("review")
 
 const warning = ref(false)
@@ -86,6 +91,7 @@ const nameOfRater = sentByMe
 const ratingMessage = computed(() => props.message.attachment.review)
 const ratingId = ratingObject.value.ratingId
 
+/** Method for sending method  */
 const submit = () => {
     if (rating.value === undefined) {
         warning.value = true
@@ -93,7 +99,7 @@ const submit = () => {
         warning.value = false
         putRating(
             store.getters.token,
-            parseInt(rating.value as string),
+            parseInt(rating.value as unknown as string),
             ratingId,
             review.value as string
         )

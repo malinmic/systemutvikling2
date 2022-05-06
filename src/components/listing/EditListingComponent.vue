@@ -155,9 +155,9 @@ const deleteImage = () => {
 
 const validationSchema = object({
     title: string().required("Dette feltet er påkrevd"),
-    price: number().nullable(),
-    phonenumber: string().nullable(),
-    description: string().nullable(),
+    price: number().nullable().typeError("Må være tall"),
+    phonenumber: string().nullable().min(6).typeError("Må være minst 6 siffer"),
+    description: string().nullable().typeError("Må være tekst"),
     address: string().required("Dette feltet er påkrevd"),
 })
 

@@ -1,6 +1,9 @@
+/** Service api-calls for requests */
+//Imports:
 import axios from "axios"
 import { REQUEST_URL } from "@/services/api/urls"
 
+// Post-call to sending a request
 export async function postRequest(
     listingId: number,
     startDate: Date,
@@ -26,6 +29,7 @@ export async function postRequest(
     )
 }
 
+// Get-call to get request from other users
 export async function getRequest(requestId: number, token: string) {
     return axios
         .get(REQUEST_URL + `/${requestId}`, {
@@ -41,6 +45,7 @@ export async function getRequest(requestId: number, token: string) {
         })
 }
 
+// Put-call for accetping a request
 export async function acceptRequest(requestId: number, token: string) {
     return axios
         .put(
@@ -62,6 +67,8 @@ export async function acceptRequest(requestId: number, token: string) {
             return "Could not find id or user"
         })
 }
+
+// Put-call for rejecting a request
 export async function rejectRequest(requestId: number, token: string) {
     return axios
         .put(

@@ -1,3 +1,4 @@
+<!-- The rating component-->
 <template>
     <h2 class="text-subtitle-1 font-weight-light text-no-wrap mt-1">
         {{ rating }}
@@ -6,11 +7,10 @@
 </template>
 
 <script setup lang="ts">
+/** Imports: */
 import { defineProps } from "vue"
 
 defineProps({
     rating: Number,
 })
 </script>
-
-<style scoped></style>

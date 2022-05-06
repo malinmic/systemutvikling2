@@ -1,20 +1,9 @@
+/** Service api-calls for notifications */
+//Imports:
 import axios from "axios"
 import { NOTIFICATION_URL } from "@/services/api/urls"
 
-/* Deprecated
-export async function getNotificationsByID(id: number) {
-    return axios
-        .get(NOTIFICATION_URL + `/${id}`)
-        .then((response) => {
-            return response.data
-        })
-        .catch((error) => {
-            console.error(`Unable to get notifications: ${error}`)
-            return {}
-        })
-}
-*/
-
+// Get-call to get notifications
 export async function getNotifications(token: string) {
     return axios.get(NOTIFICATION_URL, {
         headers: {
@@ -23,6 +12,7 @@ export async function getNotifications(token: string) {
     })
 }
 
+// Put-call to update notifications
 export async function putNotification(token: string, read: boolean) {
     return axios
         .put(

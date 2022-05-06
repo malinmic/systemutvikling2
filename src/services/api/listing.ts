@@ -1,6 +1,9 @@
+/** Service class for api-calls for listing */
+// Imports:
 import axios from "axios"
 import { LISTING_URL } from "@/services/api/urls"
 
+// Post-call for create listing
 export async function postListing(
     token: string,
     title: string,
@@ -35,6 +38,7 @@ export async function postListing(
         })
 }
 
+// Put-call for updating listing by id
 export async function putListingById(
     token: string,
     id: number,
@@ -71,6 +75,7 @@ export async function putListingById(
         })
 }
 
+// Put-call for updating a image by listing id
 export async function updateImageByListingId(
     token: string,
     id: number,
@@ -94,6 +99,7 @@ export async function updateImageByListingId(
         })
 }
 
+// Get-call for get listing by id
 export async function getListingById(id: number) {
     return axios
         .get(LISTING_URL + `/${id}`)
@@ -106,6 +112,7 @@ export async function getListingById(id: number) {
         })
 }
 
+// Get-call to get listings
 export async function getListings(token: string) {
     return axios
         .get(LISTING_URL, {
@@ -122,6 +129,7 @@ export async function getListings(token: string) {
         })
 }
 
+// Get-call to get personal listings
 export async function getPersonalListings(token: string) {
     return axios
         .get(LISTING_URL + "/user", {
@@ -138,6 +146,7 @@ export async function getPersonalListings(token: string) {
         })
 }
 
+// Get-call to get listings by search word
 export async function getListingsByQuery(query: string) {
     return axios
         .get(LISTING_URL + `/search/${query}`)
@@ -150,6 +159,7 @@ export async function getListingsByQuery(query: string) {
         })
 }
 
+// Delete-call to delete a listing
 export async function deleteListing(token: string, id: number) {
     return axios
         .delete(LISTING_URL + `/${id}`, {
@@ -166,6 +176,7 @@ export async function deleteListing(token: string, id: number) {
         })
 }
 
+// Get-call to get all listings
 export async function getAllListings() {
     return axios
         .get(LISTING_URL)

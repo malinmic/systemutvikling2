@@ -1,3 +1,4 @@
+<!-- Landing page for the application -->
 <template>
     <v-parallax src="@/assets/canoe-background.jpg" class="overflow-visible">
         <v-container class="h-screen container">
@@ -21,6 +22,7 @@
                             class="input w-100 bg-background"
                             v-model="searchbar"
                         />
+                        <!-- Search button-->
                         <v-btn
                             data-cy="searchbtn"
                             class="text-primary-c ml-3 mb-3"
@@ -35,6 +37,7 @@
                     <div
                         class="d-flex align-center text-center justify-center mt-0"
                     >
+                        <!-- Create listing button-->
                         <v-btn
                             class="button v-btn text-primary-c pa-6"
                             rounded
@@ -52,12 +55,16 @@
 </template>
 
 <script setup lang="ts">
+/** Imports: */
 import { ref } from "vue"
 import { useRouter } from "vue-router"
 
+/** Variables: */
 const searchbar = ref("")
 const router = useRouter()
 
+/** Method for the search listing button.
+ */
 const submit = () => {
     router.push({
         name: "listingsearch",
@@ -65,6 +72,7 @@ const submit = () => {
     })
 }
 
+/** Method for the create listing. Reroutes the user to create listing view */
 const listing = () => {
     router.push({
         name: "createlisting",

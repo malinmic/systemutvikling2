@@ -12,42 +12,38 @@
     </v-app>
 </template>
 
-<script lang="ts">
-import { defineComponent } from "vue"
+<script setup lang="ts">
+/** Imports:  */
+import { computed, defineEmits, onBeforeMount } from "vue"
 import { useStore } from "vuex"
 import { useCookies } from "vue3-cookies"
 import NavigationDrawerComponent from "@/components/navbar/NavigationDrawerComponent.vue"
 import GlobalAlertComponent from "@/components/GlobalAlertComponent.vue"
+import { useRouter } from "vue-router"
 
-export default defineComponent({
-    name: "App",
-    components: {
-        NavigationDrawerComponent,
-        GlobalAlertComponent,
-    },
-    async beforeMount() {
-        const store = useStore()
-        const { cookies } = useCookies()
+const emit = defineEmits(["update-login-state"])
+const store = useStore()
+const router = useRouter()
+const { cookies } = useCookies()
 
-        if (cookies.isKey("token")) {
-            const token = cookies.get("token")
-            await store.dispatch("setToken", { token })
-            this.$emit("update-login-state")
-        }
+const transparentNavBar = computed(() => {
+    return router.currentRoute.value.name == "landingpage"
+})
 
-        if (cookies.isKey("theme")) {
-            const theme = cookies.get("theme")
-            await store.dispatch("setTheme", { theme })
-        }
-    },
-    computed: {
-        transparentNavBar() {
-            return this.$router.currentRoute.value.name == "landingpage"
-        },
-        theme() {
-            const store = useStore()
-            return store.getters.theme
-        },
-    },
+const theme = computed(() => {
+    return store.getters.theme
+})
+
+onBeforeMount(() => {
+    if (cookies.isKey("token")) {
+        const token = cookies.get("token")
+        store.dispatch("setToken", { token })
+        emit("update-login-state")
+    }
+
+    if (cookies.isKey("theme")) {
+        const theme = cookies.get("theme")
+        store.dispatch("setTheme", { theme })
+    }
 })
 </script>

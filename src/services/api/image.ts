@@ -1,6 +1,9 @@
+/** Service class for api-calls for images */
+//Imports
 import axios from "axios"
 import { IMAGE_URL } from "./urls"
 
+// Post-call for uploading a image
 export async function uploadImage(file: File, token: string) {
     let formData = new FormData()
     formData.append("image", file)
@@ -19,6 +22,7 @@ export async function uploadImage(file: File, token: string) {
         })
 }
 
+// Delete-call for delete image
 export async function deleteImageCall(id: number, token: string) {
     return axios.delete(IMAGE_URL + `/${id}`, {
         headers: {

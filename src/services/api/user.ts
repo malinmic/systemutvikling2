@@ -1,6 +1,9 @@
+/** Service api-calls for users */
+// Imports:
 import axios from "axios"
 import { AUTH_URL, USER_URL } from "@/services/api/urls"
 
+// Get-call to get a token for a user
 export async function getToken(
     username: string,
     password: string
@@ -23,6 +26,7 @@ export async function getToken(
         })
 }
 
+// Post-call for sending informations for a user
 export async function postUser(
     email: string,
     firstName: string,
@@ -49,6 +53,7 @@ export async function postUser(
         })
 }
 
+// Get-caall to get information about a user
 export async function getUser(token: string) {
     return axios
         .get(USER_URL, {

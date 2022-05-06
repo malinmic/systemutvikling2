@@ -1,5 +1,7 @@
+<!-- The component for the navigation drawer-->
 <template>
     <v-navigation-drawer width="350" app v-model="isNavigationOpen">
+        <!-- Uses the component for login popup-->
         <LoginPopupComponent
             v-model="showPopup"
             @update-login-state="updateLoginState"
@@ -29,11 +31,13 @@
         <div v-if="!chat">
             <v-list nav>
                 <v-list-subheader>Utforsk</v-list-subheader>
+                <!-- Find something to rent-->
                 <v-list-item
                     prepend-icon="mdi-magnify"
                     title="Finn noe å leie"
                     @click="$router.push({ name: 'landingpage' })"
                 />
+                <!-- All listings-->
                 <v-list-item
                     prepend-icon="mdi-format-list-bulleted"
                     title="Alle annonser"
@@ -43,18 +47,21 @@
                 <v-list-subheader :hidden="!isAuthenticated"
                     >Administrer</v-list-subheader
                 >
+                <!-- Create listing-->
                 <v-list-item
                     :hidden="!isAuthenticated"
                     prepend-icon="mdi-plus"
                     title="Opprett annonse"
                     @click="$router.push({ name: 'createlisting' })"
                 />
+                <!-- My listings-->
                 <v-list-item
                     :hidden="!isAuthenticated"
                     prepend-icon="mdi-animation"
                     title="Mine annonser"
                     @click="$router.push({ name: 'personallistingview' })"
                 />
+                <!-- Chat-->
                 <v-list-item
                     :hidden="!isAuthenticated"
                     prepend-icon="mdi-chat"
@@ -70,6 +77,7 @@
                 </v-list-item>
 
                 <v-list-subheader>Få hjelp</v-list-subheader>
+                <!-- FAQ -->
                 <v-list-item
                     prepend-icon="mdi-help-circle-outline"
                     title="Ofte stilte spørsmål"
@@ -89,7 +97,7 @@
                     v-for="chat in chats"
                     :key="chat"
                     @click="
-                        this.$router.push({
+                        router.push({
                             name: 'chat',
                             params: { id: chat.id },
                         })
@@ -117,6 +125,7 @@
                     </v-col>
 
                     <v-col col="6">
+                        <!-- Logout button -->
                         <v-btn
                             class="text-error w-100"
                             v-if="isAuthenticated"
@@ -148,8 +157,10 @@
             :transparent-mode="props.transparent"
         ></navigation-bar-hamburger-button-component>
 
+        <!-- Uses the component for logo-->
         <NavigationBarLogo :transparentMode="transparent"></NavigationBarLogo>
 
+        <!-- Userprofile button-->
         <v-btn
             v-if="isAuthenticated"
             @click="$router.push({ name: 'userprofile' })"
@@ -164,6 +175,7 @@
             />
         </v-btn>
 
+        <!-- Login button-->
         <v-btn
             v-else
             text
@@ -202,7 +214,8 @@
     </v-app-bar>
 </template>
 <script setup lang="ts">
-import { ref, defineProps, onUpdated, computed } from "vue"
+/** Imports: */
+import { ref, defineProps, onUpdated, computed, onBeforeMount } from "vue"
 import { useStore } from "vuex"
 import LoginPopupComponent from "@/components/user/LoginPopupComponent.vue"
 import { getUser } from "@/services/api/user"
@@ -215,6 +228,7 @@ import NavigationBarHamburgerButtonComponent from "@/components/navbar/Navigatio
 import { getChats } from "@/services/api/chat"
 import { useCookies } from "vue3-cookies"
 
+/** Variables */
 const store = useStore()
 const { cookies } = useCookies()
 const props = defineProps({
@@ -244,6 +258,7 @@ const getChatlist = () => {
     })
 }
 
+/** Method for update the login state */
 const updateLoginState = async () => {
     getChatlist()
     isAuthenticated.value = store.getters.isLoggedIn
@@ -273,17 +288,22 @@ const toggleNavigationDrawer = () => {
 }
 
 const chatReceiverInfo = computed(() => store.getters.chatReceiverInfo)
+
+/** Method for logout */
 const logout = () => {
     cookies.remove("token")
     store.dispatch("setUserInfo", {})
     router.push("landingpage")
     location.reload()
 }
+
+/** Method for updating the chat */
 onUpdated(() => {
     updateIsChat()
     refreshNotifications()
 })
 
+/** Method for checking if notifications is unread or not */
 const refreshNotifications = () => {
     const token = store.getters.token
 

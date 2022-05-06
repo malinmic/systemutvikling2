@@ -1,3 +1,4 @@
+<!-- Base component for request chat message-->
 <template>
     <chat-message-component :sent-by-me="sentByMe">
         <v-container>
@@ -11,7 +12,8 @@
                 <span v-else>Du</span>
 
                 har spurt om å leie
-                <router-link to=""
+                <router-link
+                    :to="{ name: 'detailedlisting', params: { id: listingId } }"
                     ><b>{{ listingTitle }}</b></router-link
                 >
                 fra
@@ -26,6 +28,7 @@
                 <span justify="center" v-if="accepted === 'NOT_SEEN'">
                     <v-row v-if="!sentByMe">
                         <v-col cols="12" lg="6" md="6">
+                            <!-- Accept button-->
                             <v-btn
                                 data-cy="accept"
                                 class="w-100"
@@ -37,6 +40,7 @@
                         </v-col>
 
                         <v-col>
+                            <!-- Reject button -->
                             <v-btn
                                 data-cy="reject"
                                 type="danger"
@@ -73,16 +77,14 @@
 </template>
 
 <script setup lang="ts">
-import {
-    acceptRequest,
-    getRequest,
-    rejectRequest,
-} from "@/services/api/request"
+/** Imports: */
+import { acceptRequest, rejectRequest } from "@/services/api/request"
 import { defineEmits, ref, defineProps, computed } from "vue"
 import { useStore } from "vuex"
 import ChatMessageComponent from "@/components/chat/message/ChatMessageComponent.vue"
 import { ChatMessage } from "@/types/IfcChatMessageInterface"
 
+/** Variables: */
 const store = useStore()
 
 const props = defineProps<{ message: ChatMessage }>()
@@ -95,7 +97,8 @@ const listingItem = computed(() => requestItem.value.listing)
 
 const fromName = ref(props.message.from)
 
-const listingTitle = "listingItem.value.title"
+const listingTitle = listingItem.value.title
+const listingId = listingItem.value.id
 
 const requestId = requestItem.value.requestId
 const accepted = computed(() => requestItem.value.accepted)
@@ -105,9 +108,10 @@ const end: Date = new Date(requestItem.value.endDate)
 const startDate = ref(`${start.getDay() + 1}.${start.getMonth() + 1}`)
 const endDate = ref(`${end.getDay() + 1}.${end.getMonth() + 1}`)
 
+/** Method for rejecting a request */
 const reject = () => {
     rejectRequest(requestId, store.getters.token)
-        .then((data) => {
+        .then(() => {
             emit("update-chat")
         })
         .catch((e) => {
@@ -119,9 +123,10 @@ const reject = () => {
         })
 }
 
+/** Method for accepting a request */
 const accept = () => {
     acceptRequest(requestId, store.getters.token)
-        .then((data) => {
+        .then(() => {
             emit("update-chat")
         })
         .catch((e) => {
