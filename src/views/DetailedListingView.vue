@@ -5,6 +5,15 @@
                 <ViewListingComponent :listing="listing" />
             </v-col>
         </v-row>
+        <v-row v-if="!(userEmail === listing?.email)">
+            <v-col>
+                <UserCardComponent
+                    :firstname="firstname"
+                    :email="email"
+                    :rating="average"
+                />
+            </v-col>
+        </v-row>
         <v-row>
             <v-col>
                 <v-card class="rounded-xl">
@@ -31,7 +40,7 @@
                 </v-card>
             </v-col>
         </v-row>
-        <v-row>
+        <v-row v-if="!(userEmail === listing?.email)">
             <v-col>
                 <send-request-component />
             </v-col>
@@ -40,17 +49,22 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue"
+import { onMounted, ref } from "vue"
 import { useRoute } from "vue-router"
 import { getListingById } from "@/services/api/listing"
 import ViewListingComponent from "@/components/listing/ViewListingComponent.vue"
 import SendRequestComponent from "@/components/SendRequestComponent.vue"
 import { getPositionsFromQuery } from "@/services/api/map"
+import UserCardComponent from "@/components/user/UserCardComponent.vue"
+import { useStore } from "vuex"
+import { getRatingsForUser } from "@/services/api/rating"
 
 const route = useRoute()
+const store = useStore()
 const id = route.params.id as string
 const listing = ref()
 const address = ref("")
+const userEmail = store.getters.email
 
 const mapCenter = ref({ lat: 0, lng: 0 })
 const positions = ref()
@@ -65,5 +79,24 @@ getListingById(parseInt(id)).then((l) => {
         }
         positions.value = p?.data
     })
+})
+
+const firstname = ref("")
+const email = ref("")
+const average = ref()
+
+onMounted(() => {
+    getListingById(parseInt(id))
+        .then((data) => {
+            console.log(data)
+
+            email.value = data.email
+            firstname.value = data.firstname
+        })
+        .then(() => {
+            getRatingsForUser(email.value, store.getters.token).then((data) => {
+                average.value = data.average
+            })
+        })
 })
 </script>

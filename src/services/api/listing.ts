@@ -132,8 +132,9 @@ export async function getPersonalListings(token: string) {
         .then((response) => {
             return response.data
         })
-        .catch(() => {
-            throw "Unable to retrieve user data"
+        .catch((error) => {
+            console.error(`Unable to retrieve user data: ${error}`)
+            throw error
         })
 }
 
@@ -145,7 +146,7 @@ export async function getListingsByQuery(query: string) {
         })
         .catch((error) => {
             console.error(`Unable to get listings: ${error}`)
-            return {}
+            throw error
         })
 }
 
@@ -159,8 +160,9 @@ export async function deleteListing(token: string, id: number) {
         .then((response) => {
             return response.data
         })
-        .catch(() => {
-            return "No id found"
+        .catch((error) => {
+            console.error(`No id found: ${error}`)
+            throw error
         })
 }
 
@@ -170,7 +172,8 @@ export async function getAllListings() {
         .then((response) => {
             return response.data
         })
-        .catch(() => {
-            throw "Unable to retrieve user data"
+        .catch((error) => {
+            console.error(`Unable to retrieve user data: ${error}`)
+            throw error
         })
 }

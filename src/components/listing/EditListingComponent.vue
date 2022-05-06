@@ -14,7 +14,6 @@
                 </v-col>
                 <v-col cols="12" sm="6">
                     <v-switch
-                        data-cy="isFreeEdit"
                         v-model="isFree"
                         :label="priceSwitchText"
                         @click="changePriceLabel"
@@ -34,7 +33,6 @@
                 </v-col>
                 <v-col cols="12" sm="6">
                     <v-switch
-                        data-cy="showPhone"
                         v-model="showPhone"
                         :label="phoneSwitchText"
                         @click="changePhoneLabel"
@@ -150,7 +148,7 @@ const imageSelect = (e: Event) => {
 }
 
 const deleteImage = () => {
-    deleteImageCall(imageId.value, store.getters.token).then((response) => {
+    deleteImageCall(imageId.value, store.getters.token).then(() => {
         imageId.value = 0
     })
 }

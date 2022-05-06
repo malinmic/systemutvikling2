@@ -232,18 +232,24 @@ const updateIsChat = () => {
     isChat.value = route.name == "chat"
 }
 
-const updateLoginState = async () => {
-    isAuthenticated.value = store.getters.isLoggedIn
+const chats = ref()
+const getChatlist = () => {
+    return getChats(store.getters.token).then((data) => {
+        chats.value = data
+    })
+}
 
+const updateLoginState = async () => {
+    getChatlist()
+    isAuthenticated.value = store.getters.isLoggedIn
     if (isAuthenticated.value) {
         const token = store.getters.token
-
         let userinfo = await getUser(token)
+
         await store.dispatch("setUserInfo", userinfo)
-
         fullName.value = store.getters.fullName
-        email.value = store.getters.email
 
+        email.value = store.getters.email
         connect(token, store.getters.email).catch((e) => {
             store.dispatch("postAlert", {
                 title: "Kunne ikke koble til websocket",
@@ -251,39 +257,27 @@ const updateLoginState = async () => {
                 type: "error",
             })
         })
-
         //Notification observer
         addObserver(() => {
             refreshNotifications()
         })
     }
 }
-
 const toggleNavigationDrawer = () => {
     isNavigationOpen.value = !isNavigationOpen.value
 }
 
 const chatReceiverInfo = computed(() => store.getters.chatReceiverInfo)
-
 const logout = () => {
     cookies.remove("token")
     store.dispatch("setUserInfo", {})
     router.push("landingpage")
     location.reload()
 }
-
 onUpdated(() => {
     updateIsChat()
     refreshNotifications()
 })
-
-const chats = ref()
-const getChatlist = () => {
-    return getChats(store.getters.token).then((data) => {
-        chats.value = data
-    })
-}
-getChatlist()
 
 const refreshNotifications = () => {
     const token = store.getters.token
