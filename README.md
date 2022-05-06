@@ -1,29 +1,12 @@
-# frontend
+### frontend
+See [wiki](https://gitlab.stud.idi.ntnu.no/idatt2106-v22-07/wiki/-/wikis/home) for all wikipages for the whole BoCo-project.
+
 
 ## Project setup
-```
-npm install
-```
+See [installation](https://gitlab.stud.idi.ntnu.no/idatt2106-v22-07/wiki/-/wikis/Installation) for more information.
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+## Pipeline
+[![pipeline status](https://gitlab.stud.idi.ntnu.no/idatt2106-v22-07/frontend/badges/dev/pipeline.svg)](https://gitlab.stud.idi.ntnu.no/idatt2106-v22-07/frontend/-/commits/dev)
 
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Run your unit tests
-```
-npm run test:unit
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+## Test Coverage
+[![coverage report](https://gitlab.stud.idi.ntnu.no/idatt2106-v22-07/frontend/badges/dev/coverage.svg)](https://gitlab.stud.idi.ntnu.no/idatt2106-v22-07/frontend/-/commits/dev)
