@@ -17,8 +17,7 @@ const props = defineProps<{
     message: ChatMessage
 }>()
 
-const dataContent = ref(props.message.content)
-const messageText = ref(dataContent.value.message)
+const messageText = ref(props.message.message)
 const from = ref(props.message.from)
 const dateTime = new Date(props.message.time)
 const timeLabel = `${dateTime.getDay()}/${dateTime.getMonth()}/${dateTime.getFullYear()}, ${dateTime.getHours()}.${dateTime.getMinutes()}`

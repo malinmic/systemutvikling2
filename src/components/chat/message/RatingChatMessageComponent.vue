@@ -63,6 +63,7 @@ import { putRating } from "@/services/api/rating"
 const props = defineProps<{
     message: ChatMessage
 }>()
+
 const emit = defineEmits(["update-chat"])
 
 const { value: rating } = useField("rating")
@@ -73,7 +74,7 @@ const store = useStore()
 
 const sentByMe = props.message.from == store.getters.email
 
-const ratingObject = computed(() => props.message.content)
+const ratingObject = computed(() => props.message.attachment)
 rating.value = ratingObject.value.rating
 
 const awaitingRating = computed(() => ratingObject.value.rating == null)
@@ -82,7 +83,7 @@ const nameOfRater = sentByMe
     ? "Du"
     : computed(() => store.getters.chatReceiverInfo.email)
 
-const ratingMessage = computed(() => props.message.content.review)
+const ratingMessage = computed(() => props.message.attachment.review)
 const ratingId = ratingObject.value.ratingId
 
 const submit = () => {
