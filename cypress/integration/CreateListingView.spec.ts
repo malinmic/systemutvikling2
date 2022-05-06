@@ -86,6 +86,6 @@ describe("Creating a new listing", () => {
             "Dette er en gressklipper som er i veldig god stand"
         )
         cy.get("[data-cy=publish]").click()
-        cy.contains(/address is a required field/i)
+        cy.contains(/Adresse er påkrevd/i)
     })
 })

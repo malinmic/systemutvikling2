@@ -58,7 +58,7 @@
                     <v-btn
                         data-cy="register"
                         rounded
-                        color="background"
+                        variant="outlined"
                         @click="register(), $emit('update:modelValue', false)"
                     >
                         Registrer deg
@@ -117,8 +117,7 @@ const submit = handleSubmit(async (values) => {
 
             emit("update-login-state")
             await store.dispatch("postAlert", {
-                message: "Login vellykket",
-                title: "Tittel",
+                title: "Login vellykket",
                 type: "success",
             })
 

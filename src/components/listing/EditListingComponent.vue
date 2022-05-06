@@ -18,6 +18,7 @@
                         :label="priceSwitchText"
                         @click="changePriceLabel"
                         class="mr-5"
+                        color="primary"
                     ></v-switch>
                 </v-col>
                 <v-col cols="12" sm="6" v-if="isFree">
@@ -36,6 +37,7 @@
                         v-model="showPhone"
                         :label="phoneSwitchText"
                         @click="changePhoneLabel"
+                        color="primary"
                     ></v-switch>
                 </v-col>
                 <v-col cols="12" sm="6" v-if="showPhone">
@@ -223,7 +225,7 @@ onMounted(() => {
             if (listing.price != 0) isFree.value = true
             price.value = listing.price
             if (listing.phone != "") showPhone.value = true
-            phonenumber.value = listing.phonenumber
+            phonenumber.value = listing.phone
             address.value = listing.address
             imageId.value = listing.image
             description.value = listing.description

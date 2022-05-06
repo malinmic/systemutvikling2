@@ -5,7 +5,7 @@
             <v-col>
                 <!-- Import for a standard header component-->
                 <HeaderComponent text="Ofte stilte spørsmål" />
-                <v-expansion-panels>
+                <v-expansion-panels variant="outlined" class="border rounded">
                     <v-expansion-panel
                         v-for="entry in entries"
                         :key="entry.question"
