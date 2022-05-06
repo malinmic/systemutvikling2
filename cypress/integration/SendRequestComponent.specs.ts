@@ -31,7 +31,7 @@ describe("Sending a request", () => {
         cy.get("[data-cy=startDate]").type("2022-08-05")
         cy.get("[data-cy=endDate]").type("2022-06-05")
 
-        cy.contains("Dette feltet er påkrevd")
+        cy.contains("Sluttdato må være etter startdato")
         cy.get("[data-cy=sendRequest]").click()
     })
 })

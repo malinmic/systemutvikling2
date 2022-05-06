@@ -1,8 +1,8 @@
-describe("Get personal lists", () => {
+describe("Get personal listings", () => {
     beforeEach(() => {
         cy.login()
     })
-    it("Get personal lists", () => {
+    it("Get personal listings", () => {
         cy.intercept(
             {
                 method: "GET",

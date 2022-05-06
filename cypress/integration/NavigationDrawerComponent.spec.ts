@@ -61,10 +61,8 @@ describe("Verify NavBar Functionality", () => {
     })
 
     it("Test Login disappears and name of chat appears while in chat", () => {
-        cy.visit("/chat")
+        cy.visit("/chat/*")
         cy.get("[data-cy=navbar-chat-name]").should("exist")
         cy.get("[data-cy=navbar-logo]").should("not.exist")
-
-
     })
 })

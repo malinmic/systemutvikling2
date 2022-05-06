@@ -1,5 +1,5 @@
-describe("Createing a new list", () => {
-    it("Create new list successfully without phonenumber and price", () => {
+describe("Creating a new listing", () => {
+    it("Create new listing successfully without phonenumber and price", () => {
         cy.visit("/listing/create")
 
         cy.get("[data-cy=title]").type("Gressklipper")
@@ -28,7 +28,7 @@ describe("Createing a new list", () => {
         cy.wait("@postListing")
     })
 
-    it("Create new list successfully with phonenumber and price", () => {
+    it("Create new listing successfully with phonenumber and price", () => {
         cy.visit("/listing/create")
 
         cy.get("[data-cy=title]").type("Gressklipper")
@@ -63,7 +63,7 @@ describe("Createing a new list", () => {
         cy.wait("@postListing")
     })
 
-    it("Create new list without title", () => {
+    it("Create new listing without title", () => {
         cy.visit("/listing/create")
 
         cy.get("[data-cy=address]").type("7030")
@@ -74,7 +74,7 @@ describe("Createing a new list", () => {
         cy.contains(/Dette feltet er påkrevd/i)
     })
 
-    it("Create new list without address", () => {
+    it("Create new listing without address", () => {
         cy.visit("/listing/create")
 
         cy.get("[data-cy=title]").type("Gressklipper")
