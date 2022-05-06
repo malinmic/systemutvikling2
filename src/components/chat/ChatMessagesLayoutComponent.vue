@@ -8,19 +8,17 @@
             <rating-chat-message-component
                 v-if="m.type === MSG_TYPE_RATING"
                 :message="m"
-                @update-chat="$emit('update-chat')"
             />
             <request-chat-message-component
                 v-if="m.type === MSG_TYPE_REQUEST"
                 :message="m"
-                @update-chat="$emit('update-chat')"
             />
         </span>
     </div>
 </template>
 
 <script setup lang="ts">
-import { defineProps, ref, watch, defineEmits } from "vue"
+import { defineProps, ref, watch } from "vue"
 import { ChatMessage } from "@/types/IfcChatMessageInterface"
 import TextChatMessageComponent from "@/components/chat/message/TextChatMessageComponent.vue"
 import RatingChatMessageComponent from "@/components/chat/message/RatingChatMessageComponent.vue"
@@ -29,7 +27,6 @@ import RequestChatMessageComponent from "@/components/chat/message/RequestChatMe
 const props = defineProps<{
     messages: ChatMessage[]
 }>()
-const emit = defineEmits(["update-chat"])
 const chatContainer = ref<HTMLDivElement>()
 
 const MSG_TYPE_TEXT = "MESSAGE"

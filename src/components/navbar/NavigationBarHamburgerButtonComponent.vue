@@ -5,7 +5,7 @@
         data-test-id="hamburger-menu-button"
         :class="{ 'text-background': props.transparentMode }"
     ></v-app-bar-nav-icon>
-    <div v-if="props.notification">
+    <div v-if="!props.notification">
         <v-badge dot color="error" class="notification" />
     </div>
 </template>

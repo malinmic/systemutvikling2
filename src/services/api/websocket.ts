@@ -29,6 +29,6 @@ function callObservers(message: Message) {
     observers.forEach((f) => f(message))
 }
 
-export function addObserver(callback: (m: Message) => any) {
+export function addObserver(username: string, callback: (m: Message) => any) {
     observers.push(callback)
 }

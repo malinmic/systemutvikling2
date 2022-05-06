@@ -75,9 +75,7 @@ const validationSchema = object({
     email: string(),
     listingId: number(),
     startDate: date().required("Dette feltet er påkrevd"),
-    endDate: date()
-        .required()
-        .min(ref("startDate"), "Sluttdato må være etter startdato"),
+    endDate: date().required().min(ref("startDate"), "Dette feltet er påkrevd"),
     message: string(),
     accepted: boolean(),
 })
