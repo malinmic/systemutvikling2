@@ -7,9 +7,11 @@
             <h3>Leieforholdet er fullført!</h3>
 
             <p v-if="awaitingRating">
-                Gi gjerne en vurdering til <b>{{ emailOfCounterpart }}</b>
+                Gi gjerne en vurdering til <b>{{ props.message.from }}</b>
             </p>
-            <p class="mt-1">{{ nameOfRater }} la igjen en tilbakemelding:</p>
+            <p class="mt-1" v-else>
+                {{ nameOfRater }} la igjen en tilbakemelding:
+            </p>
 
             <v-rating
                 v-model="rating"
@@ -19,9 +21,9 @@
                 size="33"
                 :disabled="!awaitingRating"
             />
-            <v-container class="border mt-2">
-                <p class="font-weight-light">john@doe.org:</p>
-                Dritt-produkt!</v-container
+            <v-container class="border mt-2" v-if="ratingMessage">
+                <p class="font-weight-light">{{ nameOfRater }}:</p>
+                {{ ratingMessage }}</v-container
             >
             <p v-if="warning" class="ml-4 text-error mt-2">
                 <b>Rating kan ikke være tom!</b>
@@ -43,6 +45,7 @@
                     icon="mdi-send"
                     rounded="lg"
                     color="primary"
+                    @click="submit"
                 ></v-btn>
             </div>
         </v-container>
@@ -50,17 +53,17 @@
 </template>
 
 <script setup lang="ts">
-import { ref, defineProps } from "vue"
+import { ref, defineProps, computed, defineEmits } from "vue"
 import ChatMessageComponent from "@/components/chat/message/ChatMessageComponent.vue"
 import { useField } from "vee-validate"
 import { useStore } from "vuex"
 import { ChatMessage } from "@/types/IfcChatMessageInterface"
+import { putRating } from "@/services/api/rating"
 
 const props = defineProps<{
     message: ChatMessage
 }>()
-
-console.log(props.message)
+const emit = defineEmits(["update-chat"])
 
 const { value: rating } = useField("rating")
 const { value: review } = useField("review")
@@ -70,37 +73,39 @@ const store = useStore()
 
 const sentByMe = props.message.from == store.getters.email
 
-const awaitingRating = props.message.content != null
-const emailOfCounterpart = ref(props.message.from)
-const nameOfRater = sentByMe ? "Du" : "?"
+const ratingObject = computed(() => props.message.content)
+rating.value = ratingObject.value.rating
 
-/*const submit = () => {
+const awaitingRating = computed(() => ratingObject.value.rating == null)
+
+const nameOfRater = sentByMe
+    ? "Du"
+    : computed(() => store.getters.chatReceiverInfo.email)
+
+const ratingMessage = computed(() => props.message.content.review)
+const ratingId = ratingObject.value.ratingId
+
+const submit = () => {
     if (rating.value === undefined) {
         warning.value = true
     } else {
         warning.value = false
-        if (store.getters.isLoggedIn) {
-            postRating(
-                store.getters.token,
-                rating.value as string,
-                review.value as string,
-                "1"
-            )
-                .then(() =>
-                    store.dispatch("postAlert", {
-                        message: "Tilbakemeldingen er registrert!",
-                        type: "success",
-                    })
-                )
-                .catch(() => {
-                    store.dispatch("postAlert", {
-                        message: `Registrering av tilbakemelding feilet!`,
-                        type: "error",
-                    })
+        putRating(
+            store.getters.token,
+            parseInt(rating.value as string),
+            ratingId,
+            review.value as string
+        )
+            .then(() => {
+                emit("update-chat")
+            })
+            .catch((e) => {
+                store.dispatch("postAlert", {
+                    title: `Registrering av tilbakemelding feilet!`,
+                    message: "" + e,
+                    type: "error",
                 })
-        } else {
-            console.log("ikke logget inn")
-        }
+            })
     }
-}*/
+}
 </script>

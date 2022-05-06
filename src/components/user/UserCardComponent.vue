@@ -10,29 +10,36 @@
                 :subtitle="email"
             >
                 <v-btn
+                    class="mt-2"
                     data-cy="editbtn"
-                    v-model="email"
+                    size="small"
+                    variant="contained-text"
                     v-if="store.getters.email === email"
                     @click="$router.push({ name: 'edituser' })"
-                    >Rediger bruker</v-btn
+                    prepend-icon="mdi-pencil"
+                    >Rediger</v-btn
                 >
             </v-list-item>
-            <RatingComponent></RatingComponent>
+            <RatingComponent :rating="rating"></RatingComponent>
         </v-card-actions>
     </v-card>
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue"
+import { ref, defineProps } from "vue"
 import RatingComponent from "@/components/rating/RatingComponent.vue"
 import { useStore } from "vuex"
 import { getUser } from "@/services/api/user"
 
 const profileName = ref("")
 const email = ref("")
+const score = ref("")
 const store = useStore()
 const isAuthenticated = ref(false)
 
+defineProps({
+    rating: Number,
+})
 const avatar = ref(require("@/assets/user-avatar-placeholder.png"))
 
 const updateProfileState = async () => {
@@ -47,6 +54,10 @@ const updateProfileState = async () => {
         profileName.value = store.getters.fullName
         email.value = store.getters.email
     }
+}
+
+const updateScore = async () => {
+    score.value = store.getters.score
 }
 
 updateProfileState()

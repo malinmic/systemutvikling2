@@ -2,6 +2,7 @@
     <v-container class="h-screen mt-n16 pt-16">
         <v-container class="d-flex flex-column h-100">
             <ChatMessagesLayoutComponent
+                @update-chat="updateChatLog"
                 :messages="messages"
                 class="h-100"
             ></ChatMessagesLayoutComponent>
@@ -19,12 +20,12 @@
 <script lang="ts" setup>
 import ChatTextField from "@/components/chat/ChatTextFieldComponent.vue"
 import ChatMessagesLayoutComponent from "@/components/chat/ChatMessagesLayoutComponent.vue"
-import { ref, onMounted } from "vue"
+import { ref, onMounted, onUpdated } from "vue"
 import { ChatMessage } from "@/types/IfcChatMessageInterface"
 import { useStore } from "vuex"
 import { getChatMessages, postChatMessage } from "@/services/api/chat"
 import { addObserver } from "@/services/api/websocket"
-import { useRoute } from "vue-router"
+import { onBeforeRouteUpdate, useRoute } from "vue-router"
 import { UserAccount } from "@/types/IfcUserAccountInterface"
 
 const messages = ref([] as ChatMessage[])
@@ -39,8 +40,8 @@ const updateChatLog = () => {
             receiverInfo.value = res.data.users.filter(
                 (u: ChatMessage) => u.from != store.getters.email
             )[0]
+            messages.value = []
             messages.value = res.data.messages as ChatMessage[]
-            console.log(res.data)
         })
         .catch((e) => {
             store.dispatch("postAlert", {
@@ -73,8 +74,15 @@ onMounted(() => {
     })
 })
 
+onBeforeRouteUpdate(() => {
+    updateChatLog().then(() => {
+        const acc: UserAccount = receiverInfo.value as UserAccount
+        store.commit("SET_CHAT_RECEIVER", acc)
+    })
+})
+
 //Subscribe to WebSocket update-calls for new chat-messages
-addObserver(store.getters.email, () => {
+addObserver(() => {
     updateChatLog()
 })
 </script>

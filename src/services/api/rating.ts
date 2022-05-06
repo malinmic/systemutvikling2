@@ -1,32 +1,24 @@
 import axios from "axios"
 import { RATING_URL } from "@/services/api/urls"
 
-export async function postRating(
+export async function putRating(
     token: string,
-    rating: string,
-    review: string,
-    requestId: string
+    rating: number,
+    ratingId: number,
+    review: string
 ) {
-    return axios
-        .post(
-            RATING_URL,
-            {
-                rating: rating,
-                review: review,
-                requestId: requestId,
+    return axios.put(
+        RATING_URL + `/${ratingId}`,
+        {
+            rating: rating,
+            review: review,
+        },
+        {
+            headers: {
+                Authorization: `Bearer ${token}`,
             },
-            {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            }
-        )
-        .then(() => {
-            return true
-        })
-        .catch((error) => {
-            throw `Unable to post review: ${error}`
-        })
+        }
+    )
 }
 
 export async function getRatingsForUser(email: string, token: string) {
