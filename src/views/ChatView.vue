@@ -23,7 +23,11 @@ import ChatMessagesLayoutComponent from "@/components/chat/ChatMessagesLayoutCom
 import { ref, onMounted, onUpdated } from "vue"
 import { ChatMessage } from "@/types/IfcChatMessageInterface"
 import { useStore } from "vuex"
-import { getChatMessages, postChatMessage } from "@/services/api/chat"
+import {
+    getChatMessages,
+    markAsRead,
+    postChatMessage,
+} from "@/services/api/chat"
 import { addObserver } from "@/services/api/websocket"
 import { onBeforeRouteUpdate, useRoute } from "vue-router"
 import { UserAccount } from "@/types/IfcUserAccountInterface"
@@ -42,6 +46,8 @@ const updateChatLog = () => {
             )[0]
             messages.value = []
             messages.value = res.data.messages as ChatMessage[]
+
+            markAsRead(store.getters.token, chatId)
         })
         .catch((e) => {
             store.dispatch("postAlert", {
@@ -83,7 +89,13 @@ onBeforeRouteUpdate(() => {
 
 //Subscribe to WebSocket update-calls for new chat-messages
 addObserver(() => {
-    updateChatLog()
+    //Make sure we are acctually in the correct chat at callback time
+    if (
+        route.name == "chat" &&
+        parseInt(route.params.id as string) == (chatId as number)
+    ) {
+        updateChatLog()
+    }
 })
 </script>
 

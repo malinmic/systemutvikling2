@@ -95,7 +95,7 @@ const listingItem = ref(requestItem.value.listing)
 
 const fromName = ref(props.message.from)
 
-const listingTitle = listingItem.value.title
+const listingTitle = "listingItem.value.title"
 
 console.log(props.message)
 
