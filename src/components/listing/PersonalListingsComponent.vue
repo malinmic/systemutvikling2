@@ -6,8 +6,6 @@
 </template>
 
 <script setup lang="ts">
-import ListingCardComponent from "@/components/listing/ListingCardComponent.vue"
-import HeaderComponent from "@/components/HeaderComponent.vue"
 import { getPersonalListings } from "@/services/api/listing"
 import { onMounted, ref } from "vue"
 import { useStore } from "vuex"

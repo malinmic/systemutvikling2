@@ -19,6 +19,9 @@
         </v-col>
         <v-col v-if="listing?.email || listing?.phone">
             <v-card-content class="py-1">
+                <p v-if="listing?.email">
+                    <b>E-post: </b> {{ listing?.email }}
+                </p>
                 <p v-if="listing?.phone">
                     <b>Telefonnummer: </b> {{ listing?.phone }}
                 </p>

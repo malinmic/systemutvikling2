@@ -1,11 +1,11 @@
 <template>
-    <v-card class="mx-2 mt-2" color="primary-c">
+    <v-card class="ma-4" height="90" color="primary-c">
         <v-list-item
             :title="`Leie #${rating?.requestId}`"
             :subtitle="rating?.review"
             class="w-100"
         >
-            <RatingComponent :score="rating?.rating" />
+            <RatingComponent :rating="rating?.rating" />
         </v-list-item>
     </v-card>
 </template>
@@ -18,5 +18,3 @@ defineProps({
     rating: Object,
 })
 </script>
-
-<style scoped></style>

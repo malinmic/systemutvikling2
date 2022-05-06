@@ -232,23 +232,16 @@ const updateIsChat = () => {
     isChat.value = route.name == "chat"
 }
 
-const chats = ref()
-const getChatlist = () => {
-    return getChats(store.getters.token).then((data) => {
-        chats.value = data
-    })
-}
-
 const updateLoginState = async () => {
-    await getChatlist()
     isAuthenticated.value = store.getters.isLoggedIn
+
     if (isAuthenticated.value) {
         const token = store.getters.token
+
         let userinfo = await getUser(token)
-
         await store.dispatch("setUserInfo", userinfo)
-        fullName.value = store.getters.fullName
 
+        fullName.value = store.getters.fullName
         email.value = store.getters.email
 
         connect(token, store.getters.email).catch((e) => {
@@ -265,21 +258,32 @@ const updateLoginState = async () => {
         })
     }
 }
+
 const toggleNavigationDrawer = () => {
     isNavigationOpen.value = !isNavigationOpen.value
 }
 
 const chatReceiverInfo = computed(() => store.getters.chatReceiverInfo)
+
 const logout = () => {
     cookies.remove("token")
     store.dispatch("setUserInfo", {})
     router.push("landingpage")
     location.reload()
 }
+
 onUpdated(() => {
     updateIsChat()
     refreshNotifications()
 })
+
+const chats = ref()
+const getChatlist = () => {
+    return getChats(store.getters.token).then((data) => {
+        chats.value = data
+    })
+}
+getChatlist()
 
 const refreshNotifications = () => {
     const token = store.getters.token

@@ -7,11 +7,6 @@
         </v-row>
         <v-row>
             <v-col>
-                <UserCardComponent />
-            </v-col>
-        </v-row>
-        <v-row>
-            <v-col>
                 <v-card class="rounded-xl">
                     <v-card-title>Kart</v-card-title>
                     <v-card-content>
@@ -36,7 +31,7 @@
                 </v-card>
             </v-col>
         </v-row>
-        <v-row v-if="!(userEmail === listing?.email)">
+        <v-row>
             <v-col>
                 <send-request-component />
             </v-col>
@@ -51,15 +46,11 @@ import { getListingById } from "@/services/api/listing"
 import ViewListingComponent from "@/components/listing/ViewListingComponent.vue"
 import SendRequestComponent from "@/components/SendRequestComponent.vue"
 import { getPositionsFromQuery } from "@/services/api/map"
-import { useStore } from "vuex"
-import UserCardComponent from "@/components/user/UserCardComponent.vue"
 
 const route = useRoute()
-const store = useStore()
 const id = route.params.id as string
 const listing = ref()
 const address = ref("")
-const userEmail = store.getters.email
 
 const mapCenter = ref({ lat: 0, lng: 0 })
 const positions = ref()

@@ -116,7 +116,9 @@ export default createStore({
                 context.commit("SET_CITY", city)
         },
         postAlert(context, { message, type, title }) {
+            const id = Date.now() as number
             const alert: AlertMessage = {
+                id: id,
                 message: message,
                 type: type,
                 title: title,
@@ -125,8 +127,8 @@ export default createStore({
             context.commit("ADD_ALERT", alert)
 
             setTimeout(() => {
-                context.commit("REVOKE_ALERT")
-            }, 3000)
+                context.commit("REVOKE_ALERT", id)
+            }, 4500)
         },
         setTheme(context, { theme }) {
             context.commit("SET_THEME", theme)
