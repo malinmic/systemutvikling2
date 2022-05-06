@@ -1,5 +1,5 @@
-describe("Search for lists", () => {
-    it("Search for lists successfully", () => {
+describe("Search for listings", () => {
+    it("Search for listings successfully", () => {
         cy.visit("/")
 
         cy.intercept(

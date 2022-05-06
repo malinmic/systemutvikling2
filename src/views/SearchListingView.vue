@@ -83,10 +83,14 @@ function setPositionsFromListings(listings: Array<any>) {
 }
 
 const submit = () => {
-    router.push({
-        params: { searchstring: searchbar.value },
-        name: "listingsearch",
-    })
+    router
+        .replace({
+            name: "listingsearch",
+            params: { searchstring: searchbar.value },
+        })
+        .then(() => {
+            location.reload()
+        })
 }
 </script>
 <style scoped>

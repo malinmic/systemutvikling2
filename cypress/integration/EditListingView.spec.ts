@@ -1,5 +1,5 @@
-describe("Editing a list", () => {
-    it("Editing a list successfully without phonenumber and price", () => {
+describe("Editing a listing", () => {
+    it("Editing a listing successfully without phonenumber and price", () => {
         cy.intercept(
             {
                 method: "GET",
@@ -44,7 +44,7 @@ describe("Editing a list", () => {
         cy.wait("@putListing")
     })
 
-    it("Edit a list without title", () => {
+    it("Edit a listing without title", () => {
         cy.intercept(
             {
                 method: "GET",
@@ -68,7 +68,7 @@ describe("Editing a list", () => {
         cy.contains(/Dette feltet er påkrevd/i)
     })
 
-    it("Create new list without address", () => {
+    it("Create new listing without address", () => {
         cy.intercept(
             {
                 method: "GET",
