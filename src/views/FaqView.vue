@@ -1,7 +1,9 @@
+<!-- View for FAQ-->
 <template>
     <v-container>
         <v-row>
             <v-col>
+                <!-- Import for a standard header component-->
                 <HeaderComponent text="Ofte stilte spørsmål" />
                 <v-expansion-panels>
                     <v-expansion-panel
@@ -17,6 +19,7 @@
 </template>
 
 <script setup lang="ts">
+/** Imports: */
 import HeaderComponent from "@/components/HeaderComponent.vue"
 const entries = [
     {

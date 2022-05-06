@@ -6,6 +6,26 @@ describe("Get all listings", () => {
         cy.intercept(
             {
                 method: "GET",
+                url: "http://localhost:8888/chat"
+        },
+        (req) => {
+            req.reply([
+                {
+                    "id": 101,
+                    "users": [
+                        {
+                            "email": "jane@doe.org",
+                            "firstname": "Jane",
+                            "lastname": "Doe"
+                        }
+                    ]
+                }
+            ])
+        }
+        ).as("getChat")
+        cy.intercept(
+            {
+                method: "GET",
                 url: "http://localhost:8888/listing*",
             },
             (req) => {
@@ -19,8 +39,10 @@ describe("Get all listings", () => {
                 ])
             }
         ).as("getListings")
+
         cy.visit("/listings")
 
+        cy.wait("@getChat")
         cy.wait("@getListings")
         cy.contains("Alle annonser")
         cy.contains("Grønn gressklipper").click()

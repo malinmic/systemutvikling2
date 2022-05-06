@@ -1,3 +1,4 @@
+// Interface for user account
 export interface UserAccount {
     firstname: string
     lastname: string

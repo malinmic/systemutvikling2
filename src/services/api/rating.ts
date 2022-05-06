@@ -1,6 +1,9 @@
+/** Service api-calls for rating */
+// Imports:
 import axios from "axios"
 import { RATING_URL } from "@/services/api/urls"
 
+// Put-call to update rating
 export async function putRating(
     token: string,
     rating: number,
@@ -21,6 +24,7 @@ export async function putRating(
     )
 }
 
+// Get-call to get rating for a user
 export async function getRatingsForUser(email: string, token: string) {
     return axios
         .get(RATING_URL + `/${email}`, {

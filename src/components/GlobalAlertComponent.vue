@@ -1,3 +1,4 @@
+<!-- The component for global alerts -->
 <template>
     <div class="v-alert-container" v-if="alerts.length > 0">
         <v-alert
@@ -13,13 +14,16 @@
 </template>
 
 <script setup lang="ts">
+/** Imports: */
 import { useStore } from "vuex"
 import { onMounted, ref } from "vue"
 
+/** Variables: */
 const store = useStore()
 
 const alerts = ref([])
 
+/** Method for loading alerts before page is loaded */
 onMounted(() => {
     alerts.value = store.getters.alerts
 })

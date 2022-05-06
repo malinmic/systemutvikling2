@@ -1,4 +1,6 @@
+<!-- The component for giving a rating-->
 <template>
+    <!-- Uses the component for chat messages-->
     <ChatMessageComponent>
         <v-card-title class="text-subtitle-1">
             <div>
@@ -41,33 +43,36 @@
 </template>
 
 <script setup lang="ts">
+/** Imports: */
 import { ref, defineProps } from "vue"
 import ChatMessageComponent from "@/components/chat/ChatMessageComponent.vue"
 import { useField } from "vee-validate"
 import { useStore } from "vuex"
-import { postRating } from "@/services/api/rating"
+import { putRating } from "@/services/api/rating"
 
 const props = defineProps({
     name: String,
     request: Object,
 })
 
-const { value: rating } = useField("rating")
+/** Variables: */
+const { value: rating } = useField<number>("rating")
 const { value: review } = useField("review")
 
 const warning = ref(false)
 const store = useStore()
 
+/** Methods for submit the rating */
 const submit = () => {
     if (rating.value === undefined) {
         warning.value = true
     } else {
         warning.value = false
         if (store.getters.isLoggedIn) {
-            postRating(
+            putRating(
                 store.getters.token,
-                rating.value as string,
-                review.value as string,
+                rating.value as number,
+                review.value as number,
                 props.request?.requestId.value.toString()
             )
                 .then(() =>

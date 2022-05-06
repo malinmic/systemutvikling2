@@ -1,3 +1,4 @@
+<!-- The component for sending a request-->
 <template>
     <v-card class="rounded-xl" elevation="2">
         <v-form @submit.prevent="submit">
@@ -44,6 +45,7 @@
                         </v-row>
                     </v-col>
                     <v-col cols="12">
+                        <!-- Sending request button-->
                         <v-btn
                             data-cy="sendRequest"
                             class="mr-2 text-primary-c w-100"
@@ -60,6 +62,7 @@
 </template>
 
 <script setup lang="ts">
+/** Imports: */
 import { useField, useForm } from "vee-validate"
 import { boolean, date, number, object, ref, string } from "yup"
 import { postRequest } from "@/services/api/request"
@@ -67,6 +70,7 @@ import { useRouter } from "vue-router"
 import { useRoute } from "vue-router"
 import { useStore } from "vuex"
 
+/** Variables: */
 const route = useRoute()
 const router = useRouter()
 const store = useStore()
@@ -90,6 +94,7 @@ const { value: startDate } = useField("startDate")
 const { value: endDate } = useField("endDate")
 const { value: message } = useField("message")
 
+/** Method for sending a request */
 const submit = handleSubmit((values) => {
     if (values.startDate && values.endDate)
         postRequest(
@@ -117,5 +122,3 @@ const submit = handleSubmit((values) => {
             })
 })
 </script>
-
-<style scoped></style>

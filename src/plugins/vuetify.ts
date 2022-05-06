@@ -5,6 +5,7 @@ import "vuetify/styles"
 // Vuetify
 import { createVuetify } from "vuetify"
 
+// Dark theme
 const dark = {
     dark: true,
     colors: {
@@ -20,6 +21,7 @@ const dark = {
         warning: "#FB8C00",
     },
 }
+// Light theme
 const light = {
     dark: false,
     colors: {

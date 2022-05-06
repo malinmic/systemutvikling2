@@ -1,3 +1,4 @@
+// Interface for alerts
 export interface AlertMessage {
     id: number
     type: string

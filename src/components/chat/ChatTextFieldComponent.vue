@@ -1,3 +1,4 @@
+<!-- Base component for chat text field-->
 <template>
     <form @submit.prevent="sendMessage">
         <div class="d-flex">
@@ -9,6 +10,7 @@
                 placeholder="Aa"
             />
 
+            <!-- Send message button-->
             <v-btn
                 class="text-primary-c ml-2"
                 type="submit"
@@ -24,14 +26,13 @@
 </template>
 
 <script setup>
+/** Imports: */
 import { defineProps, ref } from "vue"
-import { useStore } from "vuex"
 
+/** Variables: */
 const props = defineProps({
     sendMessageCallback: Function,
 })
-
-const store = useStore()
 
 const message = ref("")
 

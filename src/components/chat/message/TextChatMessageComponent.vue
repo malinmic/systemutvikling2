@@ -1,4 +1,6 @@
+<!-- Base component for text chat message-->
 <template>
+    <!-- Uses the component for chat message-->
     <chat-message-component :sent-by-me="sentByMe">
         <h5 class="text-secondary-dimmed font-weight-regular mb-2">
             <b>{{ from + " " }} </b> {{ timeLabel }}
@@ -8,11 +10,13 @@
 </template>
 
 <script setup lang="ts">
+/** Imports: */
 import { defineProps, ref } from "vue"
 import { ChatMessage } from "@/types/IfcChatMessageInterface"
 import ChatMessageComponent from "@/components/chat/message/ChatMessageComponent.vue"
 import { useStore } from "vuex"
 
+/** Variables: */
 const props = defineProps<{
     message: ChatMessage
 }>()

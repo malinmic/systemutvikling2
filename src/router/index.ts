@@ -29,7 +29,7 @@ const routes: Array<RouteRecordRaw> = [
         },
         component: () =>
             import(
-                /* webpackChunkName: "edit-user" */ "@/views/ProfileView.vue"
+                /* webpackChunkName: "user-profile" */ "@/views/ProfileView.vue"
             ),
     },
     {
@@ -118,9 +118,7 @@ const routes: Array<RouteRecordRaw> = [
             requiresAuth: true,
         },
         component: () =>
-            import(
-                /* webpackChunkName: "edit-listing" */ "../views/ChatView.vue"
-            ),
+            import(/* webpackChunkName: "chat" */ "../views/ChatView.vue"),
     },
 ]
 

@@ -1,3 +1,4 @@
+<!-- The component for logo for navigation bar-->
 <template>
     <v-img
         v-if="
@@ -20,9 +21,11 @@
 </template>
 
 <script setup lang="ts">
+/** Imports: */
 import { defineProps } from "vue"
 import { useStore } from "vuex"
 
+/** Variables: */
 const store = useStore()
 const props = defineProps({
     transparentMode: Boolean,
