@@ -1,7 +1,8 @@
+// Interface for user account
 export interface UserAccount {
-    firstName: String
-    surname: String
-    email: String
-    phoneNumber: String
-    avatarImagePath?: String
+    firstname: string
+    lastname: string
+    email: string
+    phoneNumber?: string
+    avatarImagePath?: string
 }

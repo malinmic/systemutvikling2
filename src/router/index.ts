@@ -5,6 +5,7 @@ import {
     RouteRecordRaw,
 } from "vue-router"
 
+// @ts-ignore
 const routes: Array<RouteRecordRaw> = [
     {
         path: "/",
@@ -21,6 +22,17 @@ const routes: Array<RouteRecordRaw> = [
             import(/* webpackChunkName: "faq" */ "@/views/FaqView.vue"),
     },
     {
+        path: "/userprofile",
+        name: "userprofile",
+        meta: {
+            requiresAuth: true,
+        },
+        component: () =>
+            import(
+                /* webpackChunkName: "user-profile" */ "@/views/ProfileView.vue"
+            ),
+    },
+    {
         path: "/user/create",
         name: "createuser",
         component: () =>
@@ -31,17 +43,12 @@ const routes: Array<RouteRecordRaw> = [
     {
         path: "/user/edit",
         name: "edituser",
+        meta: {
+            requiresAuth: true,
+        },
         component: () =>
             import(
                 /* webpackChunkName: "edit-user" */ "@/views/EditUserView.vue"
-            ),
-    },
-    {
-        path: "/request/accept",
-        name: "acceptborrowrequest",
-        component: () =>
-            import(
-                /* webpackChunkName: "accept-request" */ "@/views/AcceptBorrowRequestView.vue"
             ),
     },
     {
@@ -63,6 +70,9 @@ const routes: Array<RouteRecordRaw> = [
     {
         path: "/my-listings",
         name: "personallistingview",
+        meta: {
+            requiresAuth: true,
+        },
         component: () =>
             import(
                 /* webpackChunkName: "personal-listing" */ "../views/PersonalListingView.vue"
@@ -71,6 +81,9 @@ const routes: Array<RouteRecordRaw> = [
     {
         path: "/listing/create",
         name: "createlisting",
+        meta: {
+            requiresAuth: true,
+        },
         component: () =>
             import(
                 /* webpackChunkName: "create-listing" */ "@/views/CreateListingView.vue"
@@ -89,15 +102,43 @@ const routes: Array<RouteRecordRaw> = [
         path: "/listing/:id/edit",
         props: true,
         name: "editlisting",
+        meta: {
+            requiresAuth: true,
+        },
         component: () =>
             import(
                 /* webpackChunkName: "edit-listing" */ "../views/EditListingView.vue"
             ),
     },
+    {
+        path: "/chat/:id",
+        props: true,
+        name: "chat",
+        meta: {
+            requiresAuth: true,
+        },
+        component: () =>
+            import(/* webpackChunkName: "chat" */ "../views/ChatView.vue"),
+    },
 ]
+
+import store from "@/store"
+
 const router: Router = createRouter({
     history: createWebHistory(process.env.BASE_URL),
     routes,
+})
+
+router.beforeEach((to, from, next) => {
+    if (to.matched.some((record) => record.meta.requiresAuth)) {
+        if (!store.getters.isLoggedIn) {
+            next({ name: "landingpage" })
+        } else {
+            next()
+        }
+    } else {
+        next()
+    }
 })
 
 export default router

@@ -1,5 +1,8 @@
+/** Imports: */
 import { createStore } from "vuex"
 import { AlertMessage } from "@/types/IfcAlertInterface"
+import { useCookies } from "vue3-cookies"
+import { UserAccount } from "@/types/IfcUserAccountInterface"
 
 export interface Module1State {
     userAvatarPath: string
@@ -12,6 +15,8 @@ export interface Module1State {
     zipcode: number
     city: string
     alerts: AlertMessage[]
+    theme: string
+    chatReceiver: UserAccount //Chat receiver describes Receiver Information used in navigation bar on chat-page
 }
 
 export default createStore({
@@ -26,6 +31,12 @@ export default createStore({
         zipcode: -1,
         city: "",
         alerts: [] as AlertMessage[],
+        theme: "light",
+        chatReceiver: {
+            firstname: "String",
+            lastname: "String",
+            email: "String",
+        } as UserAccount,
     },
     getters: {
         token(state) {
@@ -42,6 +53,12 @@ export default createStore({
         },
         alerts(state) {
             return state.alerts
+        },
+        theme(state) {
+            return state.theme
+        },
+        chatReceiverInfo(state) {
+            return state.chatReceiver as UserAccount
         },
     },
     mutations: {
@@ -75,6 +92,13 @@ export default createStore({
         REVOKE_ALERT(state) {
             state.alerts.pop()
         },
+        SET_THEME(state, theme) {
+            useCookies().cookies.set("theme", theme)
+            state.theme = theme
+        },
+        SET_CHAT_RECEIVER(state, receiver: UserAccount) {
+            state.chatReceiver = receiver
+        },
     },
     actions: {
         setToken(context, { token }) {
@@ -93,7 +117,9 @@ export default createStore({
                 context.commit("SET_CITY", city)
         },
         postAlert(context, { message, type, title }) {
+            const id = Date.now() as number
             const alert: AlertMessage = {
+                id: id,
                 message: message,
                 type: type,
                 title: title,
@@ -102,8 +128,18 @@ export default createStore({
             context.commit("ADD_ALERT", alert)
 
             setTimeout(() => {
-                context.commit("REVOKE_ALERT")
-            }, 3000)
+                context.commit("REVOKE_ALERT", id)
+            }, 4500)
+        },
+        setTheme(context, { theme }) {
+            context.commit("SET_THEME", theme)
+        },
+        toggleTheme(context) {
+            if (context.state.theme == "light") {
+                context.commit("SET_THEME", "dark")
+            } else {
+                context.commit("SET_THEME", "light")
+            }
         },
     },
     modules: {},

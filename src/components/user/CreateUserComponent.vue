@@ -1,4 +1,6 @@
+<!--The component to create a new user for the application-->
 <template>
+    <!--The form a new users must fill out to create a user-->
     <v-form @submit.prevent="submit">
         <v-container>
             <v-row>
@@ -83,11 +85,12 @@
                         :error-messages="errors.confirmPassword"
                     ></v-text-field>
                 </v-col>
+                <!--Register button-->
                 <v-col class="justify-center d-flex" cols="12">
                     <v-btn
                         data-cy="createUser"
                         color="primary"
-                        class="text-primary-c"
+                        class="text-primary-c w-100"
                         type="submit"
                         >Registrer deg</v-btn
                     >
@@ -97,92 +100,80 @@
     </v-form>
 </template>
 
-<script lang="ts">
-import { defineComponent } from "vue"
-import { object, string, number, ref } from "yup"
+<script setup lang="ts">
+/** Imports: */
+import { ref } from "vue"
+import { object, string, number, ref as yupRef } from "yup"
 import { useForm, useField } from "vee-validate"
 import { postUser } from "@/services/api/user"
 import router from "@/router"
 import store from "@/store"
 
-export default defineComponent({
-    data: () => ({
-        show1: false,
-        show2: false,
-    }),
-    setup() {
-        const validationSchema = object({
-            firstname: string().required("Dette feltet er påkrevd"),
-            lastname: string().required("Dette feltet er påkrevd"),
-            email: string().required().email("Fyll inn en gyldig mailadresse"),
-            phonenumber: number().min(8).required("Dette feltet er påkrevd"),
-            zipcode: number().required("Dette feltet er påkrevd"),
-            city: string().required("Dette feltet er påkrevd"),
-            password: string().required("Dette feltet er påkrevd"),
-            confirmPassword: string()
-                .required("Dette feltet er påkrevd")
-                .oneOf([ref("password"), null], "Passordene må matche"),
-        })
+/** Variables: */
+const show1 = ref(false)
+const show2 = ref(false)
 
-        const { handleSubmit, errors } = useForm({
-            validationSchema,
-        })
+const validationSchema = object({
+    firstname: string().required("Dette feltet er påkrevd"),
+    lastname: string().required("Dette feltet er påkrevd"),
+    email: string().required().email("Fyll inn en gyldig mailadresse"),
+    phonenumber: number()
+        .min(8)
+        .typeError("Mobilnummer må være et tall")
+        .required("Dette feltet er påkrevd"),
+    zipcode: number().required("Dette feltet er påkrevd"),
+    city: string().required("Dette feltet er påkrevd"),
+    password: string().required("Dette feltet er påkrevd"),
+    confirmPassword: string()
+        .required("Dette feltet er påkrevd")
+        .oneOf([yupRef("password"), null], "Passordene må matche"),
+})
 
-        const { value: firstname } = useField("firstname")
-        const { value: lastname } = useField("lastname")
-        const { value: email } = useField("email")
-        const { value: phonenumber } = useField("phonenumber")
-        const { value: zipcode } = useField("zipcode")
-        const { value: city } = useField("city")
-        const { value: password } = useField("password")
-        const { value: confirmPassword } = useField("confirmPassword")
+const { handleSubmit, errors } = useForm({
+    validationSchema,
+})
 
-        const submit = handleSubmit((values) => {
-            if (
-                values.email &&
-                values.firstname &&
-                values.lastname &&
-                values.phonenumber &&
-                values.zipcode &&
-                values.password
-            )
-                postUser(
-                    values.email,
-                    values.firstname,
-                    values.lastname,
-                    values.phonenumber,
-                    values.zipcode,
-                    values.password
-                )
-                    .then(() => {
-                        store.dispatch("postAlert", {
-                            message: "Registerering av bruker gjennomført",
-                            type: "success",
-                            title: "Brukerregisterring fullført",
-                        })
-                        router.push({ name: "landingpage" })
-                    })
-                    .catch((e) => {
-                        store.dispatch("postAlert", {
-                            title: "Registrering av bruker feilet",
-                            type: "error",
-                            message: `En feil førte til at brukeren ikke kunne oppdateres. Grunn: ${e}`,
-                        })
-                    })
-        })
+const { value: firstname } = useField("firstname")
+const { value: lastname } = useField("lastname")
+const { value: email } = useField("email")
+const { value: phonenumber } = useField("phonenumber")
+const { value: zipcode } = useField("zipcode")
+const { value: city } = useField("city")
+const { value: password } = useField("password")
+const { value: confirmPassword } = useField("confirmPassword")
 
-        return {
-            firstname,
-            lastname,
-            email,
-            phonenumber,
-            zipcode,
-            city,
-            password,
-            confirmPassword,
-            errors,
-            submit,
-        }
-    },
+/** Methods for create a new user when the user submit a form */
+const submit = handleSubmit((values) => {
+    if (
+        values.email &&
+        values.firstname &&
+        values.lastname &&
+        values.phonenumber &&
+        values.zipcode &&
+        values.password
+    )
+        postUser(
+            values.email,
+            values.firstname,
+            values.lastname,
+            values.phonenumber,
+            values.zipcode,
+            values.password
+        )
+            .then(() => {
+                store.dispatch("postAlert", {
+                    message: "Registerering av bruker gjennomført",
+                    type: "success",
+                    title: "Brukerregisterring fullført",
+                })
+                router.push({ name: "landingpage" })
+            })
+            .catch((e) => {
+                store.dispatch("postAlert", {
+                    title: "Registrering av bruker feilet",
+                    type: "error",
+                    message: `En feil førte til at brukeren ikke kunne oppdateres. Grunn: ${e}`,
+                })
+            })
 })
 </script>

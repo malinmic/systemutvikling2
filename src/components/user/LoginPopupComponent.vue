@@ -1,3 +1,4 @@
+<!-- The component for login popup-->
 <template>
     <v-dialog>
         <v-card class="rounded-xl">
@@ -42,7 +43,7 @@
                         >
                         </v-text-field>
                     </v-col>
-
+                    <!-- Login button-->
                     <v-btn
                         data-cy="submit"
                         class="mr-2 text-primary-c"
@@ -53,10 +54,11 @@
                         Logg inn
                     </v-btn>
 
+                    <!-- Register button. Sends you to the view where you can create a new user-->
                     <v-btn
                         data-cy="register"
                         rounded
-                        color="background"
+                        variant="outlined"
                         @click="register(), $emit('update:modelValue', false)"
                     >
                         Registrer deg
@@ -68,6 +70,7 @@
 </template>
 
 <script setup lang="ts">
+/** Imports: */
 import { ref, defineEmits } from "vue"
 import { useForm, useField } from "vee-validate"
 import { object, string } from "yup"
@@ -76,6 +79,7 @@ import { getToken } from "@/services/api/user"
 import { useCookies } from "vue3-cookies"
 import { useStore } from "vuex"
 
+/** Variables: */
 const store = useStore()
 const { cookies } = useCookies()
 const router = useRouter()
@@ -98,6 +102,7 @@ const { errors, handleSubmit } = useForm({
 const { value: username } = useField("username")
 const { value: password } = useField("password")
 
+/** Method for login a user*/
 const submit = handleSubmit(async (values) => {
     if (values.username && values.password) {
         try {
@@ -112,7 +117,7 @@ const submit = handleSubmit(async (values) => {
 
             emit("update-login-state")
             await store.dispatch("postAlert", {
-                message: "Login successful",
+                title: "Login vellykket",
                 type: "success",
             })
 
@@ -123,10 +128,11 @@ const submit = handleSubmit(async (values) => {
             errormessage.value = "Feil brukernavn eller passord"
         }
     } else {
-        console.log("Login error")
+        console.error("Login error")
     }
 })
 
+/**  Method for sending user to view to create new user */
 const register = () => {
     router.push({ name: "createuser" })
 }
