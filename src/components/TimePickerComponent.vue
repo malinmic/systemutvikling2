@@ -1,3 +1,4 @@
+<!-- The component for time picker-->
 <template>
     <v-container>
         <v-row>
@@ -20,22 +21,10 @@
     </v-container>
 </template>
 
-<script>
+<script setup>
+/** Imports: */
 import { useField } from "vee-validate"
 import { string } from "yup"
-export default {
-    name: "TimePickerComponent",
-
-    setup() {
-        const { value: date1 } = useField < string > "date1"
-        const { value: date2 } = useField < string > "date2"
-
-        return {
-            date1,
-            date2,
-        }
-    },
-}
+const { value: date1 } = useField < string > "date1"
+const { value: date2 } = useField < string > "date2"
 </script>
-
-<style scoped></style>

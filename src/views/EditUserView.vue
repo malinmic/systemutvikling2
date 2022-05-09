@@ -1,6 +1,9 @@
+<!-- The view for editing a user-->
 <template>
     <v-container class="m-6">
+        <!-- Import for a standard header component-->
         <HeaderComponent text="Rediger bruker" />
+        <!-- The form where a user can edit personal information-->
         <v-form @submit.prevent="updateUserInfo">
             <v-container>
                 <v-row>
@@ -82,11 +85,13 @@
                     </v-col>
                 </v-row>
                 <v-col class="justify-center d-flex" cols="12">
+                    <!-- Save changes button-->
                     <v-btn
                         data-cy="editUser"
                         color="primary"
                         variant="outlined"
                         type="submit"
+                        class="w-100"
                     >
                         Lagre endringer
                     </v-btn>
@@ -97,6 +102,7 @@
 </template>
 
 <script setup lang="ts">
+/** Imports: */
 import { onMounted, ref } from "vue"
 import { object, string, number } from "yup"
 import { useForm, useField } from "vee-validate"
@@ -105,6 +111,7 @@ import { useStore } from "vuex"
 import { useRouter } from "vue-router"
 import HeaderComponent from "@/components/HeaderComponent.vue"
 
+/** Variables: */
 const store = useStore()
 
 const show1 = ref(false)
@@ -113,8 +120,6 @@ const show2 = ref(false)
 const router = useRouter()
 
 const registered = () => {
-    console.log("registrert endringer")
-
     router.push({
         name: "landingpage",
     })
@@ -151,8 +156,8 @@ const { value: zipcode } = useField("zipcode")
 const { value: password1 } = useField("password1")
 const { value: password2 } = useField("password2")
 
+/** Method to save changes for user profile */
 const updateUserInfo = handleSubmit((values) => {
-    console.log("Update user")
     if (values.password2 == undefined) password2.value = ""
 
     putUser(
@@ -182,6 +187,7 @@ const updateUserInfo = handleSubmit((values) => {
         })
 })
 
+/** Method to load the current user before the view is loaded */
 onMounted(() => {
     getUser(store.getters.token).then((data) => {
         email.value = data.email
